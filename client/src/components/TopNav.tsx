@@ -1,10 +1,5 @@
-
 const TopNav = () => {
-  return (
-    <div>
-      Top Nav
-    </div>
-  )
-}
+  return <div>Top Nav</div>;
+};
 
-export default TopNav
+export default TopNav;
