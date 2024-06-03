@@ -1,3 +1,4 @@
+
 import { NavLink } from "react-router-dom";
 import { navigation } from "../constants/navigation";
 
@@ -22,6 +23,7 @@ const TopNav = () => {
       })}
     </nav>
   );
+
 };
 
 export default TopNav;
