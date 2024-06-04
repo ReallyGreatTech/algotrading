@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode } from "react";
 
 export interface TableColumn<T> {
   label: string;
@@ -48,4 +48,12 @@ export interface InvestorAction {
   investorName: string;
   action: string;
   amount: string;
+}
+
+export interface TableItem {
+  exchange: string;
+  token: string;
+  price: string;
+  currentFunding: string;
+  openInterest: string;
 }
