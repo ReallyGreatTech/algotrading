@@ -10,7 +10,7 @@ const FundingRates = () => {
       <header>
         <TopNav />
       </header>
-      <main className="bg-[#6558F5] text-white h-[80vh] mt-5 rounded-md">
+      <main className="bg-[#6558F5] text-white  mt-5 rounded-md">
         <h1 className="text-center font-bold py-4 text-2xl">Funding Rates</h1>
 
         <ul className="flex gap-4  items-center mx-3">

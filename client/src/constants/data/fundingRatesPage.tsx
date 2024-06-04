@@ -59,19 +59,13 @@ export const fundingRatesTableSampleData = [
     openInterest: "30000000",
   },
   {
-    exchange: "Binance",
-    token: "BTC/USDT",
-    price: "27000",
-    currentFunding: "0.01",
-    openInterest: "150000000",
-  },
-  {
-    exchange: "FTX",
-    token: "ETH/USDT",
-    price: "1800",
-    currentFunding: "0.02",
-    openInterest: "50000000",
-  },
+    exchange: "Kraken",
+    token: "SOL/USDT",
+    price: "22",
+    currentFunding: "0.007",
+    openInterest: "30000000",
+  }
+  
   
 ];
 
