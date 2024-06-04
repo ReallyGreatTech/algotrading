@@ -1,0 +1,29 @@
+pipeline {
+	agent any;
+	tools {
+		go 'go-1.11'
+	}
+	environment {
+		GO111MODULE='on'
+	}
+	stages {
+		stage("Checkout") {
+			step {
+				git 'https://github.com/yasoob/sqlalchemy-strawberry-fastapi-nextjs'
+			}
+		}
+		stage("Testing") {
+			step {
+				git 'go test ./...'
+			}
+		}
+		stage {
+			step {
+				script {
+					app = docker.build('sample-go-app')
+				}
+			}
+		}
+	}
+
+}

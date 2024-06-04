@@ -4,11 +4,17 @@ import { TableColumn } from '../types';
 interface AppTableProps<T> {
   columns: TableColumn<T>[];
   data: T[];
+  tableHeadRowClassName?: string;
+  tableBodyRowClassName?: string;
+  onRowClick?(row: T): void;
 }
 
 const AppTable = <T extends {}>({
   columns = [],
   data = [],
+  tableHeadRowClassName,
+  tableBodyRowClassName,
+  onRowClick,
 }: AppTableProps<T>) => {
   const renderCell = (row: T, column: TableColumn<T>): ReactNode => {
     if (column.render) return column.render(row);
@@ -16,12 +22,22 @@ const AppTable = <T extends {}>({
     return row[column.value as keyof T] as string;
   };
 
+  const raiseRowclick = (row: T) => {
+    if (onRowClick) {
+      onRowClick(row);
+    }
+  };
+
   return (
     <table className="w-full">
       <thead>
-        <tr>
-          {columns.map((c) => (
-            <th className="min-w-[8em]" align="left">
+        <tr className={tableHeadRowClassName}>
+          {columns.map((c, cIndex) => (
+            <th
+              className={`min-w-[8em] ${c.tableHeadCellClassName || ''}`}
+              align="left"
+              key={cIndex}
+            >
               {c.label}
             </th>
           ))}
@@ -30,9 +46,16 @@ const AppTable = <T extends {}>({
 
       <tbody>
         {data.map((row, dDndex) => (
-          <tr key={dDndex}>
+          <tr
+            key={dDndex}
+            onClick={() => raiseRowclick(row)}
+            className={tableBodyRowClassName}
+          >
             {columns.map((c, cIndex) => (
-              <td className="py-5" key={`${dDndex}_${cIndex}`}>
+              <td
+                className={`py-5 ${c.tableBodyCellClassName || ''}`}
+                key={`${dDndex}_${cIndex}`}
+              >
                 {renderCell(row, c)}
               </td>
             ))}

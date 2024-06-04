@@ -14,12 +14,12 @@ import { DataItem, Investor, InvestorAction, Wallet } from '../types';
 
 const Positions = () => {
   return (
-    <section className="container mx-auto p-10">
+    <section className="p-10">
       <div className="mb-8">
         <TopNav />
       </div>
 
-      <div className="bg-[#6558F5] p-10">
+      <div className="bg-[#6558F5] p-5 w-full">
         <div className="py-5 pb-10">
           <h1 className="text-3xl font-bold text-white">Positions</h1>
         </div>
@@ -67,8 +67,10 @@ const Positions = () => {
           </div>
           <div className="col-span-5 min-h-[20em] bg-[#F7C325] rounded-sm p-5">
             <AppTable<InvestorAction>
+              tableBodyRowClassName="hover:opacity-70 cursor-pointer"
               columns={investorActionTableColumn}
               data={investorActionTableSampleData}
+              onRowClick={(item) => {}}
             />
           </div>
         </div>

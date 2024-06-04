@@ -3,6 +3,8 @@ import { ReactNode } from 'react';
 export interface TableColumn<T> {
   label: string;
   value: string;
+  tableBodyCellClassName?: string;
+  tableHeadCellClassName?: string;
   render?(item: T): ReactNode;
 }
 
