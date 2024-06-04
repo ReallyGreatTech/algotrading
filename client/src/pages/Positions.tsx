@@ -45,7 +45,7 @@ const Positions = () => {
         </div>
 
         <div className="grid grid-cols-12 gap-5 mb-6">
-          <div className="col-span-5 min-h-[20em] bg-[#F7C325] rounded-sm overflow-auto p-5">
+          <div className="col-span-5 min-h-[20em] bg-[#F7C325] rounded-sm overflow-auto ">
             <AppTable<Wallet>
               columns={walletsTableColumn}
               data={walletsTableSampleData}
