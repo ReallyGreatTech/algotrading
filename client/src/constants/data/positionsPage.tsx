@@ -1,3 +1,7 @@
+import { render } from 'react-dom';
+import { Investor, Wallet } from '../../types';
+import { shortenString } from '../../utils/stringTool';
+
 export const positionsTableColumn = [
   {
     label: 'Date',
@@ -185,10 +189,16 @@ export const walletsTableColumn = [
   {
     label: 'Wallet',
     value: 'wallet',
+    render(item: Wallet) {
+      return shortenString(item.wallet, 10);
+    },
   },
   {
     label: 'start Time',
     value: 'startTime',
+    render(item: Wallet) {
+      return new Date(item.startTime).toLocaleString();
+    },
   },
   {
     label: 'Initial Investment',
@@ -202,22 +212,64 @@ export const walletsTableColumn = [
 
 export const walletsTableSampleData = [
   {
-    wallet: 'XXXXXX',
-    startTime: 'xxxxxx',
-    initialInvestment: 'xxxxxx',
-    currentValue: 'xxxxxx',
+    wallet: '0xA1b2C3d4E5f67890aBCdEf1234567890AbCdEf12',
+    startTime: '2023-01-01T00:00:00Z',
+    initialInvestment: '5000',
+    currentValue: '7500',
   },
   {
-    wallet: 'XXXXXX',
-    startTime: 'xxxxxx',
-    initialInvestment: 'xxxxxx',
-    currentValue: 'xxxxxx',
+    wallet: '0xB2c3D4e5F67890abCDeF1234567890abCDEf1234',
+    startTime: '2023-02-15T00:00:00Z',
+    initialInvestment: '3000',
+    currentValue: '4500',
   },
   {
-    wallet: 'XXXXXX',
-    startTime: 'xxxxxx',
-    initialInvestment: 'xxxxxx',
-    currentValue: 'xxxxxx',
+    wallet: '0xC3d4E5f67890AbcDEF1234567890ABCDef123456',
+    startTime: '2023-03-01T00:00:00Z',
+    initialInvestment: '10000',
+    currentValue: '9500',
+  },
+  {
+    wallet: '0xD4e5F67890abCDEf1234567890AbCdEf12345678',
+    startTime: '2023-04-20T00:00:00Z',
+    initialInvestment: '7500',
+    currentValue: '8200',
+  },
+  {
+    wallet: '0xE5f67890AbCDEF1234567890abCDEF1234567890',
+    startTime: '2023-05-10T00:00:00Z',
+    initialInvestment: '2000',
+    currentValue: '1800',
+  },
+  {
+    wallet: '0xF67890abCDEf1234567890ABCdEf123456789012',
+    startTime: '2023-06-25T00:00:00Z',
+    initialInvestment: '6000',
+    currentValue: '6100',
+  },
+  {
+    wallet: '0x1234567890AbCdEf1234567890aBcDeF12345678',
+    startTime: '2023-07-15T00:00:00Z',
+    initialInvestment: '12000',
+    currentValue: '13000',
+  },
+  {
+    wallet: '0x234567890ABCDEF1234567890abcdef123456789',
+    startTime: '2023-08-05T00:00:00Z',
+    initialInvestment: '4000',
+    currentValue: '4200',
+  },
+  {
+    wallet: '0x34567890abcdef1234567890ABCDEF1234567890',
+    startTime: '2023-09-12T00:00:00Z',
+    initialInvestment: '8000',
+    currentValue: '8500',
+  },
+  {
+    wallet: '0x4567890ABCDEF1234567890abcdef12345678901',
+    startTime: '2023-10-01T00:00:00Z',
+    initialInvestment: '500',
+    currentValue: '700',
   },
 ];
 
@@ -233,6 +285,9 @@ export const investorTableColumn = [
   {
     label: 'Joined Time',
     value: 'joinedTime',
+    render(investor: Investor) {
+      return new Date(investor.joinedTime).toLocaleString();
+    },
   },
   {
     label: 'Initial Investment',
@@ -242,22 +297,64 @@ export const investorTableColumn = [
 
 export const investorTableSampleData = [
   {
-    investorName: 'XXXXXX',
-    percentageFromWallet: 'xxxxxx',
-    joinedTime: 'xxxxxx',
-    initialInvestment: 'xxxxxx',
+    investorName: 'Alice Johnson',
+    percentageFromWallet: '25',
+    joinedTime: '2023-01-05T14:30:00Z',
+    initialInvestment: '1250',
   },
   {
-    investorName: 'XXXXXX',
-    percentageFromWallet: 'xxxxxx',
-    joinedTime: 'xxxxxx',
-    initialInvestment: 'xxxxxx',
+    investorName: 'Bob Smith',
+    percentageFromWallet: '40',
+    joinedTime: '2023-02-18T09:00:00Z',
+    initialInvestment: '1200',
   },
   {
-    investorName: 'XXXXXX',
-    percentageFromWallet: 'xxxxxx',
-    joinedTime: 'xxxxxx',
-    initialInvestment: 'xxxxxx',
+    investorName: 'Charlie Brown',
+    percentageFromWallet: '30',
+    joinedTime: '2023-03-10T16:45:00Z',
+    initialInvestment: '3000',
+  },
+  {
+    investorName: 'Diana Prince',
+    percentageFromWallet: '20',
+    joinedTime: '2023-04-25T12:15:00Z',
+    initialInvestment: '1500',
+  },
+  {
+    investorName: 'Ethan Hunt',
+    percentageFromWallet: '35',
+    joinedTime: '2023-05-14T10:00:00Z',
+    initialInvestment: '700',
+  },
+  {
+    investorName: 'Fiona Gallagher',
+    percentageFromWallet: '50',
+    joinedTime: '2023-06-29T11:30:00Z',
+    initialInvestment: '3000',
+  },
+  {
+    investorName: 'George Weasley',
+    percentageFromWallet: '15',
+    joinedTime: '2023-07-20T13:45:00Z',
+    initialInvestment: '1800',
+  },
+  {
+    investorName: 'Hannah Abbott',
+    percentageFromWallet: '45',
+    joinedTime: '2023-08-07T15:00:00Z',
+    initialInvestment: '1800',
+  },
+  {
+    investorName: 'Ian Malcolm',
+    percentageFromWallet: '10',
+    joinedTime: '2023-09-15T17:30:00Z',
+    initialInvestment: '800',
+  },
+  {
+    investorName: 'Jessica Jones',
+    percentageFromWallet: '20',
+    joinedTime: '2023-10-10T09:15:00Z',
+    initialInvestment: '100',
   },
 ];
 
@@ -278,18 +375,53 @@ export const investorActionTableColumn = [
 
 export const investorActionTableSampleData = [
   {
-    investorName: 'XXXXXX',
-    action: 'xxxxxx',
-    amount: 'xxxxxx',
+    investorName: 'Alice Johnson',
+    action: 'deposit',
+    amount: '500',
   },
   {
-    investorName: 'XXXXXX',
-    action: 'xxxxxx',
-    amount: 'xxxxxx',
+    investorName: 'Bob Smith',
+    action: 'withdraw',
+    amount: '200',
   },
   {
-    investorName: 'XXXXXX',
-    action: 'xxxxxx',
-    amount: 'xxxxxx',
+    investorName: 'Charlie Brown',
+    action: 'deposit',
+    amount: '1000',
+  },
+  {
+    investorName: 'Diana Prince',
+    action: 'deposit',
+    amount: '300',
+  },
+  {
+    investorName: 'Ethan Hunt',
+    action: 'withdraw',
+    amount: '150',
+  },
+  {
+    investorName: 'Fiona Gallagher',
+    action: 'deposit',
+    amount: '2500',
+  },
+  {
+    investorName: 'George Weasley',
+    action: 'withdraw',
+    amount: '500',
+  },
+  {
+    investorName: 'Hannah Abbott',
+    action: 'deposit',
+    amount: '600',
+  },
+  {
+    investorName: 'Ian Malcolm',
+    action: 'withdraw',
+    amount: '300',
+  },
+  {
+    investorName: 'Jessica Jones',
+    action: 'deposit',
+    amount: '50',
   },
 ];
