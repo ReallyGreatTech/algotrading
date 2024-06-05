@@ -56,7 +56,7 @@ const Positions = () => {
           </div>
           <div className="col-span-7 min-h-[20em] bg-[#F7C325] rounded-sm p-5">
             <h4 className="font-semibold text-2xl mb-5">Investors</h4>
-            <div className="max-h-[20em]">
+            <div className="max-h-[20em] overflow-auto">
               <AppTable<Investor>
                 columns={investorTableColumn}
                 data={investorTableSampleData}
@@ -70,6 +70,10 @@ const Positions = () => {
             <AppTable<DataItem>
               columns={positionsTableColumn}
               data={positionsTableSampleData}
+              tableBodyRowClassName="hover:opacity-70 cursor-pointer"
+              onRowClick={(item) => {
+                console.log(item);
+              }}
             />
           </div>
           <div className="col-span-5 min-h-[20em] bg-[#F7C325] rounded-sm p-5">
@@ -79,7 +83,9 @@ const Positions = () => {
                 tableBodyRowClassName="hover:opacity-70 cursor-pointer"
                 columns={investorActionTableColumn}
                 data={investorActionTableSampleData}
-                onRowClick={(item) => {}}
+                onRowClick={(item) => {
+                  console.log(item);
+                }}
               />
             </div>
           </div>

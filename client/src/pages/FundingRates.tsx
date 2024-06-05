@@ -1,8 +1,19 @@
-import AppTable from "../components/AppTable";
-import ListItem from "../components/ListItem";
-import TopNav from "../components/TopNav";
-import { fundingRatesTableColumn, fundingRatesTableSampleData } from "../constants/data/fundingRatesPage";
-import { TableItem } from "../types";
+import AppTable from '../components/AppTable';
+import ListItem from '../components/ListItem';
+import SelectInput from '../components/SelectInput';
+import TopNav from '../components/TopNav';
+import {
+  fundingRatesTableColumn,
+  fundingRatesTableSampleData,
+} from '../constants/data/fundingRatesPage';
+import { TableItem } from '../types';
+
+const selectOptions = [
+  { label: 'Ethereum', value: 'US' },
+  { label: 'BNB', value: 'CA' },
+  { label: 'SOL', value: 'FR' },
+  { label: 'USDC', value: 'DE' },
+];
 
 const FundingRates = () => {
   return (
@@ -15,16 +26,7 @@ const FundingRates = () => {
 
         <ul className="flex gap-4  items-center mx-3">
           <li className=" h-[50px]">
-            <select
-              id="countries"
-              className="bg-[#207868]  text-white text-sm rounded-lg h-full focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-            >
-              <option selected>Bitcoin </option>
-              <option value="US">Ethereum</option>
-              <option value="CA">BNB</option>
-              <option value="FR">SOL</option>
-              <option value="DE">USDC</option>
-            </select>
+            <SelectInput options={selectOptions} defaultValue="FR" />
           </li>
           <ListItem title="Minimum funding rate(yearly)" />
           <ListItem title="Exchanges" />
@@ -51,9 +53,9 @@ const FundingRates = () => {
               </h2>
             </div>
             <div className="bg-[#F7C325] h-1/2">
-              {" "}
+              {' '}
               <h2 className="text-center text-black font-bold">
-                {" "}
+                {' '}
                 Price chart (from selected row in table)
               </h2>
             </div>

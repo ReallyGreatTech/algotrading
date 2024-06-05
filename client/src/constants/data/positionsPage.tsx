@@ -1,4 +1,3 @@
-import { render } from 'react-dom';
 import { Investor, Wallet } from '../../types';
 import { shortenString } from '../../utils/stringTool';
 
