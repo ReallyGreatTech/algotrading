@@ -29,12 +29,14 @@ const AppTable = <T extends {}>({
   };
 
   return (
-    <table className="w-full">
+    <table className="w-full bg-gray-800">
       <thead>
-        <tr className={tableHeadRowClassName}>
+        <tr
+          className={`bg-[#334154] text-white/90 text-sm ${tableHeadRowClassName}`}
+        >
           {columns.map((c, cIndex) => (
             <th
-              className={`min-w-[8em] ${c.tableHeadCellClassName || ''}`}
+              className={`py-3 px-2 ${c.tableHeadCellClassName || ''}`}
               align="left"
               key={cIndex}
             >
@@ -49,11 +51,13 @@ const AppTable = <T extends {}>({
           <tr
             key={dDndex}
             onClick={() => raiseRowclick(row)}
-            className={tableBodyRowClassName}
+            className={`text-white/80 hover:bg-primary/90 ${tableBodyRowClassName}`}
           >
             {columns.map((c, cIndex) => (
               <td
-                className={`py-5 ${c.tableBodyCellClassName || ''}`}
+                className={`py-3 px-2 border-b border-white/10 text-sm ${
+                  c.tableBodyCellClassName || ''
+                }`}
                 key={`${dDndex}_${cIndex}`}
               >
                 {renderCell(row, c)}

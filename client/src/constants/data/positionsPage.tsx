@@ -1,7 +1,9 @@
-import { Investor, Wallet } from '../../types';
+import { FiEdit2 } from 'react-icons/fi';
+import { DataItem, Investor, TableColumn, Wallet } from '../../types';
 import { shortenString } from '../../utils/stringTool';
+import { RiDeleteBin5Line } from 'react-icons/ri';
 
-export const positionsTableColumn = [
+export const positionsTableColumn: TableColumn<DataItem>[] = [
   {
     label: 'Date',
     value: 'date',
@@ -17,10 +19,24 @@ export const positionsTableColumn = [
   {
     label: 'Direct',
     value: 'direct',
+    render(item) {
+      return (
+        <div
+          className={`py-1 px-5 rounded-full ${
+            item.direct.toLowerCase() === 'short'
+              ? 'bg-[#EF4444]'
+              : 'bg-[#419E6A]'
+          }`}
+        >
+          {item.direct}
+        </div>
+      );
+    },
   },
   {
     label: 'Leverage Value',
     value: 'leverageValue',
+    tableHeadCellClassName: 'min-w-[10em]',
   },
   {
     label: 'Leverage',
@@ -29,10 +45,12 @@ export const positionsTableColumn = [
   {
     label: 'Position Size',
     value: 'positionSize',
+    tableHeadCellClassName: 'min-w-[10em]',
   },
   {
     label: 'Entry Price',
     value: 'entryPrice',
+    tableHeadCellClassName: 'min-w-[10em]',
   },
   {
     label: 'MarkPrice',
@@ -45,18 +63,22 @@ export const positionsTableColumn = [
   {
     label: 'Funding Recieved Rate',
     value: 'fundingRecievedRate',
+    tableHeadCellClassName: 'min-w-[15em]',
   },
   {
     label: 'Funding Recieved',
     value: 'fundingRecieved',
+    tableHeadCellClassName: 'min-w-[10em]',
   },
   {
     label: 'Funding Paid Rate',
     value: 'fundingPaidRate',
+    tableHeadCellClassName: 'min-w-[10em]',
   },
   {
     label: 'Funding Paid',
     value: 'fundingPaid',
+    tableHeadCellClassName: 'min-w-[10em]',
   },
   {
     label: 'ROI',
@@ -65,10 +87,12 @@ export const positionsTableColumn = [
   {
     label: 'Unrealized PnL',
     value: 'unrealizedPnl',
+    tableHeadCellClassName: 'min-w-[10em]',
   },
   {
     label: 'Wallet Asset',
     value: 'walletAsset',
+    tableHeadCellClassName: 'min-w-[10em]',
   },
   {
     label: 'Account',
@@ -184,16 +208,18 @@ export const positionsTableSampleData = [
   },
 ];
 
-export const walletsTableColumn = [
+export const walletsTableColumn: TableColumn<Wallet>[] = [
   {
     label: 'Wallet',
     value: 'wallet',
     render(item: Wallet) {
       return shortenString(item.wallet, 10);
     },
+    tableHeadCellClassName: '',
+    tableBodyCellClassName: '',
   },
   {
-    label: 'start Time',
+    label: 'Start Time',
     value: 'startTime',
     render(item: Wallet) {
       return new Date(item.startTime).toLocaleString();
@@ -207,9 +233,95 @@ export const walletsTableColumn = [
     label: 'Current Value',
     value: 'currentValue',
   },
+  {
+    label: '',
+    value: '',
+    render(item) {
+      return (
+        <div className="flex gap-4">
+          <button
+            onClick={() => {
+              console.log('Editing: ', item);
+            }}
+            className="p-1 hover:bg-primary-dark rounded-full"
+          >
+            <FiEdit2 />
+          </button>
+          <button
+            onClick={() => {
+              console.log('Deleting: ', item);
+            }}
+            className="p-1 hover:bg-primary-dark rounded-full"
+          >
+            <RiDeleteBin5Line />
+          </button>
+        </div>
+      );
+    },
+  },
 ];
 
 export const walletsTableSampleData = [
+  {
+    wallet: '0xA1b2C3d4E5f67890aBCdEf1234567890AbCdEf12',
+    startTime: '2023-01-01T00:00:00Z',
+    initialInvestment: '5000',
+    currentValue: '7500',
+  },
+  {
+    wallet: '0xB2c3D4e5F67890abCDeF1234567890abCDEf1234',
+    startTime: '2023-02-15T00:00:00Z',
+    initialInvestment: '3000',
+    currentValue: '4500',
+  },
+  {
+    wallet: '0xC3d4E5f67890AbcDEF1234567890ABCDef123456',
+    startTime: '2023-03-01T00:00:00Z',
+    initialInvestment: '10000',
+    currentValue: '9500',
+  },
+  {
+    wallet: '0xD4e5F67890abCDEf1234567890AbCdEf12345678',
+    startTime: '2023-04-20T00:00:00Z',
+    initialInvestment: '7500',
+    currentValue: '8200',
+  },
+  // {
+  //   wallet: '0xE5f67890AbCDEF1234567890abCDEF1234567890',
+  //   startTime: '2023-05-10T00:00:00Z',
+  //   initialInvestment: '2000',
+  //   currentValue: '1800',
+  // },
+  // {
+  //   wallet: '0xF67890abCDEf1234567890ABCdEf123456789012',
+  //   startTime: '2023-06-25T00:00:00Z',
+  //   initialInvestment: '6000',
+  //   currentValue: '6100',
+  // },
+  // {
+  //   wallet: '0x1234567890AbCdEf1234567890aBcDeF12345678',
+  //   startTime: '2023-07-15T00:00:00Z',
+  //   initialInvestment: '12000',
+  //   currentValue: '13000',
+  // },
+  // {
+  //   wallet: '0x234567890ABCDEF1234567890abcdef123456789',
+  //   startTime: '2023-08-05T00:00:00Z',
+  //   initialInvestment: '4000',
+  //   currentValue: '4200',
+  // },
+  {
+    wallet: '0x34567890abcdef1234567890ABCDEF1234567890',
+    startTime: '2023-09-12T00:00:00Z',
+    initialInvestment: '8000',
+    currentValue: '8500',
+  },
+  {
+    wallet: '0x4567890ABCDEF1234567890abcdef12345678901',
+    startTime: '2023-10-01T00:00:00Z',
+    initialInvestment: '500',
+    currentValue: '700',
+  },
   {
     wallet: '0xA1b2C3d4E5f67890aBCdEf1234567890AbCdEf12',
     startTime: '2023-01-01T00:00:00Z',
@@ -291,6 +403,32 @@ export const investorTableColumn = [
   {
     label: 'Initial Investment',
     value: 'initialInvestment',
+  },
+  {
+    label: '',
+    value: '',
+    render(item: any) {
+      return (
+        <div className="flex gap-4">
+          <button
+            onClick={() => {
+              console.log('Editing: ', item);
+            }}
+            className="p-1 hover:bg-primary-dark rounded-full"
+          >
+            <FiEdit2 />
+          </button>
+          <button
+            onClick={() => {
+              console.log('Deleting: ', item);
+            }}
+            className="p-1 hover:bg-primary-dark rounded-full"
+          >
+            <RiDeleteBin5Line />
+          </button>
+        </div>
+      );
+    },
   },
 ];
 
