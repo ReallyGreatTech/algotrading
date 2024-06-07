@@ -17,3 +17,18 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+
+::-webkit-scrollbar {
+  
+  @apply h-[6px];
+  @apply w-[8px];
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-white/20 rounded-lg;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-900/95;
+}

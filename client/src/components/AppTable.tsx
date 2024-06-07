@@ -51,11 +51,11 @@ const AppTable = <T extends {}>({
           <tr
             key={dDndex}
             onClick={() => raiseRowclick(row)}
-            className={`text-white/80 hover:bg-primary/90 ${tableBodyRowClassName}`}
+            className={`text-white/80 border-b border-white/10 last:border-b-0 hover:bg-primary/90 ${tableBodyRowClassName}`}
           >
             {columns.map((c, cIndex) => (
               <td
-                className={`py-3 px-2 border-b border-white/10 text-sm ${
+                className={`py-3 px-2 text-sm ${
                   c.tableBodyCellClassName || ''
                 }`}
                 key={`${dDndex}_${cIndex}`}

@@ -13,7 +13,7 @@ import { DataItem, Investor, Wallet } from '../types';
 
 const Positions = () => {
   return (
-    <section className="p-10 min-h-screen">
+    <section className="p-5 lg:p-10 min-h-screen">
       <div className="mb-8">
         <TopNav />
       </div>
