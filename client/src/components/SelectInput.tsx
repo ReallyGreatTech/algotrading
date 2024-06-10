@@ -26,7 +26,7 @@ const SelectInput = ({
       </label>
       <select
         {...rest}
-        className="bg-gray-900 py-4 rounded-lg px-3 border border-white/20"
+        className="bg-gray-900 py-4 rounded-lg p-2.5  border border-white/20 "
       >
         {options.map((option, index) => (
           <option
