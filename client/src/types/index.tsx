@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode } from "react";
 
 export interface TableColumn<T> {
   label: string;
@@ -56,4 +56,10 @@ export interface TableItem {
   price: string;
   currentFunding: string;
   openInterest: string;
+}
+
+export interface OrderbookItem {
+  price: string;
+  amount: string;
+  total: string;
 }

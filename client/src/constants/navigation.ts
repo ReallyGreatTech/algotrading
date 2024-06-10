@@ -1,6 +1,6 @@
 export const navigation = [
   {
-    label: "Funding Rates",
+    label: "Funding rates",
     href: "/",
   },
   {
