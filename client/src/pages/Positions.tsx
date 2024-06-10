@@ -1,6 +1,8 @@
-import { AiOutlineExpandAlt } from "react-icons/ai";
-import AppTable from "../components/AppTable";
-
+import { useState } from 'react';
+import { AiOutlineExpandAlt } from 'react-icons/ai';
+import AppTable from '../components/AppTable';
+import InvestorActionsDialog from '../components/Dialogs/InvestorActionsDialog';
+import { DataItem, Investor, Wallet } from '../types';
 import {
   investorTableColumn,
   investorTableSampleData,
@@ -9,12 +11,9 @@ import {
   walletsTableColumn,
   walletsTableSampleData,
 } from '../constants/data/positionsPage';
-import { DataItem, Investor, Wallet } from '../types';
-import Overlay from '../components/Dialog/Overlay';
-import { useState } from 'react';
 
 const Positions = () => {
-  const [open, setOpen] = useState(true);
+  const [investorDialogOpen, setInvestorDialogOpen] = useState(true);
 
   return (
     <section className=" min-h-screen">
@@ -30,7 +29,7 @@ const Positions = () => {
                 <h3 className="text-white/90 font-semibold">Wallets</h3>
                 <button
                   className="text-white bg-primary hover:bg-primary/90 px-5 py-2 rounded-md"
-                  onClick={() => setOpen(true)}
+                  onClick={() => setInvestorDialogOpen(true)}
                 >
                   Add Wallet
                 </button>
@@ -84,9 +83,10 @@ const Positions = () => {
         </div>
       </div>
 
-      <Overlay open={open} onClose={() => setOpen(false)}>
-        <div className="text-white">Hello World</div>
-      </Overlay>
+      <InvestorActionsDialog
+        open={investorDialogOpen}
+        onClose={() => setInvestorDialogOpen(false)}
+      />
     </section>
   );
 };

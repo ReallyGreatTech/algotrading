@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode } from 'react';
 
 export interface TableColumn<T> {
   label: string;
@@ -62,4 +62,12 @@ export interface OrderbookItem {
   price: string;
   amount: string;
   total: string;
+}
+
+export interface DialogProps {
+  open: boolean;
+  onClose(): void;
+  children?: ReactNode;
+  fullWidth?: boolean;
+  maxWidth?: string;
 }

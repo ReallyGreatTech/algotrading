@@ -3,11 +3,17 @@ import { HTMLAttributes, useEffect } from 'react';
 interface OverLayProps extends HTMLAttributes<HTMLDivElement> {
   closeOnClick?: boolean;
   closeOnEscape?: boolean;
+  rootClassName?: string;
   open?: boolean;
   onClose?(): void;
 }
 
-const Overlay = ({ children, onClose, open = false }: OverLayProps) => {
+const Overlay = ({
+  children,
+  onClose,
+  open = false,
+  rootClassName,
+}: OverLayProps) => {
   useEffect(() => {
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
@@ -22,7 +28,12 @@ const Overlay = ({ children, onClose, open = false }: OverLayProps) => {
         className="fixed top-0 bottom-0 right-0 left-0 w-full h-screen bg-black/60 flex items-center justify-center"
         onClick={onClose}
       >
-        <div onClick={(e) => e.stopPropagation()}>{children}</div>
+        <div
+          className={`${rootClassName}`}
+          onClick={(e) => e.stopPropagation()}
+        >
+          {children}
+        </div>
       </div>
     )
   );
