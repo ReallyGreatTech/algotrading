@@ -17,12 +17,12 @@ export const positionsTableColumn: TableColumn<DataItem>[] = [
     value: 'platform',
   },
   {
-    label: 'Direct',
+    label: 'Direction',
     value: 'direct',
     render(item) {
       return (
         <div
-          className={`py-1 px-5 rounded-full ${
+          className={`py-1 px-5 rounded-full uppercase ${
             item.direct.toLowerCase() === 'short'
               ? 'bg-[#EF4444]'
               : 'bg-[#419E6A]'

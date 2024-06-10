@@ -10,8 +10,12 @@ import {
   walletsTableSampleData,
 } from '../constants/data/positionsPage';
 import { DataItem, Investor, Wallet } from '../types';
+import Overlay from '../components/Dialog/Overlay';
+import { useState } from 'react';
 
 const Positions = () => {
+  const [open, setOpen] = useState(true);
+
   return (
     <section className="p-5 lg:p-10 min-h-screen">
       <div className="mb-8">
@@ -28,7 +32,10 @@ const Positions = () => {
             <div className="border-2 border-white/10 overflow-hidden rounded-2xl bg-gray-800 h-auto">
               <div className="flex p-5 justify-between items-center">
                 <h3 className="text-white/90 font-semibold">Wallets</h3>
-                <button className="text-white bg-primary hover:bg-primary/90 px-5 py-2 rounded-md">
+                <button
+                  className="text-white bg-primary hover:bg-primary/90 px-5 py-2 rounded-md"
+                  onClick={() => setOpen(true)}
+                >
                   Add Wallet
                 </button>
               </div>
@@ -80,6 +87,10 @@ const Positions = () => {
           </div>
         </div>
       </div>
+
+      <Overlay open={open} onClose={() => setOpen(false)}>
+        <div className="text-white">Hello World</div>
+      </Overlay>
     </section>
   );
 };
