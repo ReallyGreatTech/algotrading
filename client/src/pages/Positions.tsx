@@ -11,15 +11,22 @@ import {
   walletsTableColumn,
   walletsTableSampleData,
 } from '../constants/data/positionsPage';
+import AddWalletDialog from '../components/Dialogs/AddWalletDialog';
+import AddInvestorDialog from '../components/Dialogs/AddInvestorDialog';
+import PositionsTableDialog from '../components/Dialogs/PositionsTableDialog';
 
 const Positions = () => {
-  const [investorDialogOpen, setInvestorDialogOpen] = useState(true);
+  const [investorDialogOpen, setInvestorDialogOpen] = useState(false);
+  const [addWalletDialogOpen, setAddWalletDialogOpen] = useState(false);
+  const [addInvestorDialogOpen, setAddInvestorDialogOpen] = useState(false);
+  const [addPositionsTableDialogOpen, setAddPositionsTableDialogOpen] =
+    useState(false);
 
   return (
     <section className=" min-h-screen">
       <div className="w-full">
         <div className="py-5">
-          <h1 className="text-3xl font-bold text-white">Positions</h1>
+          <h1 className="text-2xl font-semibold text-white/90">Positions</h1>
         </div>
 
         <div className="grid grid-cols-2 gap-5">
@@ -29,7 +36,7 @@ const Positions = () => {
                 <h3 className="text-white/90 font-semibold">Wallets</h3>
                 <button
                   className="text-white bg-primary hover:bg-primary/90 px-5 py-2 rounded-md"
-                  onClick={() => setInvestorDialogOpen(true)}
+                  onClick={() => setAddWalletDialogOpen(true)}
                 >
                   Add Wallet
                 </button>
@@ -48,7 +55,10 @@ const Positions = () => {
             <div className="border-2 border-white/10 overflow-hidden rounded-2xl bg-gray-800">
               <div className="flex p-5 justify-between items-center">
                 <h3 className="text-white/90 font-semibold">Investors</h3>
-                <button className="text-white bg-primary hover:bg-primary/90 px-5 py-2 rounded-md">
+                <button
+                  className="text-white bg-primary hover:bg-primary/90 px-5 py-2 rounded-md"
+                  onClick={() => setAddInvestorDialogOpen(true)}
+                >
                   Add Investor
                 </button>
               </div>
@@ -64,7 +74,10 @@ const Positions = () => {
             <div className="border-2 border-white/10 overflow-hidden rounded-2xl bg-gray-800">
               <div className="flex p-5 justify-between items-center">
                 <h3 className="text-white/90 font-semibold">Positions Table</h3>
-                <button className="text-white ">
+                <button
+                  className="text-white p-2 hover:bg-primary-dark rounded-full"
+                  onClick={() => setAddPositionsTableDialogOpen(true)}
+                >
                   <AiOutlineExpandAlt />
                 </button>
               </div>
@@ -86,6 +99,21 @@ const Positions = () => {
       <InvestorActionsDialog
         open={investorDialogOpen}
         onClose={() => setInvestorDialogOpen(false)}
+      />
+
+      <AddWalletDialog
+        open={addWalletDialogOpen}
+        onClose={() => setAddWalletDialogOpen(false)}
+      />
+
+      <AddInvestorDialog
+        open={addInvestorDialogOpen}
+        onClose={() => setAddInvestorDialogOpen(false)}
+      />
+
+      <PositionsTableDialog
+        open={addPositionsTableDialogOpen}
+        onClose={() => setAddPositionsTableDialogOpen(false)}
       />
     </section>
   );

@@ -18,7 +18,9 @@ const AppDialog = ({
         fullWidth ? 'full' : 'auto'
       } ${rootMaxWidth}`}
     >
-      {children}
+      <div className={`${maxWidth === 'full' && fullWidth ? 'p-10' : 'p-5'}`}>
+        {children}
+      </div>
     </Overlay>
   );
 };
