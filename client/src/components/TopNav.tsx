@@ -1,29 +1,37 @@
-
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { navigation } from "../constants/navigation";
+import PrimaryButton from "./PrimaryButton";
+
 
 const TopNav = () => {
   return (
-    <nav className="hidden lg:flex gap-2">
-      {navigation.map((navItem) => {
-        return (
-          <div key={navItem.label}>
-            <NavLink
-              to={navItem.href}
-              className={({ isActive }) =>
-                `hover:bg-opacity-80 flex py-3 justify-center bg-[#6558F5] text-white min-w-[150px] rounded-md ${
-                  isActive ? "bg-[#AC6363] font-bold" : ""
-                }`
-              }
-            >
-              {navItem.label}
-            </NavLink>
-          </div>
-        );
-      })}
+    <nav className="hidden lg:flex gap-6 text-white   items-center py-4 ">
+      <Link to="/" className="text-[24px] font-[700] mr-10">
+        Ripley
+      </Link>
+      <ul className="flex gap-4 ">
+        {navigation.map((navItem) => {
+          return (
+            <li key={navItem.label}>
+              <NavLink
+                to={navItem.href}
+                className={({ isActive }) =>
+                  `dsdsd  text-[16px] font-[600] ${
+                    isActive ? "text-primary-light" : ""
+                  }`
+                }
+              >
+                {navItem.label}
+              </NavLink>
+            </li>
+          );
+        })}
+      </ul>
+      <span className="ms-auto">
+        <PrimaryButton buttonText="Connect Wallet"  />
+      </span>
     </nav>
   );
-
 };
 
 export default TopNav;

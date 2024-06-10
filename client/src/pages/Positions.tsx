@@ -1,6 +1,6 @@
-import { AiOutlineExpandAlt } from 'react-icons/ai';
-import AppTable from '../components/AppTable';
-import TopNav from '../components/TopNav';
+import { AiOutlineExpandAlt } from "react-icons/ai";
+import AppTable from "../components/AppTable";
+
 import {
   investorTableColumn,
   investorTableSampleData,
@@ -8,17 +8,13 @@ import {
   positionsTableSampleData,
   walletsTableColumn,
   walletsTableSampleData,
-} from '../constants/data/positionsPage';
-import { DataItem, Investor, Wallet } from '../types';
+} from "../constants/data/positionsPage";
+import { DataItem, Investor, Wallet } from "../types";
 
 const Positions = () => {
   return (
-    <section className="p-5 lg:p-10 min-h-screen">
-      <div className="mb-8">
-        <TopNav />
-      </div>
-
-      <div className="p-5 w-full">
+    <section className=" min-h-screen">
+      <div className="w-full">
         <div className="py-5">
           <h1 className="text-3xl font-bold text-white">Positions</h1>
         </div>
