@@ -73,7 +73,7 @@ const AddInvestorDialog = ({ open, onClose }: AddInvestorDialogProps) => {
             Cancel
           </button>
           <button className="py-3 px-5 bg-primary rounded-lg text-white shadow-primary">
-            Add Wallet
+            Add Investor
           </button>
         </div>
       </div>

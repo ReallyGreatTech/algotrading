@@ -16,7 +16,7 @@ import AddInvestorDialog from '../components/Dialogs/AddInvestorDialog';
 import PositionsTableDialog from '../components/Dialogs/PositionsTableDialog';
 
 const Positions = () => {
-  const [investorDialogOpen, setInvestorDialogOpen] = useState(false);
+  const [investorDialogOpen, setInvestorDialogOpen] = useState(true);
   const [addWalletDialogOpen, setAddWalletDialogOpen] = useState(false);
   const [addInvestorDialogOpen, setAddInvestorDialogOpen] = useState(false);
   const [addPositionsTableDialogOpen, setAddPositionsTableDialogOpen] =

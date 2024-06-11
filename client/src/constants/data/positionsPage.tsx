@@ -1,5 +1,11 @@
 import { FiEdit2 } from 'react-icons/fi';
-import { DataItem, Investor, TableColumn, Wallet } from '../../types';
+import {
+  DataItem,
+  Investor,
+  InvestorAction,
+  TableColumn,
+  Wallet,
+} from '../../types';
 import { shortenString } from '../../utils/stringTool';
 import { RiDeleteBin5Line } from 'react-icons/ri';
 
@@ -503,6 +509,19 @@ export const investorActionTableColumn = [
   {
     label: 'Action',
     value: 'action',
+    render(item: InvestorAction) {
+      return (
+        <span
+          className={`py-1 px-5 rounded-full uppercase ${
+            item.action.toLowerCase() === 'withdraw'
+              ? 'bg-[#EF4444]'
+              : 'bg-[#419E6A]'
+          }`}
+        >
+          {item.action}
+        </span>
+      );
+    },
   },
   {
     label: 'Amount',
