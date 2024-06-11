@@ -1,8 +1,6 @@
 import AppTable from "../components/AppTable";
 import PrimaryButton from "../components/PrimaryButton";
-import SelectInput from "../components/SelectInput";
 import { GrNext } from "react-icons/gr";
-import { tokenSelectOptions } from "../constants/selectOptions";
 import { OrderbookItem, TableItem } from "../types";
 import {
   fundingRatesTableColumn,
@@ -11,6 +9,10 @@ import {
   orderBookTableColumnPostive,
   orderBookTableColumnnNegative,
 } from "../constants/data/fundingRatesPage";
+import SearchInput from "../components/SearchInput";
+import { tokens } from "../constants/data/FundingRatesData";
+import FilterInput from "../components/FilterInput";
+
 
 const FundingRates = () => {
   return (
@@ -22,18 +24,25 @@ const FundingRates = () => {
 
         {/* Filters */}
         <div className="flex flex-col lg:flex-row w-full border border-white/20 py-4  rounded-[16px] mb-4 bg-gray-800  gap-4 px-4">
-          <div className="grid grid-cols-12 w-full lg:gap-4 gap-4  ">
+          <div className="grid grid-cols-12 w-full lg:gap-8 gap-4  ">
             <div className=" col-span-full lg:col-span-4 ">
-              <SelectInput label="Token" options={tokenSelectOptions} />
-            </div>
-            <div className=" col-span-full lg:col-span-4 flex flex-col">
-              <SelectInput
-                label="Minimum funding rate"
-                options={tokenSelectOptions}
+              {/* <SelectInput label="Token" options={tokenSelectOptions} /> */}
+
+              <SearchInput
+                label="Token"
+                placeholder="Search/Enter Token: "
+                options={tokens}
               />
             </div>
             <div className=" col-span-full lg:col-span-4 flex flex-col">
-              <SelectInput label="Exchange" options={tokenSelectOptions} />
+              <FilterInput label="Minimum funding rate" />
+            </div>
+            <div className=" col-span-full lg:col-span-4 flex flex-col">
+              <SearchInput
+                label="Exhange"
+                options={[""]}
+                placeholder="Search/Enter Exchange:"
+              />
             </div>
           </div>
           <div className="mt-auto mb-1 mx-auto   ">
