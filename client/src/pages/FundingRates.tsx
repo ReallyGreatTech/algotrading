@@ -137,7 +137,8 @@ const FundingRates = () => {
             </div>
           </div>
           <div className="border col-span-full lg:col-span-5 rounded-lg flex flex-col gap-4 border-white/20">
-            <div className="py-5 px-4  flex flex-col md:flex-row gap-2 md:gap-0 justify-between items-center">
+            <div >
+             <div className="py-5 px-4  flex flex-col md:flex-row gap-2 md:gap-0 justify-between items-center">
               <h3 className="text-white/90 font-bold text-base">
                 Funding history chart
               </h3>
@@ -150,16 +151,18 @@ const FundingRates = () => {
                   <AiOutlineExpandAlt size="1.4rem"/>
                 </button>
               </div>
+              </div>
               <>
-              <div style={{ marginBottom: "20px" }}>
+              {/* <div style={{ marginBottom: "20px" }}>
                 <button onClick={() => setInterval({ timeUnit: "hour", count: 2 })}>Hourly</button>
                 <button onClick={() => setInterval({ timeUnit: "day", count: 1 })}>Daily</button>
                 <button onClick={() => setInterval({ timeUnit: "month", count: 1 })}>Monthly</button>
                 <button onClick={() => setInterval({ timeUnit: "year", count: 1 })}>Yearly</button>
-              </div>
+              </div> */}
               {/* <HistoryChart interval={interval}/> */}
               <HistoryChart />
               </>
+           
             </div>
 
             <div>
