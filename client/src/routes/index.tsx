@@ -1,8 +1,8 @@
-import { Route, Routes } from "react-router-dom";
-import FundingRates from "../pages/FundingRates";
-import Positions from "../pages/Positions";
-import Charts from "../pages/Charts";
-import Layout from "../pages/Layout";
+import { Route, Routes } from 'react-router-dom';
+import FundingRates from '../pages/FundingRates';
+import Positions from '../pages/Positions';
+import Charts from '../pages/Charts';
+import Layout from '../pages/Layout';
 
 const AppRoutes = () => {
   return (

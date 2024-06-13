@@ -1,27 +1,28 @@
-import AppTable from "../components/AppTable";
-import PrimaryButton from "../components/PrimaryButton";
-import { GrNext } from "react-icons/gr";
-import { OrderbookItem, TableItem } from "../types";
+import AppTable from '../components/AppTable';
+import PrimaryButton from '../components/PrimaryButton';
+import { GrNext } from 'react-icons/gr';
+import { OrderbookItem, TableItem } from '../types';
 import {
   fundingRatesTableColumn,
   orderBookData,
   orderBookTableColumnPostive,
   orderBookTableColumnnNegative,
-} from "../constants/data/fundingRatesPage";
-import SearchInput from "../components/SearchInput";
-import FilterInput from "../components/FilterInput";
-import { useAppSelector, useAppDispatch } from "../hooks";
-import { useEffect, useState } from "react";
+} from '../constants/data/fundingRatesPage';
+import SearchInput from '../components/SearchInput';
+import FilterInput from '../components/FilterInput';
+import { useAppSelector, useAppDispatch } from '../hooks';
+import { useEffect, useState } from 'react';
 import {
   fetchTokens,
   updateSelectedToken,
-} from "../redux/features/tokens/tokenSlice";
-import { fetchFundingHistory } from "../redux/features/fundingHistory/fundingHistorySlice";
-import { getUniqueExchanges } from "../utils/getUniqueExchanges";
-import ExchangeSearchInput from "../components/ExchangeSearchInput";
-import { fetchMarket } from "../redux/features/market/marketSlice";
-import TimeFilter from "../components/TimeFilter";
-import { AiOutlineExpandAlt } from "react-icons/ai";
+} from '../redux/features/tokens/tokenSlice';
+import { fetchFundingHistory } from '../redux/features/fundingHistory/fundingHistorySlice';
+import { getUniqueExchanges } from '../utils/getUniqueExchanges';
+import ExchangeSearchInput from '../components/ExchangeSearchInput';
+import { fetchMarket } from '../redux/features/market/marketSlice';
+import TimeFilter from '../components/TimeFilter';
+import { AiOutlineExpandAlt } from 'react-icons/ai';
+import PriceChart from '../components/PriceChart';
 import { Bars } from "react-loader-spinner";
 
 const FundingRates = () => {
@@ -67,7 +68,7 @@ const FundingRates = () => {
       token: selectedToken,
       exchanges: selectedExchanges,
     };
-    console.log("Filter Params:", filterParams);
+    console.log('Filter Params:', filterParams);
 
     // Filter the market data based on the selected token and exchanges
     const filteredData = marketData.filter((item: any) => {
@@ -144,8 +145,8 @@ const FundingRates = () => {
               )}
             </div>
           </div>
-          <div className="border col-span-full lg:col-span-5 rounded-lg flex flex-col gap-4 border-white/20">
-            <div className="py-5 px-4  flex flex-col md:flex-row gap-2 md:gap-0 justify-between items-center">
+          <div className=" col-span-full lg:col-span-5 rounded-lg flex flex-col gap-4">
+            <div className="py-5 px-4  flex flex-col md:flex-row gap-2 md:gap-0 justify-between items-center border border-white/20">
               <h3 className="text-white/90 font-bold text-base">
                 Funding history chart
               </h3>
@@ -157,12 +158,19 @@ const FundingRates = () => {
               </div>
             </div>
 
-            <div>
-              <h2 className="text-center text-black font-bold">
-                Price chart (from selected row in table)
-              </h2>
+            <div className="border border-white/20 bg-gray-800 rounded-xl">
+              <div className="px-3 py-5">
+                <h2 className="text-white/90 text-xl text-black font-bold">
+                  Price chart
+                </h2>
+              </div>
+
+              <div className="">
+                <PriceChart />
+              </div>
             </div>
           </div>
+
           <div className="border col-span-full lg:col-span-2 rounded-[16px] bg-gray-800 border-white/20 h-fit overflow-hidden">
             <div className="py-5 px-4">
               <h3 className="text-white/90 font-bold text-base">Orderbook</h3>

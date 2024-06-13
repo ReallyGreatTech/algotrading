@@ -4,20 +4,17 @@ import { DialogProps } from '../../types';
 const AppDialog = ({
   open,
   onClose,
-  maxWidth = 'sm',
+  maxWidth,
   fullWidth = false,
   children,
 }: DialogProps) => {
-  const rootMaxWidth = 'max-w-' + maxWidth;
+  const rootMaxWidth = 'max-w-' + (maxWidth || 'lg');
+  const rootClassName = `p-5 lg:p-0 w-${
+    fullWidth ? 'full' : 'auto'
+  } ${rootMaxWidth}`;
 
   return (
-    <Overlay
-      onClose={onClose}
-      open={open}
-      rootClassName={`p-5 lg:p-0 w-${
-        fullWidth ? 'full' : 'auto'
-      } ${rootMaxWidth}`}
-    >
+    <Overlay onClose={onClose} open={open} rootClassName={rootClassName}>
       <div className={`${maxWidth === 'full' && fullWidth ? 'p-10' : 'p-5'}`}>
         {children}
       </div>
