@@ -27,7 +27,7 @@ const TimeFilter = () => {
             onClick={() => handleSelectedTIme(item)}
             key={index}
             className={`w-10 h-7 font-bold border  rounded-[17px] bg-gray-700 items-center justify-center flex ${
-              item === timeSelected ? "border-[#6366F1] border-2 text-white" : "border-gray-700 text-gray-400"
+              item === timeSelected ? "border-[#6366F1] border-2 text-white" : "border-gray-700 text-gray-500"
             }`}
           >
             <span className="text-[12px]"> {item}</span>

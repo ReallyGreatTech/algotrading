@@ -135,7 +135,7 @@ const FundingRates = () => {
             </div>
           </div>
           <div className="border col-span-full lg:col-span-5 rounded-lg flex flex-col gap-4 border-white/20">
-            <div className="py-5 px-4 border flex flex-col md:flex-row gap-2 md:gap-0 justify-between items-center">
+            <div className="py-5 px-4  flex flex-col md:flex-row gap-2 md:gap-0 justify-between items-center">
               <h3 className="text-white/90 font-bold text-base">
                 Funding history chart
               </h3>
