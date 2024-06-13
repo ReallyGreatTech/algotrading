@@ -20,6 +20,8 @@ import { fetchFundingHistory } from "../redux/features/fundingHistory/fundingHis
 import { getUniqueExchanges } from "../utils/getUniqueExchanges";
 import ExchangeSearchInput from "../components/ExchangeSearchInput";
 import { fetchMarket } from "../redux/features/market/marketSlice";
+import TimeFilter from "../components/TimeFilter";
+import { AiOutlineExpandAlt } from "react-icons/ai";
 
 const FundingRates = () => {
   const tokensData = useAppSelector((state) => state.token.tokens);
@@ -66,7 +68,7 @@ const FundingRates = () => {
     console.log("Filter Params:", filterParams);
 
     // Filter the market data based on the selected token and exchanges
-    const filteredData = marketData.filter((item) => {
+    const filteredData = marketData.filter((item: any) => {
       const matchesToken =
         !filterParams.token || item.token === filterParams.token;
       const matchesExchange = filterParams.exchanges.includes(item.exchange);
@@ -133,11 +135,21 @@ const FundingRates = () => {
             </div>
           </div>
           <div className="border col-span-full lg:col-span-5 rounded-lg flex flex-col gap-4 border-white/20">
-            <div>
-              <h2 className="text-center text-black font-bold">
-                Funding history chart (from selected row in table)
-              </h2>
+            <div className="py-5 px-4 border flex justify-between items-center">
+              <h3 className="text-white/90 font-bold text-base">
+                Funding history chart
+              </h3>
+              <div className="flex  items-center gap-2">
+                <TimeFilter />
+                <button
+                  className="text-white p-2 hover:bg-primary-dark rounded-full"
+                
+                >
+                  <AiOutlineExpandAlt size="1.4rem"/>
+                </button>
+              </div>
             </div>
+
             <div>
               <h2 className="text-center text-black font-bold">
                 Price chart (from selected row in table)
