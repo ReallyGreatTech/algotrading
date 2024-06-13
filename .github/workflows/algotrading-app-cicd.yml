@@ -1,4 +1,5 @@
 name: Algotrading-app-UI
+
 on:
     push:
         branches: [development]
@@ -23,13 +24,16 @@ jobs:
               id: env_check
               run: |
                   echo "Running on branch ${{ github.ref }}"
-                  if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+                  if [ "${{ github.ref }}" = "refs/heads/development" ]; then
                       echo "::set-output name=ENV_NAME_TAG::dev"
                       echo "::set-output name=EB_S3_BUCKET::algotrading-client-app-dev"
                       echo "::set-output name=CLOUD_FRONT_DISTRIBUTION_ID::${{ secrets.DEV_ALGOTRADING_CLIENT_APP_CLOUD_FRONT_DISTRIBUTION_ID }}"
-                      echo "::set-output name=AWS_ACCESS_KEY_ID_NAME::PROD_AWS_ACCESS_KEY_ID"
-                      echo "::set-output name=AWS_SECRET_ACCESS_KEY_NAME::PROD_AWS_SECRET_ACCESS_KEY"
+                      echo "::set-output name=AWS_ACCESS_KEY_ID_NAME::DEV_AWS_ACCESS_KEY_ID"
+                      echo "::set-output name=AWS_SECRET_ACCESS_KEY_NAME::DEV_AWS_SECRET_ACCESS_KEY"
                   fi
+
+            - name: Check out code
+              uses: actions/checkout@v2
 
             - name: Configure AWS Credentials
               uses: aws-actions/configure-aws-credentials@v1
@@ -38,8 +42,6 @@ jobs:
                   aws-secret-access-key: ${{ secrets[steps.env_check.outputs.AWS_SECRET_ACCESS_KEY_NAME] }}
                   aws-region: ${{ secrets.AWS_REGION }}
 
-            - name: Check out code
-              uses: actions/checkout@v2
 
             - name: Build dist files
               id: build_dist
