@@ -58,6 +58,7 @@ const AreaChart = ({ data, id, containerStyle }: ChartsProps) => {
     const xAxisRender = xAxis.get('renderer');
     xAxisRender.labels.template.setAll({
       fill: am5.color(0xffffff),
+      fontSize: '12px',
     });
 
     let yAxis = chart.yAxes.push(
@@ -73,6 +74,7 @@ const AreaChart = ({ data, id, containerStyle }: ChartsProps) => {
     let yRenderer = yAxis.get('renderer');
     yRenderer.labels.template.setAll({
       fill: am5.color(0xffffff),
+      fontSize: '12px',
     });
 
     let series = chart.series.push(
@@ -83,14 +85,30 @@ const AreaChart = ({ data, id, containerStyle }: ChartsProps) => {
         valueYField: 'value',
         valueXField: 'date',
         stroke: am5.color(0x6366f1),
-        tooltip: am5.Tooltip.new(root, {
-          labelText: '{valueY}',
-        }),
+        // tooltip: seriesToolTip,
       })
     );
 
+    let tooltip = am5.Tooltip.new(root, {
+      getFillFromSprite: false,
+      getLabelFillFromSprite: false,
+      labelText: '{valueY}',
+    });
+
+    tooltip?.get('background')?.setAll({
+      fill: am5.color(0xdddddd),
+      fillOpacity: 0.8,
+      strokeOpacity: 0,
+    });
+
+    tooltip.label.setAll({
+      fill: am5.color(0xffffff),
+    });
+
+    series.set('tooltip', tooltip);
+
     series.fills.template.setAll({
-      fillOpacity: 0.2,
+      fillOpacity: 0.3,
       fillGradient: am5.LinearGradient.new(root, {
         stops: [
           {
@@ -102,6 +120,10 @@ const AreaChart = ({ data, id, containerStyle }: ChartsProps) => {
         ],
       }),
       visible: true,
+    });
+
+    series.strokes.template.setAll({
+      strokeWidth: 2,
     });
 
     series.data.setAll(data);
@@ -119,6 +141,7 @@ const AreaChart = ({ data, id, containerStyle }: ChartsProps) => {
   return (
     <div
       id="chartdiv"
+      className="px-2"
       style={{ width: '100%', height: '500px', ...containerStyle }}
     ></div>
   );
