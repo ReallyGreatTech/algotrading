@@ -23,10 +23,12 @@ import { fetchMarket } from '../redux/features/market/marketSlice';
 import TimeFilter from '../components/TimeFilter';
 import { AiOutlineExpandAlt } from 'react-icons/ai';
 import PriceChart from '../components/PriceChart';
+import { Bars } from "react-loader-spinner";
 
 const FundingRates = () => {
   const tokensData = useAppSelector((state) => state.token.tokens);
   const marketData = useAppSelector((state) => state.market.data);
+  const marketDataLoading = useAppSelector((state) => state.market.loading);
   const [filteredMarketData, setFilteredMarketData] = useState(marketData);
   const fundingHistoryData = useAppSelector(
     (state) => state.fundingHistory.data
@@ -79,6 +81,8 @@ const FundingRates = () => {
     setFilteredMarketData(filteredData);
   };
 
+  console.log("Loading", marketDataLoading);
+
   return (
     <section className="text-white">
       <div className="w-full">
@@ -128,11 +132,17 @@ const FundingRates = () => {
               </h3>
             </div>
             <div className="overflow-x-auto text-black  h-[520px]">
-              <AppTable<TableItem>
-                tableHeadRowClassName=" "
-                columns={fundingRatesTableColumn}
-                data={filteredMarketData}
-              />
+              {marketDataLoading ? (
+                <div className="text-center text-white flex h-full w-full pt-16 justify-center">
+                  <Bars color="#FFF" />
+                </div>
+              ) : (
+                <AppTable<TableItem>
+                  tableHeadRowClassName=" "
+                  columns={fundingRatesTableColumn}
+                  data={filteredMarketData}
+                />
+              )}
             </div>
           </div>
           <div className=" col-span-full lg:col-span-5 rounded-lg flex flex-col gap-4">
