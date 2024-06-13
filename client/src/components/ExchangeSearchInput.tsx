@@ -16,7 +16,8 @@ const ExchangeSearchInput: React.FC<SearchInputProps> = ({
   onSelectionChange,
 }) => {
   const [filteredOptions, setFilteredOptions] = useState<string[]>(options);
-  const [inputValue, setInputValue] = useState<string>("");
+  // const [inputValue ,setInputValue] = useState<string>("");
+  const [,setInputValue] = useState<string>("");
   const [listOpened, setListOpened] = useState<boolean>(false);
   const [selectedOptions, setSelectedOptions] = useState<string[]>(options); // New state
   const inputRef = useRef<HTMLInputElement>(null);
