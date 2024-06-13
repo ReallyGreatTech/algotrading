@@ -1,10 +1,12 @@
 // store.ts
 import { configureStore } from "@reduxjs/toolkit";
 import tokenReducer from "./features/tokens/tokenSlice";
+import fundingHistoryReducer from "./features/fundingHistory/fundingHistorySlice";
 
 const store = configureStore({
   reducer: {
     token: tokenReducer,
+    fundingHistory: fundingHistoryReducer
   },
 });
 

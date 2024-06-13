@@ -11,7 +11,7 @@ interface Result {
   trading_pair: number;
 }
 
-function getUniqueExchanges(results: Result[]): string[] {
+export const getUniqueExchanges = (results: Result[]): string[] => {
   // Create a set to store unique exchanges
   const uniqueExchanges = new Set<string>();
 
@@ -85,3 +85,5 @@ const results: Result[] = [
 ];
 
 console.log(getUniqueExchanges(results));
+
+

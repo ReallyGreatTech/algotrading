@@ -3,12 +3,14 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 
 interface TokenInitialState {
+  selectedToken: string;
   loading: boolean;
   tokens: string[];
   error: string;
 }
 
 const initialState: TokenInitialState = {
+  selectedToken: "",
   loading: false,
   tokens: [],
   error: "",
@@ -31,10 +33,10 @@ const tokenSlice = createSlice({
   name: "token",
   initialState,
   reducers: {
-    updateTokens: (state,action) => {
-      state.tokens = action.payload
+    
+    updateSelectedToken: (state, action) => {
+      state.selectedToken = action.payload
     }
-
   },
   extraReducers: (builder) => {
     builder.addCase(fetchTokens.pending, (state) => {
@@ -60,4 +62,4 @@ const tokenSlice = createSlice({
 
 export default tokenSlice.reducer;
 
-export const { updateTokens} = tokenSlice.actions
+export const {  updateSelectedToken} = tokenSlice.actions;
