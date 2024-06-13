@@ -1,0 +1,69 @@
+name: Algotrading-app-UI
+on:
+    push:
+        branches: [development]
+        paths:
+            - "client/**"
+
+env:
+    APP_DIR: "${{ github.workspace }}/client"
+    DEPLOY_DIR: "${{ github.workspace }}/client/deploy-package"
+
+permissions:
+    id-token: write
+    contents: read
+
+jobs:
+    deploy:
+        if: github.event_name == 'push'
+        name: Deploy
+        runs-on: ubuntu-latest
+        steps:
+            - name: Check Push Branch
+              id: env_check
+              run: |
+                  echo "Running on branch ${{ github.ref }}"
+
+                  if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+                      echo "::set-output name=ENV_NAME_TAG::dev"
+                      echo "::set-output name=EB_S3_BUCKET::algotrading-client-app-dev"
+                      echo "::set-output name=CLOUD_FRONT_DISTRIBUTION_ID::${{ secrets.DEV_ALGOTRADING_CLIENT_APP_CLOUD_FRONT_DISTRIBUTION_ID }}"
+                      echo "::set-output name=AWS_ACCESS_KEY_ID_NAME::PROD_AWS_ACCESS_KEY_ID"
+                      echo "::set-output name=AWS_SECRET_ACCESS_KEY_NAME::PROD_AWS_SECRET_ACCESS_KEY"
+                  fi
+
+            - name: Configure AWS Credentials
+              uses: aws-actions/configure-aws-credentials@v1
+              with:
+                  aws-access-key-id: ${{ secrets[steps.env_check.outputs.AWS_ACCESS_KEY_ID_NAME] }}
+                  aws-secret-access-key: ${{ secrets[steps.env_check.outputs.AWS_SECRET_ACCESS_KEY_NAME] }}
+                  aws-region: ${{ secrets.AWS_REGION }}
+
+            - name: Check out code
+              uses: actions/checkout@v2
+
+            - name: Build dist files
+              id: build_dist
+              run: |
+                  cd ${APP_DIR}
+                  docker build -t algotrading:latest .
+
+            - name: Copy Distribution or Package Files
+              id: copy_package
+              run: |
+                  mkdir -p ${DEPLOY_DIR}
+                  docker create --name copy_dist algotrading:latest
+                  sleep 15
+                  docker cp copy_dist:/usr/share/nginx/html ${DEPLOY_DIR}
+                  docker rm -f copy_dist
+                  ls -lagh ${DEPLOY_DIR}/html
+
+            - name: Upload package files to S3 bucket
+              run: aws s3 cp ${DEPLOY_DIR}/html s3://${{steps.env_check.outputs.EB_S3_BUCKET}}/ --recursive
+
+            - name: Invalidate CloudFront cache
+              run: |
+                  aws cloudfront create-invalidation --distribution-id ${{ steps.env_check.outputs.CLOUD_FRONT_DISTRIBUTION_ID }} --paths "/*"
+
+            - name: Deployed!
+              run: echo Application deployed to ${{steps.env_check.outputs.ENV_NAME_TAG}} S3 Web Hosting
