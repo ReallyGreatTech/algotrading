@@ -144,8 +144,8 @@ const FundingRates = () => {
               )}
             </div>
           </div>
-          <div className="border col-span-full lg:col-span-5 rounded-lg flex flex-col gap-4 border-white/20">
-            <div className="py-5 px-4  flex flex-col md:flex-row gap-2 md:gap-0 justify-between items-center">
+          <div className=" col-span-full lg:col-span-5 rounded-lg flex flex-col gap-4">
+            <div className="py-5 px-4  flex flex-col md:flex-row gap-2 md:gap-0 justify-between items-center border border-white/20">
               <h3 className="text-white/90 font-bold text-base">
                 Funding history chart
               </h3>
@@ -157,12 +157,19 @@ const FundingRates = () => {
               </div>
             </div>
 
-            <div>
-              <h2 className="text-center text-black font-bold">
-                Price chart (from selected row in table)
-              </h2>
+            <div className="border border-white/20 bg-gray-800 rounded-xl">
+              <div className="px-3 py-5">
+                <h2 className="text-white/90 text-xl text-black font-bold">
+                  Price chart
+                </h2>
+              </div>
+
+              <div className="">
+                <PriceChart />
+              </div>
             </div>
           </div>
+
           <div className="border col-span-full lg:col-span-2 rounded-[16px] bg-gray-800 border-white/20 h-fit overflow-hidden">
             <div className="py-5 px-4">
               <h3 className="text-white/90 font-bold text-base">Orderbook</h3>
