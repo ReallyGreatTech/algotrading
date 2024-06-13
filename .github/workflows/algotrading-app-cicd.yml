@@ -23,7 +23,6 @@ jobs:
               id: env_check
               run: |
                   echo "Running on branch ${{ github.ref }}"
-
                   if [ "${{ github.ref }}" = "refs/heads/main" ]; then
                       echo "::set-output name=ENV_NAME_TAG::dev"
                       echo "::set-output name=EB_S3_BUCKET::algotrading-client-app-dev"
