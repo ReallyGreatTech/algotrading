@@ -143,7 +143,8 @@ const FundingRates = () => {
                 Funding history chart
               </h3>
               <div className="flex  items-center gap-2">
-                <TimeFilter />
+                {/* <TimeFilter /> */}
+                <TimeFilter setInterval={setInterval} />
                 <button
                   className="text-white p-2 hover:bg-primary-dark rounded-full"
                 
@@ -159,8 +160,8 @@ const FundingRates = () => {
                 <button onClick={() => setInterval({ timeUnit: "month", count: 1 })}>Monthly</button>
                 <button onClick={() => setInterval({ timeUnit: "year", count: 1 })}>Yearly</button>
               </div> */}
-              {/* <HistoryChart interval={interval}/> */}
-              <HistoryChart />
+              <HistoryChart interval={interval}/>
+              {/* <HistoryChart /> */}
               </>
            
             </div>

@@ -195,15 +195,15 @@ const HistoryChart = () => {
     let cursor = chart.set("cursor", am5xy.XYCursor.new(root, {
       behavior: "none"
     }));
-    cursor.lineX.setAll({
-      stroke: am5.color(0xFFFFFF),
-      strokeDasharray: [5, 5]
-    });
-    cursor.lineY.setAll({
-      stroke: am5.color(0xFFFFFF),
-      strokeDasharray: [5, 5],
-      visible: true
-    });
+    // cursor.lineX.setAll({
+    //   stroke: am5.color(0xFFFFFF),
+    //   strokeDasharray: [5, 5]
+    // });
+    // cursor.lineY.setAll({
+    //   stroke: am5.color(0xFFFFFF),
+    //   strokeDasharray: [5, 5],
+    //   visible: true
+    // });
 
     let date = new Date();
     date.setHours(0, 0, 0, 0);
@@ -253,10 +253,10 @@ const HistoryChart = () => {
       am5xy.DateAxis.new(root, {
         baseInterval: interval,
         renderer: xRenderer,
-        tooltip: am5.Tooltip.new(root, {
-          labelText: "{valueX.formatDate('yyyy-MM-dd HH:mm')}",
-          label: { fill: am5.color(0xFFFFFF) } // Set tooltip label color to white
-        })
+        // tooltip: am5.Tooltip.new(root, {
+        //   labelText: "{valueX.formatDate('yyyy-MM-dd HH:mm')}",
+        //   label: { fill: am5.color(0xFFFFFF) } // Set tooltip label color to white
+        // })
       })
     );
 
@@ -271,10 +271,10 @@ const HistoryChart = () => {
         renderer: yRenderer,
         min: -50,
         max: 50,
-        tooltip: am5.Tooltip.new(root, {
-          labelText: "{valueY}",
-          label: { fill: am5.color(0xFFFFFF) }
-        })
+        // tooltip: am5.Tooltip.new(root, {
+        //   labelText: "{valueY}",
+        //   label: { fill: am5.color(0xFFFFFF) }
+        // })
       })
     );
 
@@ -288,7 +288,7 @@ const HistoryChart = () => {
 
     let tooltip = series.set("tooltip", am5.Tooltip.new(root, {}));
     tooltip.label.setAll({
-      text: "{valueX}",
+      text: "{valueX.formatDate('yyyy-MM-dd HH:mm')}",
       fill: am5.color(0xFFFFFF)  // Set tooltip label color to white
     });
 
@@ -324,12 +324,12 @@ const HistoryChart = () => {
 
   return (
     <div>
-      <div>
+      {/* <div>
         <button onClick={() => setInterval({ timeUnit: "hour", count: 1 })}>Hourly</button>
         <button onClick={() => setInterval({ timeUnit: "day", count: 1 })}>Daily</button>
         <button onClick={() => setInterval({ timeUnit: "month", count: 1 })}>Monthly</button>
         <button onClick={() => setInterval({ timeUnit: "year", count: 1 })}>Yearly</button>
-      </div>
+      </div> */}
       <div id="historyChartDiv" style={{ width: "100%", height: "500px" }}></div>
     </div>
   );
