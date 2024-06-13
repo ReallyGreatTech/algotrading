@@ -4,18 +4,21 @@ interface SearchInputProps {
   options: string[];
   placeholder?: string;
   label: string;
-  onOptionClick: (value: string) => void;
+
+  onSelectionChange?: (selectedOptions: string[]) => void; // New prop
 }
 
-const SearchInput: React.FC<SearchInputProps> = ({
+const ExchangeSearchInput: React.FC<SearchInputProps> = ({
   options,
   placeholder = "Search/Enter a Value",
   label,
-  onOptionClick,
+ 
+  onSelectionChange,
 }) => {
   const [filteredOptions, setFilteredOptions] = useState<string[]>(options);
   const [inputValue, setInputValue] = useState<string>("");
   const [listOpened, setListOpened] = useState<boolean>(false);
+  const [selectedOptions, setSelectedOptions] = useState<string[]>(options); // New state
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
 
@@ -28,9 +31,22 @@ const SearchInput: React.FC<SearchInputProps> = ({
   };
 
   const handleOptionClick = (value: string) => {
-    onOptionClick(value);
+   
     setInputValue(value);
     setListOpened(false);
+  };
+
+  const handleCheckboxChange = (option: string) => {
+    let newSelectedOptions = [];
+    if (selectedOptions.includes(option)) {
+      newSelectedOptions = selectedOptions.filter((o) => o !== option);
+    } else {
+      newSelectedOptions = [...selectedOptions, option];
+    }
+    setSelectedOptions(newSelectedOptions);
+    if (onSelectionChange) {
+      onSelectionChange(newSelectedOptions);
+    }
   };
 
   const toggleList = () => {
@@ -59,6 +75,10 @@ const SearchInput: React.FC<SearchInputProps> = ({
     setFilteredOptions(options);
   }, [options]);
 
+  useEffect(() => {
+    setSelectedOptions(options); // Reset selected options when options change
+  }, [options]);
+
   return (
     <div>
       <h2 className="mb-2">{label}</h2>
@@ -70,7 +90,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
             className="border border-white/20 data-list peer w-[100%] h-full rounded-md bg-gray-900 py-4 cursor-pointer outline-none text-gray-400 caret-gray-200 pl-2 pr-7 focus:bg-gray-900 font-bold transition-all duration-300 text-sm text-overflow-ellipsis"
             spellCheck="false"
             placeholder={placeholder}
-            value={inputValue}
+          
             onChange={handleInputChange}
             onClick={() => setListOpened(true)}
           />
@@ -95,10 +115,20 @@ const SearchInput: React.FC<SearchInputProps> = ({
             {filteredOptions.map((option) => (
               <li
                 key={option}
-                className="p-2 cursor-pointer hover:bg-gray-400 text-neutral-200 bg-gray-600"
-                onClick={() => handleOptionClick(option)}
+                className="p-2 flex items-center text-gray-200 bg-gray-600 "
               >
-                {option}
+                <input
+                  type="checkbox"
+                  checked={selectedOptions.includes(option)}
+                  onChange={() => handleCheckboxChange(option)}
+                  className="mr-2 w-6 h-6  rounded-lg border-2 border-primary bg-[#121C2D] text-white shadow-primary"
+                />
+                <span
+                  className="cursor-pointer"
+                  onClick={() => handleOptionClick(option)}
+                >
+                  {option}
+                </span>
               </li>
             ))}
           </ul>
@@ -108,4 +138,4 @@ const SearchInput: React.FC<SearchInputProps> = ({
   );
 };
 
-export default SearchInput;
+export default ExchangeSearchInput;

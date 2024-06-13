@@ -49,8 +49,26 @@ export interface InvestorAction {
   action: string;
   amount: string;
 }
-
 export interface TableItem {
+  id?: number;
+  funding_rate_latest?: number;
+  funding_rate_latest_annual?:  number;
+  funding_interval_hours?: number;
+  open_interest?: number;
+  open_interest_usd?: number;
+  volume_24h?: null;
+  volume_24h_usd?: null;
+  mark_price?: number;
+  mark_price_usd?: number;
+  oracle_price_usd?: null;
+  average_funding?: null;
+  origin_symbol?: string;
+  token?: string;
+  exchange?: string;
+  created_at?: string;
+  updated_at?: string;
+}
+export interface TableIte {
   exchange: string;
   token: string;
   price: string;
