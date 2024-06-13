@@ -4,7 +4,6 @@ import { GrNext } from "react-icons/gr";
 import { OrderbookItem, TableItem } from "../types";
 import {
   fundingRatesTableColumn,
-  fundingRatesTableSampleData,
   orderBookData,
   orderBookTableColumnPostive,
   orderBookTableColumnnNegative,
@@ -20,9 +19,12 @@ import {
 import { fetchFundingHistory } from "../redux/features/fundingHistory/fundingHistorySlice";
 import { getUniqueExchanges } from "../utils/getUniqueExchanges";
 import ExchangeSearchInput from "../components/ExchangeSearchInput";
+import { fetchMarket } from "../redux/features/market/marketSlice";
 
 const FundingRates = () => {
   const tokensData = useAppSelector((state) => state.token.tokens);
+  const marketData = useAppSelector((state) => state.market.data);
+  const [filteredMarketData, setFilteredMarketData] = useState(marketData);
   const fundingHistoryData = useAppSelector(
     (state) => state.fundingHistory.data
   );
@@ -34,6 +36,7 @@ const FundingRates = () => {
 
   useEffect(() => {
     dispatch(fetchTokens());
+    dispatch(fetchMarket());
   }, [dispatch]);
 
   useEffect(() => {
@@ -50,6 +53,11 @@ const FundingRates = () => {
     }
   }, [fundingHistoryData]);
 
+  // Set the initial filtered market data when market data is fetched
+  useEffect(() => {
+    setFilteredMarketData(marketData);
+  }, [marketData]);
+
   const handleGoClick = () => {
     const filterParams = {
       token: selectedToken,
@@ -57,16 +65,15 @@ const FundingRates = () => {
     };
     console.log("Filter Params:", filterParams);
 
-    // Here you would make the API call using filterParams
-    /*
-    axios.get("http://3.76.134.149:8000/api/funding-history", {
-      params: filterParams,
-    }).then(response => {
-      console.log(response.data);
-    }).catch(error => {
-      console.error(error);
+    // Filter the market data based on the selected token and exchanges
+    const filteredData = marketData.filter((item) => {
+      const matchesToken =
+        !filterParams.token || item.token === filterParams.token;
+      const matchesExchange = filterParams.exchanges.includes(item.exchange);
+      return matchesToken && matchesExchange;
     });
-    */
+
+    setFilteredMarketData(filteredData);
   };
 
   return (
@@ -111,17 +118,17 @@ const FundingRates = () => {
         </div>
 
         <div className="grid grid-cols-10 gap-4">
-          <div className="border col-span-full lg:col-span-3 rounded-[16px] bg-gray-800 border-white/20">
+          <div className="border col-span-full lg:col-span-3 rounded-[16px] bg-gray-800 border-white/20 h-fit overflow-hidden">
             <div className="py-5 px-4">
               <h3 className="text-white/90 font-bold text-base">
                 Table results
               </h3>
             </div>
-            <div className="overflow-x-auto text-black">
+            <div className="overflow-x-auto text-black  h-[520px]">
               <AppTable<TableItem>
                 tableHeadRowClassName=" "
                 columns={fundingRatesTableColumn}
-                data={fundingRatesTableSampleData}
+                data={filteredMarketData}
               />
             </div>
           </div>
@@ -137,7 +144,7 @@ const FundingRates = () => {
               </h2>
             </div>
           </div>
-          <div className="border col-span-full lg:col-span-2 rounded-[16px] bg-gray-800 border-white/20">
+          <div className="border col-span-full lg:col-span-2 rounded-[16px] bg-gray-800 border-white/20 h-fit overflow-hidden">
             <div className="py-5 px-4">
               <h3 className="text-white/90 font-bold text-base">Orderbook</h3>
             </div>
