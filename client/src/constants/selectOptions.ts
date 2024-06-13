@@ -4,3 +4,6 @@ export const tokenSelectOptions = [
   { label: "SOL", value: "FR" },
   { label: "USDC", value: "DE" },
 ];
+
+
+export const timeFilterOptions = ["1D","1H","1W","1M","3M","1Y" ] 
