@@ -20,6 +20,7 @@ import {
 import { fetchFundingHistory } from "../redux/features/fundingHistory/fundingHistorySlice";
 import { getUniqueExchanges } from "../utils/getUniqueExchanges";
 import ExchangeSearchInput from "../components/ExchangeSearchInput";
+import HistoryChart from "../components/charts/HistoryChart";
 
 const FundingRates = () => {
   const tokensData = useAppSelector((state) => state.token.tokens);
@@ -31,6 +32,7 @@ const FundingRates = () => {
 
   const [availableExchanges, setAvailableExchanges] = useState<string[]>([]);
   const [selectedExchanges, setSelectedExchanges] = useState<string[]>([]);
+  const [interval, setInterval] = useState({ timeUnit: "day", count: 1 });
 
   useEffect(() => {
     dispatch(fetchTokens());
@@ -130,6 +132,15 @@ const FundingRates = () => {
               <h2 className="text-center text-black font-bold">
                 Funding history chart (from selected row in table)
               </h2>
+              <>
+              <div style={{ marginBottom: "20px" }}>
+                <button onClick={() => setInterval({ timeUnit: "hour", count: 2 })}>Hourly</button>
+                <button onClick={() => setInterval({ timeUnit: "day", count: 1 })}>Daily</button>
+                <button onClick={() => setInterval({ timeUnit: "month", count: 1 })}>Monthly</button>
+                <button onClick={() => setInterval({ timeUnit: "year", count: 1 })}>Yearly</button>
+              </div>
+              <HistoryChart interval={interval}/>
+              </>
             </div>
             <div>
               <h2 className="text-center text-black font-bold">
