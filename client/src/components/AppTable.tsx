@@ -29,7 +29,7 @@ const AppTable = <T extends {}>({
   };
 
   return (
-    <table className="w-full bg-gray-800">
+    <table className="w-full bg-gray-800 max-h-[600px]">
       <thead>
         <tr
           className={`bg-[#334154] text-white/90 text-sm ${tableHeadRowClassName}`}
