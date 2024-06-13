@@ -360,21 +360,7 @@ export const orderBookTableColumnPostive = [
 ];
 
 export const orderBookData =[
-  {
-    price: "63254.65",
-    amount: "0.004459",
-    total: "2,820.524"
-  },
-  {
-    price: "63254.65",
-    amount: "0.004459",
-    total: "2,820.524"
-  },
-  {
-    price: "63254.65",
-    amount: "0.004459",
-    total: "2,820.524"
-  },
+ 
   {
     price: "63254.65",
     amount: "0.004459",
