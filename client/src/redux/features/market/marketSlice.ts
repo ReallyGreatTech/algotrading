@@ -7,14 +7,19 @@ const initialState = {
   error: "",
 };
 
-export const fetchMarket = createAsyncThunk("market/fetchMarket", async () => {
-  try {
-    const results = await axios.get("http://3.76.134.149:8000/api/markets");
-    return results.data.results;
-  } catch (error) {
-    console.log(error);
+export const fetchMarket = createAsyncThunk(
+  "market/fetchMarket",
+  async (params: { token?: string; annual_min_funding_rate?: number } = {}) => {
+    try {
+      const results = await axios.get("http://3.76.134.149:8000/api/markets", {
+        params,
+      });
+      return results.data.results;
+    } catch (error) {
+      console.log(error);
+    }
   }
-});
+);
 
 const marketSlice = createSlice({
   name: "market",
