@@ -98,6 +98,13 @@ const FundingRates = () => {
     dispatch(fetchMarket(filterParams));
   };
 
+  // const filterBasedOnExchanges = (
+  //   markets: unknown[],
+  //   exchanges: string
+  // ): unknown[] => {};
+
+  // commented out unused variables
+
   return (
     <section className="text-white">
       <div className="w-full">
