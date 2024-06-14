@@ -1,14 +1,14 @@
-import { time } from '@amcharts/amcharts5';
-import AreaChart from '../components/Charts/AreaChart';
+import { time } from "@amcharts/amcharts5";
+import AreaChart from "../components/Charts/AreaChart";
 
 const PriceChart = () => {
-  let date = new Date();
+  const date = new Date();
   date.setHours(0, 0, 0, 0);
 
   let value = 100;
   function generateData() {
     value = Math.round(Math.random() * 10 - 5 + value);
-    time.add(date, 'day', 1);
+    time.add(date, "day", 1);
     return {
       date: date.getTime(),
       value: value,
@@ -16,21 +16,21 @@ const PriceChart = () => {
   }
 
   function generateDatas(count: number) {
-    let data = [];
-    for (var i = 0; i < count; ++i) {
+    const data = [];
+    for (let i = 0; i < count; ++i) {
       data.push(generateData());
     }
     return data;
   }
 
-  let data = generateDatas(50);
+  const data = generateDatas(50);
 
   return (
     <div className="">
       <AreaChart
         data={data}
         id="chartdiv"
-        containerStyle={{ height: '27em' }}
+        containerStyle={{ height: "27em" }}
       />
     </div>
   );

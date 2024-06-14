@@ -1,7 +1,7 @@
 import AppTable from "../components/AppTable";
 import PrimaryButton from "../components/PrimaryButton";
 import { GrNext } from "react-icons/gr";
-import { OrderbookItem, TableItem } from "../types";
+import { OrderbookItem } from "../types";
 import {
   fundingRatesTableColumn,
   orderBookData,
@@ -49,7 +49,7 @@ const FundingRates = () => {
   const marketData = useAppSelector((state) => state.market.data);
   const marketDataLoading = useAppSelector((state) => state.market.loading);
   const [filteredMarketData, setFilteredMarketData] = useState(marketData);
-  const [minimumFundingRate, setMinimumFundingRate] = useState("");
+  const [minimumFundingRate, setMinimumFundingRate] = useState(0);
   const fundingHistoryData = useAppSelector(
     (state) => state.fundingHistory.data
   );
@@ -61,8 +61,13 @@ const FundingRates = () => {
 
   useEffect(() => {
     dispatch(fetchTokens());
-    dispatch(fetchMarket({}));
-  }, [dispatch]);
+    dispatch(
+      fetchMarket({
+        token: selectedToken,
+        annual_min_funding_rate: minimumFundingRate,
+      })
+    );
+  }, []);
 
   useEffect(() => {
     if (selectedToken) {
@@ -87,16 +92,11 @@ const FundingRates = () => {
     const filterParams = {
       token: selectedToken,
       exchanges: selectedExchanges,
-      minimumFundingRate: parseFloat(minimumFundingRate),
+      annual_min_funding_rate: minimumFundingRate,
     };
 
     dispatch(fetchMarket(filterParams));
   };
-
-  const filterBasedOnExchanges = (
-    markets: unknown[],
-    exchanges: string
-  ): unknown[] => {};
 
   return (
     <section className="text-white">
@@ -123,7 +123,7 @@ const FundingRates = () => {
               <input
                 type="text"
                 value={minimumFundingRate}
-                onChange={(evt) => setMinimumFundingRate(evt.target.value)}
+                onChange={(e) => setMinimumFundingRate(Number(e.target.value))}
                 placeholder="Mininum funding rate. Eg: 10"
                 className="bg-gray-900 py-4 rounded-lg p-2.5  border border-white/20  text-gray-400 font-bold"
               />
@@ -161,8 +161,8 @@ const FundingRates = () => {
                   <Bars color="#FFF" />
                 </div>
               ) : (
-                <AppTable<TableItem>
-                  tableHeadRowClassName=" "
+                <AppTable<Market>
+                  tableHeadRowClassName=""
                   columns={fundingRatesTableColumn}
                   data={filteredMarketData}
                 />

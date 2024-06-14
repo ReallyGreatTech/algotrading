@@ -1,7 +1,7 @@
-import { CSSProperties, useLayoutEffect } from 'react';
-import * as am5 from '@amcharts/amcharts5';
-import * as am5xy from '@amcharts/amcharts5/xy';
-import am5themes_Animated from '@amcharts/amcharts5/themes/Animated';
+import { CSSProperties, useLayoutEffect } from "react";
+import * as am5 from "@amcharts/amcharts5";
+import * as am5xy from "@amcharts/amcharts5/xy";
+import am5themes_Animated from "@amcharts/amcharts5/themes/Animated";
 
 interface DataItem {
   value: number;
@@ -16,86 +16,86 @@ interface ChartsProps {
 
 const AreaChart = ({ data, id, containerStyle }: ChartsProps) => {
   useLayoutEffect(() => {
-    let root = am5.Root.new(id);
+    const root = am5.Root.new(id);
 
     root.setThemes([am5themes_Animated.new(root)]);
 
-    let chart = root.container.children.push(
+    const chart = root.container.children.push(
       am5xy.XYChart.new(root, {
         panX: true,
         panY: true,
-        wheelX: 'panX',
-        wheelY: 'zoomX',
+        wheelX: "panX",
+        wheelY: "zoomX",
         pinchZoomX: true,
         paddingLeft: 0,
       })
     );
 
-    let cursor = chart.set(
-      'cursor',
+    const cursor = chart.set(
+      "cursor",
       am5xy.XYCursor.new(root, {
-        behavior: 'none',
+        behavior: "none",
       })
     );
-    cursor.lineY.set('visible', false);
+    cursor.lineY.set("visible", false);
 
-    let xAxis = chart.xAxes.push(
+    const xAxis = chart.xAxes.push(
       am5xy.DateAxis.new(root, {
         maxDeviation: 0.5,
         baseInterval: {
-          timeUnit: 'day',
+          timeUnit: "day",
           count: 1,
         },
         renderer: am5xy.AxisRendererX.new(root, {
           minGridDistance: 80,
           minorGridEnabled: true,
-          pan: 'zoom',
+          pan: "zoom",
         }),
         tooltip: am5.Tooltip.new(root, {}),
       })
     );
 
-    const xAxisRender = xAxis.get('renderer');
+    const xAxisRender = xAxis.get("renderer");
     xAxisRender.labels.template.setAll({
       fill: am5.color(0xffffff),
-      fontSize: '12px',
+      fontSize: "12px",
     });
 
-    let yAxis = chart.yAxes.push(
+    const yAxis = chart.yAxes.push(
       am5xy.ValueAxis.new(root, {
         maxDeviation: 1,
 
         renderer: am5xy.AxisRendererY.new(root, {
-          pan: 'zoom',
+          pan: "zoom",
         }),
       })
     );
 
-    let yRenderer = yAxis.get('renderer');
+    const yRenderer = yAxis.get("renderer");
     yRenderer.labels.template.setAll({
       fill: am5.color(0xffffff),
-      fontSize: '12px',
+      fontSize: "12px",
     });
 
-    let series = chart.series.push(
+    const series = chart.series.push(
       am5xy.SmoothedXLineSeries.new(root, {
-        name: 'Series',
+        name: "Series",
         xAxis: xAxis,
         yAxis: yAxis,
-        valueYField: 'value',
-        valueXField: 'date',
+        valueYField: "value",
+        valueXField: "date",
         stroke: am5.color(0x6366f1),
         // tooltip: seriesToolTip,
       })
     );
 
-    let tooltip = am5.Tooltip.new(root, {
+    const tooltip = am5.Tooltip.new(root, {
       getFillFromSprite: false,
       getLabelFillFromSprite: false,
-      labelText: '{valueY}',
+      labelText: "{valueY}",
     });
 
-    tooltip?.get('background')?.setAll({
+    tooltip?.get("background")?.setAll({
       fill: am5.color(0xdddddd),
       fillOpacity: 0.8,
       strokeOpacity: 0,
@@ -105,7 +105,7 @@ const AreaChart = ({ data, id, containerStyle }: ChartsProps) => {
       fill: am5.color(0xffffff),
     });
 
-    series.set('tooltip', tooltip);
+    series.set("tooltip", tooltip);
 
     series.fills.template.setAll({
       fillOpacity: 0.3,
@@ -142,7 +142,7 @@ const AreaChart = ({ data, id, containerStyle }: ChartsProps) => {
     <div
       id="chartdiv"
       className="px-2"
-      style={{ width: '100%', height: '500px', ...containerStyle }}
+      style={{ width: "100%", height: "500px", ...containerStyle }}
     ></div>
   );
 };
