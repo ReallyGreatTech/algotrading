@@ -29,8 +29,9 @@ export const fundingRatesTableColumn = [
     value: "mark_price",
   },
   {
-    label: "Current Funding",
-    value: "funding_rate_latest",
+    label: "Annual Funding Latest",
+    value: "funding_rate_latest_annual",
+    tableHeadCellClassName: "min-w-[12em]",
   },
   {
     label: "Open Interest",
@@ -324,9 +325,7 @@ export const fundingRatesTableSampleData = [
     created_at: "2024-06-08T13:58:08.174176",
     updated_at: "2024-06-13T08:01:30.100143",
   },
-  
 ];
-
 
 export const orderBookTableColumnnNegative = [
   {
@@ -359,31 +358,30 @@ export const orderBookTableColumnPostive = [
   },
 ];
 
-export const orderBookData =[
- 
+export const orderBookData = [
   {
     price: "63254.65",
     amount: "0.004459",
-    total: "2,820.524"
+    total: "2,820.524",
   },
   {
     price: "63254.65",
     amount: "0.004459",
-    total: "2,820.524"
+    total: "2,820.524",
   },
   {
     price: "63254.65",
     amount: "0.004459",
-    total: "2,820.524"
+    total: "2,820.524",
   },
   {
     price: "63254.65",
     amount: "0.004459",
-    total: "2,820.524"
+    total: "2,820.524",
   },
   {
     price: "63254.65",
     amount: "0.004459",
-    total: "2,820.524"
-  }
-]
+    total: "2,820.524",
+  },
+];
