@@ -98,6 +98,8 @@ const FundingRates = () => {
   //   exchanges: string
   // ): unknown[] => {};
 
+  // commented out unused variables
+
   return (
     <section className="text-white">
       <div className="w-full">
