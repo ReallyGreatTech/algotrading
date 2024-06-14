@@ -7,14 +7,21 @@ const initialState = {
   error: "",
 };
 
-export const fetchMarket = createAsyncThunk("market/fetchMarket", async () => {
-  try {
-    const results = await axios.get("http://3.76.134.149:8000/api/markets");
-    return results.data.results;
-  } catch (error) {
-    console.log(error);
+export const fetchMarket = createAsyncThunk(
+  "market/fetchMarket",
+  async (params: { token?: string; annual_min_funding_rate?: number } = {}) => {
+    console.log(params);
+    try {
+      const results = await axios.get("http://3.76.134.149:8000/api/markets", {
+        params,
+      });
+      console.log("Data:", results.data);
+      return results.data.results;
+    } catch (error) {
+      console.log(error);
+    }
   }
-});
+);
 
 const marketSlice = createSlice({
   name: "market",
@@ -25,8 +32,8 @@ const marketSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(fetchMarket.fulfilled, (state, action) => {
-      state.loading = false;
       state.data = action.payload;
+      state.loading = false;
     });
     builder.addCase(fetchMarket.rejected, (state, action) => {
       state.loading = false;
