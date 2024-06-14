@@ -1,35 +1,55 @@
-import AppTable from '../components/AppTable';
-import PrimaryButton from '../components/PrimaryButton';
-import { GrNext } from 'react-icons/gr';
-import { OrderbookItem, TableItem } from '../types';
+import AppTable from "../components/AppTable";
+import PrimaryButton from "../components/PrimaryButton";
+import { GrNext } from "react-icons/gr";
+import { OrderbookItem, TableItem } from "../types";
 import {
   fundingRatesTableColumn,
   orderBookData,
   orderBookTableColumnPostive,
   orderBookTableColumnnNegative,
-} from '../constants/data/fundingRatesPage';
-import SearchInput from '../components/SearchInput';
-import FilterInput from '../components/FilterInput';
-import { useAppSelector, useAppDispatch } from '../hooks';
-import { useEffect, useState } from 'react';
+} from "../constants/data/fundingRatesPage";
+import SearchInput from "../components/SearchInput";
+import { useAppSelector, useAppDispatch } from "../hooks";
+import { useEffect, useState } from "react";
 import {
   fetchTokens,
   updateSelectedToken,
-} from '../redux/features/tokens/tokenSlice';
-import { fetchFundingHistory } from '../redux/features/fundingHistory/fundingHistorySlice';
-import { getUniqueExchanges } from '../utils/getUniqueExchanges';
-import ExchangeSearchInput from '../components/ExchangeSearchInput';
-import { fetchMarket } from '../redux/features/market/marketSlice';
-import TimeFilter from '../components/TimeFilter';
-import { AiOutlineExpandAlt } from 'react-icons/ai';
-import PriceChart from '../components/PriceChart';
+} from "../redux/features/tokens/tokenSlice";
+import { fetchFundingHistory } from "../redux/features/fundingHistory/fundingHistorySlice";
+import { getUniqueExchanges } from "../utils/getUniqueExchanges";
+import ExchangeSearchInput from "../components/ExchangeSearchInput";
+import { fetchMarket } from "../redux/features/market/marketSlice";
+import TimeFilter from "../components/TimeFilter";
+import { AiOutlineExpandAlt } from "react-icons/ai";
+import PriceChart from "../components/PriceChart";
 import { Bars } from "react-loader-spinner";
+
+interface Market {
+  id: 246;
+  funding_rate_latest: 0.0112817623;
+  funding_rate_latest_annual: 98.8282373976;
+  funding_interval_hours: 1;
+  open_interest: 23.0788502447;
+  open_interest_usd: 1113.02371075;
+  volume_24h: null;
+  volume_24h_usd: null;
+  mark_price: null;
+  mark_price_usd: 48.227;
+  oracle_price_usd: null;
+  average_funding: null;
+  origin_symbol: "ORDIUSD";
+  token: "ORDI";
+  exchange: "hmx-arbitrum";
+  created_at: "2024-06-08T14:10:28.732290";
+  updated_at: "2024-06-14T10:02:11.347750";
+}
 
 const FundingRates = () => {
   const tokensData = useAppSelector((state) => state.token.tokens);
   const marketData = useAppSelector((state) => state.market.data);
   const marketDataLoading = useAppSelector((state) => state.market.loading);
   const [filteredMarketData, setFilteredMarketData] = useState(marketData);
+  const [minimumFundingRate, setMinimumFundingRate] = useState("");
   const fundingHistoryData = useAppSelector(
     (state) => state.fundingHistory.data
   );
@@ -41,7 +61,7 @@ const FundingRates = () => {
 
   useEffect(() => {
     dispatch(fetchTokens());
-    dispatch(fetchMarket());
+    dispatch(fetchMarket({}));
   }, [dispatch]);
 
   useEffect(() => {
@@ -67,21 +87,16 @@ const FundingRates = () => {
     const filterParams = {
       token: selectedToken,
       exchanges: selectedExchanges,
+      minimumFundingRate: parseFloat(minimumFundingRate),
     };
-    console.log('Filter Params:', filterParams);
 
-    // Filter the market data based on the selected token and exchanges
-    const filteredData = marketData.filter((item: any) => {
-      const matchesToken =
-        !filterParams.token || item.token === filterParams.token;
-      const matchesExchange = filterParams.exchanges.includes(item.exchange);
-      return matchesToken && matchesExchange;
-    });
-
-    setFilteredMarketData(filteredData);
+    dispatch(fetchMarket(filterParams));
   };
 
-  console.log("Loading", marketDataLoading);
+  const filterBasedOnExchanges = (
+    markets: unknown[],
+    exchanges: string
+  ): unknown[] => {};
 
   return (
     <section className="text-white">
@@ -101,8 +116,17 @@ const FundingRates = () => {
                 onOptionClick={(value) => dispatch(updateSelectedToken(value))}
               />
             </div>
-            <div className="col-span-full lg:col-span-4 flex flex-col">
-              <FilterInput label="Minimum funding rate" />
+            <div className="col-span-full lg:col-span-4 flex flex-col ">
+              <label htmlFor="" className="mb-1">
+                Minimum Funding Rate
+              </label>
+              <input
+                type="text"
+                value={minimumFundingRate}
+                onChange={(evt) => setMinimumFundingRate(evt.target.value)}
+                placeholder="Mininum funding rate. Eg: 10"
+                className="bg-gray-900 py-4 rounded-lg p-2.5  border border-white/20  text-gray-400 font-bold"
+              />
             </div>
             <div className="col-span-full lg:col-span-4 flex flex-col">
               <ExchangeSearchInput
