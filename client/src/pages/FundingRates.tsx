@@ -23,6 +23,7 @@ import TimeFilter from '../components/TimeFilter';
 import { AiOutlineExpandAlt } from 'react-icons/ai';
 import PriceChart from '../components/PriceChart';
 import { Bars } from 'react-loader-spinner';
+import Input from '../components/Input';
 
 interface Market {
   id: 246;
@@ -112,22 +113,20 @@ const FundingRates = () => {
           <h1 className="text-3xl font-bold text-white">Funding Rates</h1>
         </div>
 
-        {/* Filters */}
-        <div className="flex flex-col lg:flex-row w-full border border-white/20 py-4 rounded-[16px] mb-4 bg-gray-800 gap-4 px-4">
-          <div className="grid grid-cols-12 w-full lg:gap-8 gap-4">
-            <div className="col-span-full lg:col-span-4">
-              <SearchInput
-                label="Token"
-                placeholder="Search/Enter Token: "
-                options={tokensData}
-                onOptionClick={(value) => dispatch(updateSelectedToken(value))}
-              />
-            </div>
-            <div className="col-span-full lg:col-span-4 flex flex-col ">
-              <label htmlFor="" className="mb-1">
-                Minimum Funding Rate
-              </label>
-              <input
+        <div className="grid grid-cols-4  border border-white/20 py-4 rounded-[16px] mb-4 bg-gray-800 gap-4 px-4">
+          <div className="col-span-1">
+            <SearchInput
+              label="Token"
+              placeholder="Search/Enter Token: "
+              options={tokensData}
+              onOptionClick={(value) => dispatch(updateSelectedToken(value))}
+            />
+          </div>
+
+          <div className="col-span-1">
+            <div className="col-span-full lg:col-span-1 flex flex-col ">
+              <Input
+                label="Minimum Funding Rate"
                 type="text"
                 value={minimumFundingRate}
                 onChange={(e) => setMinimumFundingRate(Number(e.target.value))}
@@ -135,7 +134,24 @@ const FundingRates = () => {
                 className="bg-gray-900 py-4 rounded-lg p-2.5  border border-white/20  text-gray-400 font-bold"
               />
             </div>
-            <div className="col-span-full lg:col-span-4 flex flex-col">
+          </div>
+
+          <div className="col-span-1">
+            <div className="col-span-full lg:col-span-1 flex flex-col ">
+              <Input
+                label="Minimum Funding Rate"
+                type="text"
+                value={minimumFundingRate}
+                onChange={(e) => setMinimumFundingRate(Number(e.target.value))}
+                placeholder="Mininum funding rate. Eg: 10"
+                className="bg-gray-900 py-4 rounded-lg p-2.5  border border-white/20  text-gray-400 font-bold"
+              />
+            </div>
+          </div>
+
+          <div className="col-span-1">
+            {' '}
+            <div className="col-span-full lg:col-span-1 flex flex-col">
               <ExchangeSearchInput
                 label="Exchange"
                 options={availableExchanges}
@@ -146,13 +162,12 @@ const FundingRates = () => {
               />
             </div>
           </div>
-          <div className="mt-auto mb-1 mx-auto">
-            <PrimaryButton
-              buttonText="GO"
-              buttonIcon={<GrNext />}
-              onClick={handleGoClick}
-            />
-          </div>
+
+          <PrimaryButton
+            buttonText="GO"
+            buttonIcon={<GrNext />}
+            onClick={handleGoClick}
+          />
         </div>
 
         <div className="grid grid-cols-10 gap-4">

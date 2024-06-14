@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from 'react';
+import InputLabel from './InputLabel';
 
 interface SearchInputProps {
   options: string[];
@@ -9,12 +10,12 @@ interface SearchInputProps {
 
 const SearchInput: React.FC<SearchInputProps> = ({
   options,
-  placeholder = "Search/Enter a Value",
+  placeholder = 'Search/Enter a Value',
   label,
   onOptionClick,
 }) => {
   const [filteredOptions, setFilteredOptions] = useState<string[]>(options);
-  const [inputValue, setInputValue] = useState<string>("");
+  const [inputValue, setInputValue] = useState<string>('');
   const [listOpened, setListOpened] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
@@ -49,9 +50,9 @@ const SearchInput: React.FC<SearchInputProps> = ({
   };
 
   useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
 
@@ -61,7 +62,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
 
   return (
     <div>
-      <h2 className="mb-2">{label}</h2>
+      <InputLabel>{label}</InputLabel>
       <div className="rounded-lg flex justify-center items-start">
         <div className="relative searchable-list w-full">
           <input
@@ -76,7 +77,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
           />
           <svg
             className={`outline-none cursor-pointer fill-gray-400 absolute transition-all duration-200 h-full w-4 right-2 top-[50%] -translate-y-[50%] ${
-              listOpened ? "rotate-0" : "-rotate-90"
+              listOpened ? 'rotate-0' : '-rotate-90'
             }`}
             viewBox="0 0 1024 1024"
             version="1.1"
@@ -89,7 +90,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
           <ul
             ref={listRef}
             className={`absolute option-list overflow-y-scroll max-h-64 min-h-[0px] flex flex-col top-12 left-14 max-w-[90%] min-w-[90%] bg-white rounded-sm transition-all duration-200 origin-top-left ${
-              listOpened ? "scale-100 opacity-100" : "scale-0 opacity-0"
+              listOpened ? 'scale-100 opacity-100' : 'scale-0 opacity-0'
             }`}
           >
             {filteredOptions.map((option) => (
