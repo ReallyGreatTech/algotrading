@@ -18,7 +18,10 @@ import {
 import { fetchFundingHistory } from '../redux/features/fundingHistory/fundingHistorySlice';
 import { getUniqueExchanges } from '../utils/getUniqueExchanges';
 import ExchangeSearchInput from '../components/ExchangeSearchInput';
-import { fetchMarket } from '../redux/features/market/marketSlice';
+import {
+  FetchMarketParams,
+  fetchMarket,
+} from '../redux/features/market/marketSlice';
 import TimeFilter from '../components/TimeFilter';
 import { AiOutlineExpandAlt } from 'react-icons/ai';
 import PriceChart from '../components/PriceChart';
@@ -50,7 +53,13 @@ const FundingRates = () => {
   const marketData = useAppSelector((state) => state.market.data);
   const marketDataLoading = useAppSelector((state) => state.market.loading);
   const [filteredMarketData, setFilteredMarketData] = useState(marketData);
-  const [minimumFundingRate, setMinimumFundingRate] = useState(0);
+  const [minimumFundingRate, setMinimumFundingRate] = useState<
+    string | undefined
+  >(undefined);
+  const [fundingNormalization, setFundingNormalization] = useState<
+    string | undefined
+  >(undefined);
+
   const fundingHistoryData = useAppSelector(
     (state) => state.fundingHistory.data
   );
@@ -62,12 +71,7 @@ const FundingRates = () => {
 
   useEffect(() => {
     dispatch(fetchTokens());
-    dispatch(
-      fetchMarket({
-        token: selectedToken,
-        annual_min_funding_rate: minimumFundingRate,
-      })
-    );
+    dispatch(fetchMarket(getMarketParams()));
   }, []);
 
   useEffect(() => {
@@ -80,31 +84,29 @@ const FundingRates = () => {
     if (fundingHistoryData.length) {
       const exchanges = getUniqueExchanges(fundingHistoryData);
       setAvailableExchanges(exchanges);
-      setSelectedExchanges(exchanges); // Initially select all exchanges
+      setSelectedExchanges(exchanges);
     }
   }, [fundingHistoryData]);
 
-  // Set the initial filtered market data when market data is fetched
   useEffect(() => {
     setFilteredMarketData(marketData);
   }, [marketData]);
 
-  const handleGoClick = () => {
-    const filterParams = {
-      token: selectedToken,
-      exchanges: selectedExchanges,
-      annual_min_funding_rate: minimumFundingRate,
-    };
+  const getMarketParams = (): FetchMarketParams => {
+    const filterParams: FetchMarketParams = {};
 
-    dispatch(fetchMarket(filterParams));
+    if (selectedToken) filterParams.token = selectedToken;
+    if (fundingNormalization)
+      filterParams.funding_normalization = Number(fundingNormalization);
+    if (minimumFundingRate)
+      filterParams.annual_min_funding_rate = Number(minimumFundingRate);
+
+    return filterParams;
   };
 
-  // const filterBasedOnExchanges = (
-  //   markets: unknown[],
-  //   exchanges: string
-  // ): unknown[] => {};
-
-  // commented out unused variables
+  const handleGoClick = () => {
+    dispatch(fetchMarket(getMarketParams()));
+  };
 
   return (
     <section className="text-white">
@@ -113,61 +115,63 @@ const FundingRates = () => {
           <h1 className="text-3xl font-bold text-white">Funding Rates</h1>
         </div>
 
-        <div className="grid grid-cols-4  border border-white/20 py-4 rounded-[16px] mb-4 bg-gray-800 gap-4 px-4">
-          <div className="col-span-1">
-            <SearchInput
-              label="Token"
-              placeholder="Search/Enter Token: "
-              options={tokensData}
-              onOptionClick={(value) => dispatch(updateSelectedToken(value))}
+        <div className=" flex flex-row gap-5 items-center border border-white/20 py-4 rounded-[16px] mb-4 bg-gray-800  px-4">
+          <div className="grid grid-cols-4 gap-4">
+            <div className="col-span-1">
+              <SearchInput
+                label="Token"
+                placeholder="Search/Enter Token: "
+                options={tokensData}
+                onOptionClick={(value) => dispatch(updateSelectedToken(value))}
+              />
+            </div>
+
+            <div className="col-span-1">
+              <div className="col-span-full lg:col-span-1 flex flex-col ">
+                <Input
+                  label="Minimum Funding Rate"
+                  type="text"
+                  value={minimumFundingRate}
+                  onChange={(e) => setMinimumFundingRate(e.target.value)}
+                  placeholder="Mininum funding rate. Eg: 10"
+                  className="bg-gray-900"
+                />
+              </div>
+            </div>
+
+            <div className="col-span-1">
+              <div className="col-span-full lg:col-span-1 flex flex-col ">
+                <Input
+                  label="Funding Normalization"
+                  type="text"
+                  value={fundingNormalization}
+                  onChange={(e) => setFundingNormalization(e.target.value)}
+                  placeholder="Mininum funding rate. Eg: 10"
+                  className="bg-gray-900"
+                />
+              </div>
+            </div>
+
+            <div className="col-span-1">
+              <div className="col-span-full lg:col-span-1 flex flex-col">
+                <ExchangeSearchInput
+                  label="Exchange"
+                  options={availableExchanges}
+                  placeholder="Search/Enter Exchange:"
+                  onSelectionChange={(selectedOptions) =>
+                    setSelectedExchanges(selectedOptions)
+                  }
+                />
+              </div>
+            </div>
+          </div>
+          <div className="w-[5em] mt-5">
+            <PrimaryButton
+              buttonText="GO"
+              buttonIcon={<GrNext />}
+              onClick={handleGoClick}
             />
           </div>
-
-          <div className="col-span-1">
-            <div className="col-span-full lg:col-span-1 flex flex-col ">
-              <Input
-                label="Minimum Funding Rate"
-                type="text"
-                value={minimumFundingRate}
-                onChange={(e) => setMinimumFundingRate(Number(e.target.value))}
-                placeholder="Mininum funding rate. Eg: 10"
-                className="bg-gray-900 py-4 rounded-lg p-2.5  border border-white/20  text-gray-400 font-bold"
-              />
-            </div>
-          </div>
-
-          <div className="col-span-1">
-            <div className="col-span-full lg:col-span-1 flex flex-col ">
-              <Input
-                label="Minimum Funding Rate"
-                type="text"
-                value={minimumFundingRate}
-                onChange={(e) => setMinimumFundingRate(Number(e.target.value))}
-                placeholder="Mininum funding rate. Eg: 10"
-                className="bg-gray-900 py-4 rounded-lg p-2.5  border border-white/20  text-gray-400 font-bold"
-              />
-            </div>
-          </div>
-
-          <div className="col-span-1">
-            {' '}
-            <div className="col-span-full lg:col-span-1 flex flex-col">
-              <ExchangeSearchInput
-                label="Exchange"
-                options={availableExchanges}
-                placeholder="Search/Enter Exchange:"
-                onSelectionChange={(selectedOptions) =>
-                  setSelectedExchanges(selectedOptions)
-                }
-              />
-            </div>
-          </div>
-
-          <PrimaryButton
-            buttonText="GO"
-            buttonIcon={<GrNext />}
-            onClick={handleGoClick}
-          />
         </div>
 
         <div className="grid grid-cols-10 gap-4">

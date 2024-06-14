@@ -1,21 +1,34 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
+
+export interface FetchMarketParams {
+  token?: string;
+  annual_min_funding_rate?: number;
+  funding_normalization?: number;
+}
 
 const initialState = {
   loading: false,
   data: [],
-  error: "",
+  error: '',
 };
 
 export const fetchMarket = createAsyncThunk(
-  "market/fetchMarket",
-  async (params: { token?: string; annual_min_funding_rate?: number } = {}) => {
-    console.log(params);
+  'market/fetchMarket',
+  async (params: FetchMarketParams = {}) => {
     try {
-      const results = await axios.get("http://3.76.134.149:8000/api/markets", {
-        params,
-      });
-      console.log("Data:", results.data);
+      const searchParams = new URLSearchParams();
+      let key: keyof FetchMarketParams;
+      for (key in params) {
+        searchParams.set(key, params[key] as string);
+      }
+
+      console.log(searchParams.toString());
+
+      if (params.token) searchParams.set('token', params['token']);
+      const results = await axios.get(
+        `http://3.76.134.149:8000/api/markets?${searchParams.toString()}`
+      );
       return results.data.results;
     } catch (error) {
       console.log(error);
@@ -24,7 +37,7 @@ export const fetchMarket = createAsyncThunk(
 );
 
 const marketSlice = createSlice({
-  name: "market",
+  name: 'market',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -33,6 +46,7 @@ const marketSlice = createSlice({
     });
     builder.addCase(fetchMarket.fulfilled, (state, action) => {
       state.data = action.payload;
+
       state.loading = false;
     });
     builder.addCase(fetchMarket.rejected, (state, action) => {
