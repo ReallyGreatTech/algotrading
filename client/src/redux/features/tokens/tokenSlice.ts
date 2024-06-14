@@ -38,21 +38,18 @@ const tokenSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(fetchTokens.pending, (state) => {
       state.loading = true;
-      console.log("fetchTokens pending");
     });
     builder.addCase(
       fetchTokens.fulfilled,
       (state, action: PayloadAction<string[]>) => {
         state.loading = false;
         state.tokens = action.payload;
-        console.log("fetchTokens fulfilled", action.payload);
       }
     );
     builder.addCase(fetchTokens.rejected, (state, action) => {
       state.loading = false;
       state.tokens = [];
       state.error = action.payload as string;
-      console.log("fetchTokens rejected", action.payload);
     });
   },
 });
