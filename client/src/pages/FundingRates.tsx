@@ -20,7 +20,8 @@ import { getUniqueExchanges } from "../utils/getUniqueExchanges";
 import ExchangeSearchInput from "../components/ExchangeSearchInput";
 import {
   FetchMarketParams,
-  fetchMarket,
+  // fetchMarket,
+  loadMarkets,
 } from "../redux/features/market/marketSlice";
 import TimeFilter from "../components/TimeFilter";
 import { AiOutlineExpandAlt } from "react-icons/ai";
@@ -73,7 +74,8 @@ const FundingRates = () => {
 
   useEffect(() => {
     dispatch(fetchTokens());
-    dispatch(fetchMarket(getMarketParams()));
+    // dispatch(fetchMarket(getMarketParams()));
+    dispatch(loadMarkets({}));
   }, []);
 
   useEffect(() => {
@@ -109,8 +111,10 @@ const FundingRates = () => {
     return filterParams;
   };
 
+  console.log(marketDataLoading);
+
   const handleGoClick = () => {
-    dispatch(fetchMarket(getMarketParams()));
+    dispatch(loadMarkets(getMarketParams()));
   };
 
   // const filterBasedOnExchanges = (
