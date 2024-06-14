@@ -23,6 +23,7 @@ import { fetchMarket } from '../redux/features/market/marketSlice';
 import TimeFilter from '../components/TimeFilter';
 import { AiOutlineExpandAlt } from 'react-icons/ai';
 import { Bars } from 'react-loader-spinner';
+import PriceChart from '../components/PriceChart';
 
 const FundingRates = () => {
   const tokensData = useAppSelector((state) => state.token.tokens);
