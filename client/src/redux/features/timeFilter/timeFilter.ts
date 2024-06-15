@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  time: "",
+  time: "1Y",
 };
 
 const timeFilterSlice = createSlice({

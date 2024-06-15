@@ -26,6 +26,7 @@ const AppTable = <T extends {}>({
     if (onRowClick) {
       onRowClick(row);
     }
+    console.log('row clicked:', row)
   };
 
   return (
