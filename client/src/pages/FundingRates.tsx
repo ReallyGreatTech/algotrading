@@ -18,7 +18,11 @@ import {
 import { fetchFundingHistory } from "../redux/features/fundingHistory/fundingHistorySlice";
 import { getUniqueExchanges } from "../utils/getUniqueExchanges";
 import ExchangeSearchInput from "../components/ExchangeSearchInput";
-import { fetchMarket } from "../redux/features/market/marketSlice";
+import {
+  FetchMarketParams,
+  // fetchMarket,
+  loadMarkets,
+} from "../redux/features/market/marketSlice";
 import TimeFilter from "../components/TimeFilter";
 import { AiOutlineExpandAlt } from "react-icons/ai";
 import PriceChart from "../components/PriceChart";
@@ -661,7 +665,16 @@ const FundingRates = () => {
   const marketData = useAppSelector((state) => state.market.data);
   const marketDataLoading = useAppSelector((state) => state.market.loading);
   const [filteredMarketData, setFilteredMarketData] = useState(marketData);
-  const [minimumFundingRate, setMinimumFundingRate] = useState(0);
+  const [minimumFundingRate, setMinimumFundingRate] = useState<
+    string | undefined
+  >(undefined);
+  const [fundingNormalization, setFundingNormalization] = useState<
+    string | undefined
+  >(undefined);
+  const [minOpenInterestUsd, setMinOpenInterestUsd] = useState<
+    string | undefined
+  >(undefined);
+
   const fundingHistoryData = useAppSelector(
     (state) => state.fundingHistory.data
   );
@@ -673,17 +686,12 @@ const FundingRates = () => {
   const dispatch = useAppDispatch();
 
   const [availableExchanges, setAvailableExchanges] = useState<string[]>([]);
-  const [selectedExchanges, setSelectedExchanges] = useState<string[]>([]);
-  
+  // const [selectedExchanges, setSelectedExchanges] = useState<string[]>([]);
 
   useEffect(() => {
     dispatch(fetchTokens());
-    dispatch(
-      fetchMarket({
-        token: selectedToken,
-        annual_min_funding_rate: minimumFundingRate,
-      })
-    );
+    // dispatch(fetchMarket(getMarketParams()));
+    dispatch(loadMarkets({}));
   }, []);
 
   useEffect(() => {
@@ -696,7 +704,7 @@ const FundingRates = () => {
     if (fundingHistoryData.length) {
       const exchanges = getUniqueExchanges(fundingHistoryData);
       setAvailableExchanges(exchanges);
-      setSelectedExchanges(exchanges); // Initially select all exchanges
+      // setSelectedExchanges(exchanges); // Initially select all exchanges
     }
   }, [fundingHistoryData]);
 
@@ -705,14 +713,24 @@ const FundingRates = () => {
     setFilteredMarketData(marketData);
   }, [marketData]);
 
-  const handleGoClick = () => {
-    const filterParams = {
-      token: selectedToken,
-      exchanges: selectedExchanges,
-      annual_min_funding_rate: minimumFundingRate,
-    };
+  const getMarketParams = (): FetchMarketParams => {
+    const filterParams: FetchMarketParams = {};
 
-    dispatch(fetchMarket(filterParams));
+    if (selectedToken) filterParams.token = selectedToken;
+    if (fundingNormalization)
+      filterParams.funding_normalization = Number(fundingNormalization);
+    if (minimumFundingRate)
+      filterParams.annual_min_funding_rate = Number(minimumFundingRate);
+    if (minOpenInterestUsd)
+      filterParams.min_open_interest_usd = Number(minOpenInterestUsd);
+
+    return filterParams;
+  };
+
+  console.log(marketDataLoading);
+
+  const handleGoClick = () => {
+    dispatch(loadMarkets(getMarketParams()));
   };
 
   // const filterBasedOnExchanges = (
@@ -819,9 +837,33 @@ const FundingRates = () => {
               <input
                 type="text"
                 value={minimumFundingRate}
-                onChange={(e) => setMinimumFundingRate(Number(e.target.value))}
+                onChange={(e) => setMinimumFundingRate(e.target.value)}
                 placeholder="Mininum funding rate. Eg: 10"
-                className="bg-gray-900 py-4 rounded-lg p-2.5  border border-white/20  text-gray-400 font-bold"
+                className="bg-gray-900 py-[0.9em] rounded-lg p-2.5  border border-white/20  text-gray-400 font-bold"
+              />
+            </div>
+            <div className="col-span-full lg:col-span-4 flex flex-col ">
+              <label htmlFor="" className="mb-1">
+                Funding Normalization
+              </label>
+              <input
+                type="text"
+                value={fundingNormalization}
+                onChange={(e) => setFundingNormalization(e.target.value)}
+                placeholder="Funding Normalization. Eg: 5"
+                className="bg-gray-900 py-[0.9em] rounded-lg p-2.5  border border-white/20  text-gray-400 font-bold"
+              />
+            </div>
+            <div className="col-span-full lg:col-span-4 flex flex-col ">
+              <label htmlFor="" className="mb-1">
+                Minimum Open Interest USD
+              </label>
+              <input
+                type="text"
+                value={minOpenInterestUsd}
+                onChange={(e) => setMinOpenInterestUsd(e.target.value)}
+                placeholder="Minimum Open Interest USD. Eg: 5"
+                className="bg-gray-900 py-[0.9em] rounded-lg p-2.5  border border-white/20  text-gray-400 font-bold"
               />
             </div>
             <div className="col-span-full lg:col-span-4 flex flex-col">
@@ -829,9 +871,9 @@ const FundingRates = () => {
                 label="Exchange"
                 options={availableExchanges}
                 placeholder="Search/Enter Exchange:"
-                onSelectionChange={(selectedOptions) =>
-                  setSelectedExchanges(selectedOptions)
-                }
+                onSelectionChange={() => {
+                  // setSelectedExchanges(selectedOptions)
+                }}
               />
             </div>
           </div>
@@ -854,7 +896,7 @@ const FundingRates = () => {
             <div className="overflow-x-auto text-black  h-[520px]">
               {marketDataLoading ? (
                 <div className="text-center text-white flex h-full w-full pt-16 justify-center">
-                  <Bars color="#FFF" />
+                  <Bars height={32} color="#FFF" />
                 </div>
               ) : (
                 <AppTable<Market>
@@ -928,3 +970,4 @@ const FundingRates = () => {
 };
 
 export default FundingRates;
+
