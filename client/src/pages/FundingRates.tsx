@@ -25,10 +25,10 @@ import {
 } from "../redux/features/market/marketSlice";
 import TimeFilter from "../components/TimeFilter";
 import { AiOutlineExpandAlt } from "react-icons/ai";
-import PriceChart from "../components/PriceChart";
+// import PriceChart from "../components/PriceChart";
 import { Bars } from "react-loader-spinner";
 import HistoryChart from "../components/charts/HistoryChart";
-import { formatTime, formatTimestamp } from "../utils/formatTime";
+import { formatTimestamp } from "../utils/formatTime";
 
 
 const fundingData = [
@@ -678,7 +678,7 @@ const FundingRates = () => {
   const fundingHistoryData = useAppSelector(
     (state) => state.fundingHistory.data
   );
-  const { loading, data, error } = useAppSelector(
+  const {  data } = useAppSelector(
     (state) => state.fundingHistory
   );
   const selectedToken = useAppSelector((state) => state.token.selectedToken);
