@@ -4,10 +4,13 @@ import * as am5xy from '@amcharts/amcharts5/xy';
 import am5themes_Animated from '@amcharts/amcharts5/themes/Animated';
 
 const HistoryChart = ({ data }) => {
-  const chartRef = useRef(null);
+//   const chartRef = useRef(null);
+    // Ref for the chart element
+    const chartRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    let root = am5.Root.new(chartRef.current);
+    // let root = am5.Root.new(chartRef.current);
+    let root = am5.Root.new("chartdiv");
 
     root.setThemes([am5themes_Animated.new(root)]);
 
@@ -17,15 +20,21 @@ const HistoryChart = ({ data }) => {
         panY: true,
         wheelX: 'panX',
         wheelY: 'zoomX',
-        pinchZoomX: true,
+        pinchZoomX: true, 
       })
     );
+
+    
+
+    /* remove amchart logo */
+    root._logo?.dispose()
+
 
     let xAxis = chart.xAxes.push(
       am5xy.CategoryAxis.new(root, {
         categoryField: 'timestamp',
         renderer: am5xy.AxisRendererX.new(root, {
-          labels: {
+          label: {
             fill: am5.color(0xffffff), // Set x-axis labels to white
           },
           grid: {
@@ -50,7 +59,7 @@ const HistoryChart = ({ data }) => {
       am5xy.ValueAxis.new(root, {
         renderer: am5xy.AxisRendererY.new(root, {
             opposite: true,
-          labels: {
+          label: {
             fill: am5.color(0xffffff), // Set y-axis labels to white
           },
           grid: {
@@ -116,7 +125,10 @@ const HistoryChart = ({ data }) => {
     };
   }, [data]);
 
-  return <div ref={chartRef} style={{ width: '100%', height: '500px' }}></div>;
+  return <div 
+  id="chartdiv"
+  ref={chartRef} 
+  style={{ width: '100%', height: '500px' }}></div>;
 };
 
 export default HistoryChart;
