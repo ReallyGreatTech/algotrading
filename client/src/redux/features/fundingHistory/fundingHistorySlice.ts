@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 interface FundingHistory {
@@ -63,7 +63,7 @@ const fundingHistorySlice = createSlice({
     builder.addCase(fetchFundingHistory.rejected, (state, action) => {
       state.loading = false;
       state.data = [];
-      state.error = action.payload as string;
+      state.error = action.error as string;
     });
   },
 });
