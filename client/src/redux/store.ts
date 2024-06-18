@@ -1,9 +1,10 @@
 // store.ts
-import { configureStore } from '@reduxjs/toolkit';
-import tokenReducer from './features/tokens/tokenSlice';
-import fundingHistoryReducer from './features/fundingHistory/fundingHistorySlice';
-import marketReducer from './features/market/marketSlice';
-import timeFilterReducer from './features/timeFilter/timeFilter';
+import { configureStore } from "@reduxjs/toolkit";
+import tokenReducer from "./features/tokens/tokenSlice";
+import fundingHistoryReducer from "./features/fundingHistory/fundingHistorySlice";
+import marketReducer from "./features/market/marketSlice";
+import timeFilterReducer from "./features/timeFilter/timeFilter";
+import selectedfundingHistoryReducer from "./features/selectedfundingHistory/selectedfundingHistorySlice";
 
 const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ const store = configureStore({
     fundingHistory: fundingHistoryReducer,
     market: marketReducer,
     timefilter: timeFilterReducer,
+    selecetedFundingHistory: selectedfundingHistoryReducer,
   },
 });
 
