@@ -678,7 +678,7 @@ const FundingRates = () => {
   const fundingHistoryData = useAppSelector(
     (state) => state.fundingHistory.data
   );
-  const {  data } = useAppSelector(
+  const { data } = useAppSelector(
     (state) => state.fundingHistory
   );
   const selectedToken = useAppSelector((state) => state.token.selectedToken);
