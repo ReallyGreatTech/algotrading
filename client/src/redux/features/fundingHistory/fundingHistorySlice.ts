@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-interface FundingHistory {
+export interface FundingHistory {
   id: number;
   exchange: string;
   token: string;

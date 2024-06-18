@@ -1,9 +1,14 @@
-import React, { useEffect, useRef } from 'react';
 import * as am5 from '@amcharts/amcharts5';
 import * as am5xy from '@amcharts/amcharts5/xy';
 import am5themes_Animated from '@amcharts/amcharts5/themes/Animated';
+import { useEffect, useRef } from 'react';
 
-const HistoryChart = ({ data }) => {
+interface FundingData {
+  timestamp: string;
+  funding: number;
+}
+
+const HistoryChart = ({ data }: { data: FundingData[] }) => {
 //   const chartRef = useRef(null);
     // Ref for the chart element
     const chartRef = useRef<HTMLDivElement>(null);
@@ -34,17 +39,17 @@ const HistoryChart = ({ data }) => {
       am5xy.CategoryAxis.new(root, {
         categoryField: 'timestamp',
         renderer: am5xy.AxisRendererX.new(root, {
-          label: {
-            fill: am5.color(0xffffff), // Set x-axis labels to white
-          },
-          grid: {
-            stroke: am5.color(0xffffff), // Optional: Set x-axis grid lines to white
-          }
+          // label: {
+          //   fill: am5.color(0xffffff), // Set x-axis labels to white
+          // },
+          // grid: {
+          //   stroke: am5.color(0xffffff), // Optional: Set x-axis grid lines to white
+          // }
         }),
         tooltip: am5.Tooltip.new(root, {
-          label: {
-            fill: am5.color(0xffffff), // Set x-axis tooltip labels to white
-          }
+          // label: {
+          //   fill: am5.color(0xffffff), // Set x-axis tooltip labels to white
+          // }
         }),
       })
     );
@@ -59,12 +64,12 @@ const HistoryChart = ({ data }) => {
       am5xy.ValueAxis.new(root, {
         renderer: am5xy.AxisRendererY.new(root, {
             opposite: true,
-          label: {
-            fill: am5.color(0xffffff), // Set y-axis labels to white
-          },
-          grid: {
-            stroke: am5.color(0xffffff), // Optional: Set y-axis grid lines to white
-          }
+          // label: {
+          //   fill: am5.color(0xffffff), // Set y-axis labels to white
+          // },
+          // grid: {
+          //   stroke: am5.color(0xffffff), // Optional: Set y-axis grid lines to white
+          // }
         }),
       })
     );
@@ -84,9 +89,9 @@ const HistoryChart = ({ data }) => {
         categoryXField: 'timestamp',
         tooltip: am5.Tooltip.new(root, {
           labelText: '{valueY}',
-          label: {
-            fill: am5.color(0xffffff), // Set tooltip text to white
-          }
+          // label: {
+          //   fill: am5.color(0xffffff), // Set tooltip text to white
+          // }
         }),
       })
     );

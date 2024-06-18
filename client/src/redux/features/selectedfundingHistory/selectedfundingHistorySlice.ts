@@ -2,6 +2,17 @@ import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
+// interface FundingHistory {
+//   id: number;
+//   exchange: string;
+//   token: string;
+//   origin_funding: number;
+//   hourly_funding: number;
+//   daily_funding: number;
+//   annual_funding: number;
+//   timestamp: string;
+//   trading_pair: number;
+// }
 interface FundingHistory {
   id: number;
   exchange: string;
