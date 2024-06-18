@@ -27,7 +27,7 @@ import TimeFilter from "../components/TimeFilter";
 import { AiOutlineExpandAlt } from "react-icons/ai";
 // import PriceChart from "../components/PriceChart";
 import { Bars } from "react-loader-spinner";
-import HistoryChart from "../components/charts/HistoryChart";
+import HistoryChart from "../components/Charts/HistoryChart";
 import { formatTimestamp } from "../utils/formatTime";
 import { fetchSelectedFundingHistory } from "../redux/features/selectedfundingHistory/selectedfundingHistorySlice";
 
@@ -661,7 +661,9 @@ interface Market {
 }
 
 const FundingRates = () => {
-  const [selecetedRow,setSelectedRow] = useState<Market|undefined>(undefined)
+  const [selecetedRow, setSelectedRow] = useState<Market | undefined>(
+    undefined
+  );
   const tokensData = useAppSelector((state) => state.token.tokens);
   const marketData = useAppSelector((state) => state.market.data);
   const marketDataLoading = useAppSelector((state) => state.market.loading);
@@ -726,8 +728,6 @@ const FundingRates = () => {
     return filterParams;
   };
 
-
-
   const handleGoClick = () => {
     dispatch(loadMarkets(getMarketParams()));
   };
@@ -763,7 +763,6 @@ const FundingRates = () => {
   //       }));
   //   }}
   const getFundingData = () => {
-   
     switch (selectedTimeFilter) {
       case "1H":
         return fundingData.map((item) => ({
@@ -925,7 +924,7 @@ const FundingRates = () => {
                   data={filteredMarketData}
                   onRowClick={(item) => {
                     console.log(item.token, item.exchange);
-                    setSelectedRow(item)
+                    setSelectedRow(item);
                     dispatch(
                       fetchSelectedFundingHistory({
                         token: item.token,

@@ -1,5 +1,5 @@
 import { time } from "@amcharts/amcharts5";
-import AreaChart from "../components/charts/AreaChart";
+import AreaChart from "./Charts/AreaChart";
 
 const PriceChart = () => {
   const date = new Date();
