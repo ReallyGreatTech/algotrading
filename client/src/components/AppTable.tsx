@@ -1,5 +1,5 @@
-import { ReactNode } from 'react';
-import { TableColumn } from '../types';
+import { ReactNode } from "react";
+import { TableColumn } from "../types";
 
 interface AppTableProps<T> {
   columns: TableColumn<T>[];
@@ -7,10 +7,12 @@ interface AppTableProps<T> {
   tableHeadRowClassName?: string;
   tableBodyRowClassName?: string;
   onRowClick?(row: T): void;
+  selectedRow?: T;
 }
 
 const AppTable = <T extends {}>({
   columns = [],
+  selectedRow,
   data = [],
   tableHeadRowClassName,
   tableBodyRowClassName,
@@ -26,7 +28,7 @@ const AppTable = <T extends {}>({
     if (onRowClick) {
       onRowClick(row);
     }
-    console.log('row clicked:', row)
+    console.log("row clicked:", row);
   };
 
   return (
@@ -37,7 +39,7 @@ const AppTable = <T extends {}>({
         >
           {columns.map((c, cIndex) => (
             <th
-              className={`py-3 px-2 ${c.tableHeadCellClassName || ''}`}
+              className={`py-3 px-2 ${c.tableHeadCellClassName || ""}`}
               align="left"
               key={cIndex}
             >
@@ -52,12 +54,15 @@ const AppTable = <T extends {}>({
           <tr
             key={dDndex}
             onClick={() => raiseRowclick(row)}
-            className={`text-white/80 border-b border-white/10 last:border-b-0 hover:bg-primary/90 ${tableBodyRowClassName}`}
+            className={`text-white/80 border-b border-white/10 last:border-b-0 hover:bg-primary/90 ${
+              selectedRow === row ? "bg-primary" : ""
+            }
+            }} ${tableBodyRowClassName}`}
           >
             {columns.map((c, cIndex) => (
               <td
                 className={`py-3 px-2 text-sm ${
-                  c.tableBodyCellClassName || ''
+                  c.tableBodyCellClassName || ""
                 }`}
                 key={`${dDndex}_${cIndex}`}
               >
