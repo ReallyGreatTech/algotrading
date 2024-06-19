@@ -28,6 +28,7 @@ import { AiOutlineExpandAlt } from "react-icons/ai";
 // import PriceChart from "../components/PriceChart";
 import { Bars } from "react-loader-spinner";
 import HistoryChart from "../components/Charts/HistoryChart";
+// import HistoryChart from "../components/charts/HistoryChart";
 import { formatTimestamp } from "../utils/formatTime";
 import { fetchSelectedFundingHistory } from "../redux/features/selectedfundingHistory/selectedfundingHistorySlice";
 
@@ -296,17 +297,7 @@ import { fetchSelectedFundingHistory } from "../redux/features/selectedfundingHi
 //     timestamp: "2024-06-13T16:00:00",
 //     trading_pair: 323,
 //   },
-//   {
-//     id: 72595,
-//     exchange: "rabbitx",
-//     token: "BTC",
-//     origin_funding: 0.0000194426,
-//     hourly_funding: 0.0019442633,
-//     daily_funding: 0.0466623185,
-//     annual_funding: 17.031746508,
-//     timestamp: "2024-06-13T15:00:00",
-//     trading_pair: 323,
-//   },
+
 //   {
 //     id: 72283,
 //     exchange: "rabbitx",
@@ -762,54 +753,113 @@ const FundingRates = () => {
   //         funding: item.annual_funding,
   //       }));
   //   }}
-  const getFundingData = () => {
-    switch (selectedTimeFilter) {
-      case "1H":
-        return fundingData.map((item) => ({
-          timestamp: formatTimestamp(item.timestamp),
-          funding: item.hourly_funding,
-        }));
-      case "1D":
-        return fundingData.map((item) => ({
-          timestamp: formatTimestamp(item.timestamp),
-          funding: item.daily_funding,
-        }));
-      case "1Y":
-        return fundingData.map((item) => ({
-          timestamp: formatTimestamp(item.timestamp),
-          funding: item.annual_funding,
-        }));
-      default:
-        return fundingData.map((item) => ({
-          timestamp: formatTimestamp(item.timestamp),
-          funding: item.annual_funding,
-        }));
-    }
-  };
   // const getFundingData = () => {
-  //   console.log('history data:',data)
   //   switch (selectedTimeFilter) {
-  //     case '1H':
-  //       return data.map(item => ({
+  //     case "1H":
+  //       return fundingData.map((item) => ({
   //         timestamp: formatTimestamp(item.timestamp),
   //         funding: item.hourly_funding,
   //       }));
-  //     case '1D':
-  //       return data.map(item => ({
+  //     case "1D":
+  //       return fundingData.map((item) => ({
   //         timestamp: formatTimestamp(item.timestamp),
   //         funding: item.daily_funding,
   //       }));
-  //     case '1Y':
-  //       return data.map(item => ({
+  //     case "1Y":
+  //       return fundingData.map((item) => ({
   //         timestamp: formatTimestamp(item.timestamp),
   //         funding: item.annual_funding,
   //       }));
   //     default:
-  //       return data.map(item => ({
+  //       return fundingData.map((item) => ({
   //         timestamp: formatTimestamp(item.timestamp),
   //         funding: item.annual_funding,
   //       }));
-  //   }}
+  //   }
+  // };
+
+
+  // const getFundingData = () => {
+  //   const now = new Date();
+  //   const today = now.toISOString().split("T")[0];
+  //   const yesterday = new Date(now.setDate(now.getDate() - 1)).toISOString().split("T")[0];
+  //   const twoDaysAgo = new Date(now.setDate(now.getDate() - 1)).toISOString().split("T")[0];
+  
+  //   const filteredData = fundingData.filter((item) => {
+  //     const itemDate = new Date(item.timestamp).toISOString().split("T")[0];
+  //     return itemDate === today || itemDate === yesterday || itemDate === twoDaysAgo;
+  //   });
+  
+  //   const transformedData = filteredData.map((item) => {
+  //     const formattedTimestamp = formatTimestamp(item.timestamp);
+  //     let funding;
+  
+  //     switch (selectedTimeFilter) {
+  //       case "1H":
+  //         funding = item.hourly_funding;
+  //         break;
+  //       case "1D":
+  //         funding = item.daily_funding;
+  //         break;
+  //       case "1Y":
+  //         funding = item.annual_funding;
+  //         break;
+  //       default:
+  //         funding = item.annual_funding;
+  //     }
+  
+  //     return {
+  //       timestamp: formattedTimestamp,
+  //       funding,
+  //     };
+  //   });
+  
+  //   // Rotate the data array
+  //   return transformedData.reverse();
+  // };
+  const getFundingData = () => {
+    const now = new Date();
+    const today = now.toISOString().split("T")[0];
+    const yesterday = new Date(now.setDate(now.getDate() - 1)).toISOString().split("T")[0];
+    const twoDaysAgo = new Date(now.setDate(now.getDate() - 1)).toISOString().split("T")[0];
+  
+    const filteredData = fundingData.filter((item) => {
+      const itemDate = new Date(item.timestamp).toISOString().split("T")[0];
+      return itemDate === today || itemDate === yesterday || itemDate === twoDaysAgo;
+    });
+  
+    const transformedData = filteredData.map((item) => {
+      const formattedTimestamp = formatTimestamp(item.timestamp);
+      const itemDate = new Date(item.timestamp).toISOString().split("T")[0]; // Simplified date string for chart display
+      let funding;
+  
+      switch (selectedTimeFilter) {
+        case "1H":
+          funding = item.hourly_funding;
+          break;
+        case "1D":
+          funding = item.daily_funding;
+          break;
+        case "1Y":
+          funding = item.annual_funding;
+          break;
+        default:
+          funding = item.annual_funding;
+      }
+  
+      return {
+        timestamp: formattedTimestamp, // This is for display purposes elsewhere
+        chartDate: itemDate, // This is for chart display
+        funding,
+      };
+    });
+  
+    // Rotate the data array
+    return transformedData.reverse();
+  };
+  
+  
+  
 
   const handleTestDispatch = () => {
     dispatch(

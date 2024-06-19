@@ -32,5 +32,6 @@ export const formatTimestamp = (timestamp: string): string => {
     };
     const formattedDate = date.toLocaleDateString(undefined, optionsDate);
     const formattedTime = date.toLocaleTimeString(undefined, optionsTime);
+    // return `${formattedDate} | ${formattedTime}`;
     return `${formattedDate} | ${formattedTime}`;
   };

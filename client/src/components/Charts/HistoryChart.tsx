@@ -5,17 +5,35 @@ import { useEffect, useRef } from 'react';
 
 interface FundingData {
   timestamp: string;
+  chartDate: string; // Add this field to the interface
   funding: number;
 }
 
 const HistoryChart = ({ data }: { data: FundingData[] }) => {
-//   const chartRef = useRef(null);
+
+    // const chartRef = useRef(null);
     // Ref for the chart element
     const chartRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  // useEffect(() => {
+  //   let root = am5.Root.new(chartRef.current);
+
+  //   root.setThemes([am5themes_Animated.new(root)]);
+
+  //   let chart = root.container.children.push(
+  //     am5xy.XYChart.new(root, {
+  //       panX: true,
+  //       panY: true,
+  //       wheelX: 'panX',
+  //       wheelY: 'zoomX',
+  //       pinchZoomX: true,
+  //     })
+  //   );
+
+    useEffect(() => {
     // let root = am5.Root.new(chartRef.current);
     let root = am5.Root.new("chartdiv");
+    
 
     root.setThemes([am5themes_Animated.new(root)]);
 
@@ -29,17 +47,11 @@ const HistoryChart = ({ data }: { data: FundingData[] }) => {
       })
     );
 
-    
-
-    /* remove amchart logo */
-    root._logo?.dispose()
-
-
     let xAxis = chart.xAxes.push(
       am5xy.CategoryAxis.new(root, {
         categoryField: 'timestamp',
         renderer: am5xy.AxisRendererX.new(root, {
-          // label: {
+          // labels: {
           //   fill: am5.color(0xffffff), // Set x-axis labels to white
           // },
           // grid: {
@@ -64,7 +76,7 @@ const HistoryChart = ({ data }: { data: FundingData[] }) => {
       am5xy.ValueAxis.new(root, {
         renderer: am5xy.AxisRendererY.new(root, {
             opposite: true,
-          // label: {
+          // labels: {
           //   fill: am5.color(0xffffff), // Set y-axis labels to white
           // },
           // grid: {
@@ -80,6 +92,7 @@ const HistoryChart = ({ data }: { data: FundingData[] }) => {
       fontSize: "12px",
     });
 
+
     let series = chart.series.push(
       am5xy.LineSeries.new(root, {
         name: 'Funding',
@@ -89,6 +102,7 @@ const HistoryChart = ({ data }: { data: FundingData[] }) => {
         categoryXField: 'timestamp',
         tooltip: am5.Tooltip.new(root, {
           labelText: '{valueY}',
+       
           // label: {
           //   fill: am5.color(0xffffff), // Set tooltip text to white
           // }
@@ -115,14 +129,53 @@ const HistoryChart = ({ data }: { data: FundingData[] }) => {
     //   })
     // );
 
-    let cursor = chart.set(
-      'cursor',
-      am5xy.XYCursor.new(root, {
-        behavior: 'zoomX',
+    // let cursor = chart.set(
+    //   'cursor',
+    //   am5xy.XYCursor.new(root, {
+    //     behavior: 'zoomX',
+    //   })
+    // );
+
+    let cursor = chart.set('cursor', am5xy.XYCursor.new(root, {
+      behavior: 'zoomXY',
+      snapToSeries: [series], // Enable snapping to the series
+      xAxis: xAxis,
+      yAxis: yAxis,
+    }));
+    // cursor.lineY.set('visible', false);
+
+    cursor.lineX.setAll({
+      stroke: am5.color(0xFFFFFF),
+      strokeWidth: 2,
+      strokeDasharray: [4, 4],
+    });
+
+    // cursor.lineY.setAll({
+    //   stroke: am5.color(0xFFFFFF),
+    //   strokeWidth: 2,
+    //   strokeDasharray: [4, 4],
+    // });
+
+    
+
+     // Add a red target line at value 0 on y-axis
+     let targetLine = chart.plotContainer.children.push(
+      am5.Line.new(root, {
+        position: "absolute",
+        layer: 5,
+        stroke: am5.color(0xff0000), // Red color
+        strokeWidth: 2,
+        strokeDasharray: [4, 4],
+        // x1: 0,
+        // x2: chart.plotContainer.width(),
+        y: yAxis.valueToPosition(0) * chart.plotContainer.height(),
       })
     );
-    cursor.lineY.set('visible', false);
 
+    yAxis.on("height", () => {
+      targetLine.set("y", yAxis.valueToPosition(0) * chart.plotContainer.height());
+    });
+    
     xAxis.data.setAll(data);
 
     return () => {
@@ -131,7 +184,7 @@ const HistoryChart = ({ data }: { data: FundingData[] }) => {
   }, [data]);
 
   return <div 
-  id="chartdiv"
+  id= "chartdiv"
   ref={chartRef} 
   style={{ width: '100%', height: '500px' }}></div>;
 };
