@@ -27,7 +27,8 @@ import TimeFilter from "../components/TimeFilter";
 import { AiOutlineExpandAlt } from "react-icons/ai";
 // import PriceChart from "../components/PriceChart";
 import { Bars } from "react-loader-spinner";
-import HistoryChart from "../components/Charts/HistoryChart";
+// import HistoryChart from "../components/Charts/HistoryChart";
+import HistoryChart from "../components/charts/HistoryChart";
 import { formatTimestamp } from "../utils/formatTime";
 import { fetchSelectedFundingHistory } from "../redux/features/selectedfundingHistory/selectedfundingHistorySlice";
 
