@@ -68,3 +68,16 @@ jobs:
 
             - name: Deployed!
               run: echo Application deployed to ${{steps.env_check.outputs.ENV_NAME_TAG}} S3 Web Hosting
+            
+            - name: Slack Notification
+              if: always()
+              uses: rtCamp/action-slack-notify@v2
+              env:
+                SLACK_CHANNEL: Ripley-Algotrading
+                SLACK_COLOR: ${{ job.status == 'success' && 'good' || 'danger' }}
+                SLACK_ICON: https://github.com/rtCamp.png?size=48
+                SLACK_MESSAGE: 'Deploy to Ripley-Algotrading (UI) environment: ${{ job.status }} :rocket:'
+                SLACK_TITLE: 'Deploy Status'
+                SLACK_USERNAME: GitHub Actions
+                SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+
