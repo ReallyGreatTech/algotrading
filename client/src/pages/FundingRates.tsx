@@ -188,7 +188,7 @@ const FundingRates = () => {
   // console.log('SELECTED ROW RESPONSE DATA', fundingData);
 
   return (
-    <section className="text-white">
+    <section className="text-white pb-10">
       <div className="w-full">
         <div className="py-5">
           <h1

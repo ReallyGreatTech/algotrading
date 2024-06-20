@@ -21,7 +21,7 @@ const PriceChart = ({ data }: PriceChartProps) => {
           containerStyle={{ height: '27em' }}
         />
       ) : (
-        <div className="py-10">
+        <div className="py-10 pb-14">
           <p className="text-sm text-center text-white/50">
             Data for this chart is not available.
           </p>
