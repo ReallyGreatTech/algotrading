@@ -13,9 +13,10 @@ interface InvestorActionsDialogProps extends DialogProps {}
 const InvestorActionsDialog = ({
   open,
   onClose,
+  ...rest
 }: InvestorActionsDialogProps) => {
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="xl" fullWidth>
+    <Dialog {...rest} open={open} onClose={onClose} maxWidth="xl" fullWidth>
       <div className="border-2 border-white/10 overflow-hidden rounded-2xl bg-gray-800">
         <div className="flex justify-between items-center px-3 py-6">
           <h3 className="text-white font-semibold text-xl">Investor Actions</h3>

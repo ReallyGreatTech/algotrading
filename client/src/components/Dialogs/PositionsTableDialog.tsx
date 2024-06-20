@@ -10,9 +10,13 @@ import { MdNavigateBefore, MdNavigateNext } from 'react-icons/md';
 
 interface PositionsTableDialogProps extends DialogProps {}
 
-const PositionsTableDialog = ({ open, onClose }: PositionsTableDialogProps) => {
+const PositionsTableDialog = ({
+  open,
+  onClose,
+  ...rest
+}: PositionsTableDialogProps) => {
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="full" fullWidth>
+    <Dialog {...rest} open={open} onClose={onClose} maxWidth="full" fullWidth>
       <div className="border-2 border-white/10 overflow-hidden rounded-2xl bg-gray-800">
         <div className="flex justify-between items-center px-3 py-6">
           <h3 className="text-white font-semibold text-xl">Positions Table</h3>

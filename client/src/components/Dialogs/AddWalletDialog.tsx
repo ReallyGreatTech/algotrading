@@ -6,9 +6,9 @@ import InputLabel from '../InputLabel';
 
 interface AddWalletDialogProps extends DialogProps {}
 
-const AddWalletDialog = ({ open, onClose }: AddWalletDialogProps) => {
+const AddWalletDialog = ({ open, onClose, ...rest }: AddWalletDialogProps) => {
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="xl" fullWidth>
+    <Dialog {...rest} open={open} onClose={onClose} maxWidth="xl" fullWidth>
       <div className="border-2 border-white/10 overflow-hidden rounded-2xl bg-gray-800">
         <div className="flex justify-between items-center px-3 py-6">
           <h3 className="text-white/80 font-semibold text-xl">Add Wallet</h3>

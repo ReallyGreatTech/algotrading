@@ -1,4 +1,4 @@
-import { HTMLAttributes, useEffect } from 'react';
+import { CSSProperties, HTMLAttributes, useEffect } from 'react';
 
 interface OverLayProps extends HTMLAttributes<HTMLDivElement> {
   closeOnClick?: boolean;
@@ -6,6 +6,7 @@ interface OverLayProps extends HTMLAttributes<HTMLDivElement> {
   rootClassName?: string;
   open?: boolean;
   onClose?(): void;
+  rootStyle?: CSSProperties;
 }
 
 const Overlay = ({
@@ -13,6 +14,7 @@ const Overlay = ({
   onClose,
   open = false,
   rootClassName,
+  rootStyle,
 }: OverLayProps) => {
   useEffect(() => {
     window.addEventListener('keydown', (e) => {
@@ -31,6 +33,7 @@ const Overlay = ({
         <div
           className={`${rootClassName}`}
           onClick={(e) => e.stopPropagation()}
+          style={rootStyle}
         >
           {children}
         </div>
