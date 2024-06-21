@@ -10,7 +10,7 @@ import {
 } from '../constants/data/fundingRatesPage';
 import SearchInput from '../components/SearchInput';
 import { useAppSelector, useAppDispatch } from '../hooks';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   fetchTokens,
   updateSelectedToken,
@@ -31,8 +31,8 @@ import HistoryChart from '../components/Charts/HistoryChart';
 // import HistoryChart from "../components/charts/HistoryChart";
 import { formatTimestamp } from '../utils/formatTime';
 import { fetchSelectedFundingHistory } from '../redux/features/selectedfundingHistory/selectedfundingHistorySlice';
-import PriceChart from '../components/PriceChart';
 import { fetchCryptoComparePrices } from '../utils/fetchCryptoPrices';
+import TradingViewChart from '../components/TradingViewChart';
 
 interface Market {
   id: 246;
@@ -55,6 +55,8 @@ interface Market {
 }
 
 const FundingRates = () => {
+  const chartContainer = useRef<HTMLDivElement | null>(null);
+  const [chartContainerHeight, setChartContainerHeight] = useState(5000);
   const [selecetedRow, setSelectedRow] = useState<Market | undefined>(
     undefined
   );
@@ -75,9 +77,7 @@ const FundingRates = () => {
   const fundingHistoryData = useAppSelector(
     (state) => state.fundingHistory.data
   );
-  const [priceChartData, setPriceChartData] = useState<PriceChartDataItem[]>(
-    []
-  );
+  const [_, setPriceChartData] = useState<PriceChartDataItem[]>([]);
   const selectedToken = useAppSelector((state) => state.token.selectedToken);
   const selectedTimeFilter = useAppSelector((state) => state.timefilter.time);
   const dispatch = useAppDispatch();
@@ -106,6 +106,11 @@ const FundingRates = () => {
   useEffect(() => {
     setFilteredMarketData(marketData);
   }, [marketData]);
+
+  useEffect(() => {
+    if (chartContainer.current?.offsetHeight)
+      setChartContainerHeight(chartContainer.current?.offsetHeight);
+  }, []);
 
   const getMarketParams = (): FetchMarketParams => {
     const filterParams: FetchMarketParams = {};
@@ -210,7 +215,7 @@ const FundingRates = () => {
                 onOptionClick={(value) => dispatch(updateSelectedToken(value))}
               />
             </div>
-            <div className="col-span-full lg:col-span-4 flex flex-col ">
+            <div className="col-span-full lg:col-span-4 flex flex-col">
               <label htmlFor="" className="mb-1">
                 Minimum Funding Rate
               </label>
@@ -273,7 +278,10 @@ const FundingRates = () => {
                 Table results
               </h3>
             </div>
-            <div className="overflow-x-auto text-black  min-h-[520px] h-auto max-h-[120vh]">
+            <div
+              className="overflow-x-auto text-black  min-h-[520px] h-auto max-h-[1000px]"
+              style={{ maxHeight: chartContainerHeight - 70 }}
+            >
               {marketDataLoading ? (
                 <div className="text-center text-white flex h-full w-full pt-16 justify-center">
                   <Bars height={32} color="#FFF" />
@@ -298,15 +306,17 @@ const FundingRates = () => {
                     setPriceChartData([]);
                     fetchCryptoComparePrices(item.token, 30).then((prices) => {
                       setPriceChartData(prices);
-                      console.log('API Call Ended');
-                      console.log(prices);
                     });
                   }}
                 />
               )}
             </div>
           </div>
-          <div className=" col-span-full lg:col-span-5 rounded-lg flex flex-col gap-4">
+
+          <div
+            className=" col-span-full lg:col-span-5 rounded-lg flex flex-col gap-4"
+            ref={chartContainer}
+          >
             <div className="border border-white/20 bg-gray-800 rounded-xl">
               <div className="py-5 px-4  flex flex-col md:flex-row gap-2 md:gap-0 justify-between items-center">
                 <h3 className="text-white/90 font-bold text-base">
@@ -336,8 +346,9 @@ const FundingRates = () => {
                 </h2>
               </div>
 
-              <div className="">
-                <PriceChart data={priceChartData} />
+              <div className="h-[500px]">
+                {/* <PriceChart data={priceChartData} /> */}
+                <TradingViewChart />
               </div>
             </div>
           </div>

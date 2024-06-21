@@ -1,4 +1,4 @@
-import { CSSProperties, ReactNode, StyleHTMLAttributes } from 'react';
+import { CSSProperties, ReactNode } from 'react';
 
 export interface TableColumn<T> {
   label: string;
