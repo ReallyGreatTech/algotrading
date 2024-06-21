@@ -7,6 +7,7 @@ const AppDialog = ({
   maxWidth,
   fullWidth = false,
   children,
+  rootStyle,
 }: DialogProps) => {
   const rootMaxWidth = 'max-w-' + (maxWidth || 'lg');
   const rootClassName = `p-5 lg:p-0 w-${
@@ -14,7 +15,12 @@ const AppDialog = ({
   } ${rootMaxWidth}`;
 
   return (
-    <Overlay onClose={onClose} open={open} rootClassName={rootClassName}>
+    <Overlay
+      onClose={onClose}
+      open={open}
+      rootClassName={rootClassName}
+      rootStyle={rootStyle}
+    >
       <div className={`${maxWidth === 'full' && fullWidth ? 'p-10' : 'p-5'}`}>
         {children}
       </div>

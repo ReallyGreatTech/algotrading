@@ -98,16 +98,19 @@ const Positions = () => {
 
       <InvestorActionsDialog
         open={investorDialogOpen}
+        rootStyle={{ maxWidth: '38em' }}
         onClose={() => setInvestorDialogOpen(false)}
       />
 
       <AddWalletDialog
         open={addWalletDialogOpen}
+        rootStyle={{ maxWidth: '38em' }}
         onClose={() => setAddWalletDialogOpen(false)}
       />
 
       <AddInvestorDialog
         open={addInvestorDialogOpen}
+        rootStyle={{ maxWidth: '38em' }}
         onClose={() => setAddInvestorDialogOpen(false)}
       />
 

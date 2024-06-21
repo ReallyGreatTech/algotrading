@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { CSSProperties, ReactNode } from 'react';
 
 export interface TableColumn<T> {
   label: string;
@@ -52,7 +52,7 @@ export interface InvestorAction {
 export interface TableItem {
   id?: number;
   funding_rate_latest?: number;
-  funding_rate_latest_annual?:  number;
+  funding_rate_latest_annual?: number;
   funding_interval_hours?: number;
   open_interest?: number;
   open_interest_usd?: number;
@@ -88,4 +88,10 @@ export interface DialogProps {
   children?: ReactNode;
   fullWidth?: boolean;
   maxWidth?: string;
+  rootStyle?: CSSProperties;
+}
+
+export interface PriceChartDataItem {
+  price: number;
+  time: number;
 }

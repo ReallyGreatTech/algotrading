@@ -6,9 +6,13 @@ import InputLabel from '../InputLabel';
 
 interface AddInvestorDialogProps extends DialogProps {}
 
-const AddInvestorDialog = ({ open, onClose }: AddInvestorDialogProps) => {
+const AddInvestorDialog = ({
+  open,
+  onClose,
+  ...rest
+}: AddInvestorDialogProps) => {
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="xl" fullWidth>
+    <Dialog {...rest} open={open} onClose={onClose} maxWidth="xl" fullWidth>
       <div className="border-2 border-white/10 overflow-hidden rounded-2xl bg-gray-800">
         <div className="flex justify-between items-center px-3 py-6">
           <h3 className="text-white/80 font-semibold text-xl">Add Investor</h3>

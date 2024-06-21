@@ -1,37 +1,32 @@
-import { time } from "@amcharts/amcharts5";
-import AreaChart from "./Charts/AreaChart";
+import AreaChart from './Charts/AreaChart';
+import { PriceChartDataItem } from '../types';
+import { useEffect } from 'react';
 
-const PriceChart = () => {
-  const date = new Date();
-  date.setHours(0, 0, 0, 0);
+interface PriceChartProps {
+  data: PriceChartDataItem[];
+}
 
-  let value = 100;
-  function generateData() {
-    value = Math.round(Math.random() * 10 - 5 + value);
-    time.add(date, "day", 1);
-    return {
-      date: date.getTime(),
-      value: value,
-    };
-  }
+const PriceChart = ({ data }: PriceChartProps) => {
+  const mapToViewModel = (priceData: { time: number; price: number }[]) =>
+    priceData.map((p) => ({ date: p.time, value: p.price }));
 
-  function generateDatas(count: number) {
-    const data = [];
-    for (let i = 0; i < count; ++i) {
-      data.push(generateData());
-    }
-    return data;
-  }
-
-  const data = generateDatas(50);
+  useEffect(() => {}, [data]);
 
   return (
     <div className="">
-      <AreaChart
-        data={data}
-        id="chartdiv"
-        containerStyle={{ height: "27em" }}
-      />
+      {data.length ? (
+        <AreaChart
+          data={mapToViewModel(data)}
+          id="price-chart-div"
+          containerStyle={{ height: '27em' }}
+        />
+      ) : (
+        <div className="py-10 pb-14">
+          <p className="text-sm text-center text-white/50">
+            Data for this chart is not available.
+          </p>
+        </div>
+      )}
     </div>
   );
 };
