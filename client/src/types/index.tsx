@@ -95,3 +95,25 @@ export interface PriceChartDataItem {
   price: number;
   time: number;
 }
+
+export interface FundingHistory {
+  id: number;
+  exchange: string;
+  token: string;
+  origin_funding: number;
+  hourly_funding: number;
+  daily_funding: number;
+  annual_funding: number;
+  timestamp: string;
+  trading_pair: number;
+}
+
+export interface FundingHistoryState {
+  loading: boolean;
+  data: FundingHistory[];
+  error: string;
+}
+
+export interface FetchFundingHistoryResponse {
+  results: FundingHistory[];
+}

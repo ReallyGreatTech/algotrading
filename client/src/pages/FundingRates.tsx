@@ -15,24 +15,21 @@ import {
   fetchTokens,
   updateSelectedToken,
 } from '../redux/features/tokens/tokenSlice';
-import { fetchFundingHistory } from '../redux/features/fundingHistory/fundingHistorySlice';
 import { getUniqueExchanges } from '../utils/getUniqueExchanges';
 import ExchangeSearchInput from '../components/ExchangeSearchInput';
 import {
   FetchMarketParams,
-  // fetchMarket,
   loadMarkets,
 } from '../redux/features/market/marketSlice';
 import TimeFilter from '../components/TimeFilter';
 import { AiOutlineExpandAlt } from 'react-icons/ai';
-// import PriceChart from "../components/PriceChart";
 import { Bars } from 'react-loader-spinner';
 import HistoryChart from '../components/Charts/HistoryChart';
-// import HistoryChart from "../components/charts/HistoryChart";
 import { formatTimestamp } from '../utils/formatTime';
 import { fetchSelectedFundingHistory } from '../redux/features/selectedfundingHistory/selectedfundingHistorySlice';
 import { fetchCryptoComparePrices } from '../utils/fetchCryptoPrices';
 import TradingViewChart from '../components/TradingViewChart';
+import { fetchFundingHistory } from '../redux/api/fundingHistory';
 
 interface Market {
   id: 246;
