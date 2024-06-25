@@ -1,12 +1,12 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { FetchMarketParams } from '../../types';
-import axios from 'axios';
+import { apiClient } from './apiClient';
 
 export const fetchMarket = createAsyncThunk(
   'market/fetchMarket',
   async (params: FetchMarketParams = {}, { rejectWithValue }) => {
     try {
-      const results = await axios.get('http://3.76.134.149:8000/api/markets', {
+      const results = await apiClient.get('/markets', {
         params,
       });
       return results.data.results;

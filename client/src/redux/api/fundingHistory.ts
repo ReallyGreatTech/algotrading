@@ -1,10 +1,10 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
 import {
   FetchFundingHistoryResponse,
   FundingHistory,
   RowParams,
 } from '../../types';
+import { apiClient } from './apiClient';
 
 export const fetchFundingHistory = createAsyncThunk<
   FundingHistory[],
@@ -12,8 +12,8 @@ export const fetchFundingHistory = createAsyncThunk<
   { rejectValue: string }
 >('fundingHistory/fetchFundingHistory', async (token, { rejectWithValue }) => {
   try {
-    const response = await axios.get<FetchFundingHistoryResponse>(
-      'http://3.76.134.149:8000/api/funding-history',
+    const response = await apiClient.get<FetchFundingHistoryResponse>(
+      '/funding-history',
       {
         params: { token },
       }
@@ -28,15 +28,12 @@ export const fetchSelectedFundingHistory = createAsyncThunk(
   'selectedFundingHistory/fetchselectedFundingHistory',
   async ({ token, exchange }: RowParams, { rejectWithValue }) => {
     try {
-      const response = await axios.get(
-        'http://3.76.134.149:8000/api/funding-history',
-        {
-          params: {
-            token,
-            exchange,
-          },
-        }
-      );
+      const response = await apiClient.get('/funding-history', {
+        params: {
+          token,
+          exchange,
+        },
+      });
 
       return response.data.results;
     } catch (error) {
