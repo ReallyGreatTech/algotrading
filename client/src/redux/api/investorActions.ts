@@ -2,7 +2,7 @@ import { apiClient } from './apiClient';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 export const fetchInvestorActions = createAsyncThunk(
-  'market/fetchMarket',
+  'market/fetchInvestorActions',
   async (params: {} = {}, { rejectWithValue }) => {
     try {
       const { data } = await apiClient.get('/investor-actions', {

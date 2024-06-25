@@ -9,12 +9,13 @@ import {
   positionsTableColumn,
   positionsTableSampleData,
   walletsTableColumn,
-  walletsTableSampleData,
 } from '../constants/data/positionsPage';
 import AddWalletDialog from '../components/Dialogs/AddWalletDialog';
 import AddInvestorDialog from '../components/Dialogs/AddInvestorDialog';
 import PositionsTableDialog from '../components/Dialogs/PositionsTableDialog';
 import PaginationControls from '../components/PaginationControls';
+import { useAppDispatch, useAppSelector } from '../hooks';
+import { fetchWallets } from '../redux/api/wallets';
 
 const Positions = () => {
   const [investorDialogOpen, setInvestorDialogOpen] = useState(true);
@@ -22,6 +23,14 @@ const Positions = () => {
   const [addInvestorDialogOpen, setAddInvestorDialogOpen] = useState(false);
   const [addPositionsTableDialogOpen, setAddPositionsTableDialogOpen] =
     useState(false);
+
+  const wallets = useAppSelector((state) => state.wallets);
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(fetchWallets());
+  }, []);
 
   return (
     <section className="min-h-screen pb-10">
@@ -45,10 +54,16 @@ const Positions = () => {
                 </div>
 
                 <div className="overflow-x-auto max-h-[40vh]">
-                  <AppTable<Wallet>
-                    columns={walletsTableColumn}
-                    data={walletsTableSampleData}
-                  />
+                  {wallets.loading ? (
+                    <div className="text-sm text-white/90 w-full h-full flex justify-center items-center">
+                      Loading wallets...
+                    </div>
+                  ) : (
+                    <AppTable<Wallet>
+                      columns={walletsTableColumn}
+                      data={wallets.data}
+                    />
+                  )}
                 </div>
                 <PaginationControls />
               </div>

@@ -40,8 +40,8 @@ const InvestorActionsDialog = ({
 
         <div className="mb-5">
           {investorActions.loading ? (
-            <div className="py-10 text-center text-sm text-white">
-              Loading...
+            <div className="py-10 text-center text-sm text-white/90">
+              Loading investor actions...
             </div>
           ) : (
             <div className="overflow-x-auto max-h-[22em]">

@@ -31,10 +31,13 @@ export interface DataItem {
 }
 
 export interface Wallet {
-  wallet: string;
-  startTime: string;
-  initialInvestment: string;
-  currentValue: string;
+  name: string;
+  address: string;
+  id: string;
+  investors: Investor[];
+  start_time_manual: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface Investor {
