@@ -16,6 +16,7 @@ import PositionsTableDialog from '../components/Dialogs/PositionsTableDialog';
 import PaginationControls from '../components/PaginationControls';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { fetchWallets } from '../redux/api/wallets';
+import { fetchInvestors } from '../redux/api/investors';
 
 const Positions = () => {
   const [investorDialogOpen, setInvestorDialogOpen] = useState(true);
@@ -25,11 +26,13 @@ const Positions = () => {
     useState(false);
 
   const wallets = useAppSelector((state) => state.wallets);
+  const investors = useAppSelector((state) => state.investors);
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(fetchWallets());
+    dispatch(fetchInvestors());
   }, []);
 
   return (
@@ -84,7 +87,7 @@ const Positions = () => {
                 <div className="overflow-x-auto max-h-[40vh]">
                   <AppTable<Investor>
                     columns={investorTableColumn}
-                    data={investorTableSampleData}
+                    data={investors.data}
                   />
                 </div>
                 <PaginationControls />

@@ -297,22 +297,24 @@ export const walletsTableColumn: TableColumn<Wallet>[] = [
 export const investorTableColumn = [
   {
     label: 'Investor Name',
-    value: 'investorName',
+    value: 'name',
   },
   {
     label: '% From Wallet',
     value: 'percentageFromWallet',
+    render: () => 'N/A',
   },
   {
     label: 'Joined Time',
     value: 'joinedTime',
     render(investor: Investor) {
-      return new Date(investor.joinedTime).toLocaleString();
+      return new Date(investor.join_time_manual).toLocaleString();
     },
   },
   {
-    label: 'Initial Investment',
-    value: 'initialInvestment',
+    label: 'Total Investment',
+    value: 'totalInvestment',
+    render: () => "N/A"
   },
   {
     label: '',

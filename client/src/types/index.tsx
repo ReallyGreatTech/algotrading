@@ -41,10 +41,12 @@ export interface Wallet {
 }
 
 export interface Investor {
-  investorName: string;
-  percentageFromWallet: string;
-  joinedTime: string;
-  initialInvestment: string;
+  name: string;
+  wallets: Wallet[];
+  actions: InvestorAction[];
+  join_time_manual: string;
+  createdAt: string;
+  updated: string;
 }
 
 export interface InvestorAction {

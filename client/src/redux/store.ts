@@ -7,6 +7,7 @@ import timeFilterReducer from './features/timeFilter/timeFilter';
 import selectedfundingHistoryReducer from './features/selectedfundingHistory/selectedfundingHistorySlice';
 import investorActionsReducer from './features/investorActions/investorActionsSlice';
 import walletReducer from './features/wallets/walletSlice';
+import investorsReducer from './features/investors/investorsSlice';
 
 const store = configureStore({
   reducer: {
@@ -17,6 +18,7 @@ const store = configureStore({
     selecetedFundingHistory: selectedfundingHistoryReducer,
     investorActions: investorActionsReducer,
     wallets: walletReducer,
+    investors: investorsReducer,
   },
 });
 
