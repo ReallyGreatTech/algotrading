@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AiOutlineExpandAlt } from 'react-icons/ai';
 import AppTable from '../components/AppTable';
 import InvestorActionsDialog from '../components/Dialogs/InvestorActionsDialog';

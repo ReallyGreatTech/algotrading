@@ -45,9 +45,13 @@ export interface Investor {
 }
 
 export interface InvestorAction {
+  id: 13;
   investorName: string;
   action: string;
-  amount: string;
+  amount: number;
+  investor: number;
+  time: string;
+  wallet: number;
 }
 export interface TableItem {
   id?: number;

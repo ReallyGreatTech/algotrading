@@ -530,6 +530,7 @@ export const investorActionTableColumn = [
   {
     label: 'Investor Name',
     value: 'investorName',
+    render: () => 'Unknown',
   },
   {
     label: 'Action',
@@ -551,58 +552,6 @@ export const investorActionTableColumn = [
   {
     label: 'Amount',
     value: 'amount',
-  },
-];
-
-export const investorActionTableSampleData = [
-  {
-    investorName: 'Alice Johnson',
-    action: 'deposit',
-    amount: '500',
-  },
-  {
-    investorName: 'Bob Smith',
-    action: 'withdraw',
-    amount: '200',
-  },
-  {
-    investorName: 'Charlie Brown',
-    action: 'deposit',
-    amount: '1000',
-  },
-  {
-    investorName: 'Diana Prince',
-    action: 'deposit',
-    amount: '300',
-  },
-  {
-    investorName: 'Ethan Hunt',
-    action: 'withdraw',
-    amount: '150',
-  },
-  {
-    investorName: 'Fiona Gallagher',
-    action: 'deposit',
-    amount: '2500',
-  },
-  {
-    investorName: 'George Weasley',
-    action: 'withdraw',
-    amount: '500',
-  },
-  {
-    investorName: 'Hannah Abbott',
-    action: 'deposit',
-    amount: '600',
-  },
-  {
-    investorName: 'Ian Malcolm',
-    action: 'withdraw',
-    amount: '300',
-  },
-  {
-    investorName: 'Jessica Jones',
-    action: 'deposit',
-    amount: '50',
+    render: (item: InvestorAction) => item.amount.toFixed(4),
   },
 ];
