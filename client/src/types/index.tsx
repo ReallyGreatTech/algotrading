@@ -8,26 +8,30 @@ export interface TableColumn<T> {
   render?(item: T): ReactNode;
 }
 
-export interface DataItem {
-  id: string;
-  date: string;
-  time: string;
-  platform: string;
-  direct: string;
-  leverageValue: string;
-  leverage: string;
-  positionSize: string;
-  entryPrice: string;
-  markPrice: string;
-  liquidation: string;
-  fundingRecievedRate: string;
-  fundingRecieved: string;
-  fundingPaidRate: string;
-  fundingPaid: string;
-  roi: string;
-  unrealizedPnl: string;
-  walletAsset: string;
-  account: string;
+export interface Position {
+  id: number;
+  token: string;
+  exchange: string;
+  opened_at: string;
+  closed_at: unknown;
+  status: string;
+  direction: string;
+  leverage: number;
+  leveraged_amount: number;
+  position_size: number;
+  entry_price: number;
+  liquidation_price: number;
+  stop_loss: number;
+  take_profit: number;
+  roi_percent: number;
+  unrealized_pnl: number;
+  wallet_asset: number;
+  account_balance: number;
+  equity: number;
+  created_at: string;
+  updated_at: string;
+  trading_pair: string;
+  wallet: number;
 }
 
 export interface Wallet {

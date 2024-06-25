@@ -1,22 +1,26 @@
 import { FiEdit2 } from 'react-icons/fi';
 import {
-  DataItem,
   Investor,
   InvestorAction,
+  Position,
   TableColumn,
   Wallet,
 } from '../../types';
 import { shortenString } from '../../utils/stringTool';
 import { RiDeleteBin5Line } from 'react-icons/ri';
 
-export const positionsTableColumn: TableColumn<DataItem>[] = [
+export const positionsTableColumn: TableColumn<Position>[] = [
   {
     label: 'Date',
     value: 'date',
+    tableHeadCellClassName: 'min-w-[8em]',
+    render: (item) => new Date(item.opened_at).toLocaleDateString(),
   },
   {
     label: 'Time',
-    value: 'time',
+    value: 'opened_at',
+    tableHeadCellClassName: 'min-w-[8em]',
+    render: (item) => new Date(item.opened_at).toLocaleTimeString(),
   },
   {
     label: 'Token',
@@ -24,96 +28,65 @@ export const positionsTableColumn: TableColumn<DataItem>[] = [
   },
   {
     label: 'Direction',
-    value: 'direct',
+    value: 'direction',
     render(item) {
       return (
         <div
           className={`py-1 px-5 rounded-full uppercase ${
-            item.direct.toLowerCase() === 'short'
+            item.direction.toLowerCase() === 'short'
               ? 'bg-[#EF4444]'
               : 'bg-[#419E6A]'
           }`}
         >
-          {item.direct}
+          {item.direction}
         </div>
       );
     },
   },
   {
-    label: 'Leverage Value',
-    value: 'leverageValue',
+    label: 'Leverage',
+    value: 'leverage',
     tableHeadCellClassName: 'min-w-[10em]',
   },
   {
     label: 'Non Leverage',
-    value: 'nonLeverageValue',
+    value: 'nonLeverage',
     tableHeadCellClassName: 'min-w-[12em]',
+    render: () => 'N/A',
   },
   {
     label: 'Average Daily Funding',
     value: 'nonLeverageValue',
     tableHeadCellClassName: 'min-w-[12em]',
+    render: () => 'N/A',
   },
-  // {
-  //   label: 'Leverage',
-  //   value: 'leverage',
-  // },
-  // {
-  //   label: 'Position Size',
-  //   value: 'positionSize',
-  //   tableHeadCellClassName: 'min-w-[10em]',
-  // },
   {
     label: 'SL',
     value: 'entryPrice',
     tableHeadCellClassName: 'min-w-[10em]',
+    render: () => 'N/A',
   },
   {
     label: 'TP',
-    value: 'markPrice',
+    value: 'entry_price',
   },
   {
     label: 'Liquidation',
     value: 'liquidation',
+    render: () => 'N/A',
   },
-  // {
-  //   label: 'Funding Recieved Rate',
-  //   value: 'fundingRecievedRate',
-  //   tableHeadCellClassName: 'min-w-[15em]',
-  // },
   {
     label: '%SL',
     value: 'fundingRecieved',
     tableHeadCellClassName: 'min-w-[10em]',
+    render: () => 'N/A',
   },
   {
     label: '%TP',
     value: 'fundingPaidRate',
     tableHeadCellClassName: 'min-w-[10em]',
+    render: () => 'N/A',
   },
-  // {
-  //   label: 'Funding Paid',
-  //   value: 'fundingPaid',
-  //   tableHeadCellClassName: 'min-w-[10em]',
-  // },
-  // {
-  //   label: 'ROI',
-  //   value: 'roi',
-  // },
-  // {
-  //   label: 'Unrealized PnL',
-  //   value: 'unrealizedPnl',
-  //   tableHeadCellClassName: 'min-w-[10em]',
-  // },
-  // {
-  //   label: 'Wallet Asset',
-  //   value: 'walletAsset',
-  //   tableHeadCellClassName: 'min-w-[10em]',
-  // },
-  // {
-  //   label: 'Account',
-  //   value: 'account',
-  // },
 ];
 
 export const positionsTableSampleData = [
@@ -314,7 +287,7 @@ export const investorTableColumn = [
   {
     label: 'Total Investment',
     value: 'totalInvestment',
-    render: () => "N/A"
+    render: () => 'N/A',
   },
   {
     label: '',
@@ -341,69 +314,6 @@ export const investorTableColumn = [
         </div>
       );
     },
-  },
-];
-
-export const investorTableSampleData = [
-  {
-    investorName: 'Alice Johnson',
-    percentageFromWallet: '25',
-    joinedTime: '2023-01-05T14:30:00Z',
-    initialInvestment: '1250',
-  },
-  {
-    investorName: 'Bob Smith',
-    percentageFromWallet: '40',
-    joinedTime: '2023-02-18T09:00:00Z',
-    initialInvestment: '1200',
-  },
-  {
-    investorName: 'Charlie Brown',
-    percentageFromWallet: '30',
-    joinedTime: '2023-03-10T16:45:00Z',
-    initialInvestment: '3000',
-  },
-  {
-    investorName: 'Diana Prince',
-    percentageFromWallet: '20',
-    joinedTime: '2023-04-25T12:15:00Z',
-    initialInvestment: '1500',
-  },
-  {
-    investorName: 'Ethan Hunt',
-    percentageFromWallet: '35',
-    joinedTime: '2023-05-14T10:00:00Z',
-    initialInvestment: '700',
-  },
-  {
-    investorName: 'Fiona Gallagher',
-    percentageFromWallet: '50',
-    joinedTime: '2023-06-29T11:30:00Z',
-    initialInvestment: '3000',
-  },
-  {
-    investorName: 'George Weasley',
-    percentageFromWallet: '15',
-    joinedTime: '2023-07-20T13:45:00Z',
-    initialInvestment: '1800',
-  },
-  {
-    investorName: 'Hannah Abbott',
-    percentageFromWallet: '45',
-    joinedTime: '2023-08-07T15:00:00Z',
-    initialInvestment: '1800',
-  },
-  {
-    investorName: 'Ian Malcolm',
-    percentageFromWallet: '10',
-    joinedTime: '2023-09-15T17:30:00Z',
-    initialInvestment: '800',
-  },
-  {
-    investorName: 'Jessica Jones',
-    percentageFromWallet: '20',
-    joinedTime: '2023-10-10T09:15:00Z',
-    initialInvestment: '100',
   },
 ];
 

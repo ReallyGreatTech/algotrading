@@ -8,6 +8,7 @@ import selectedfundingHistoryReducer from './features/selectedfundingHistory/sel
 import investorActionsReducer from './features/investorActions/investorActionsSlice';
 import walletReducer from './features/wallets/walletSlice';
 import investorsReducer from './features/investors/investorsSlice';
+import positionsReducer from './features/positions/positionsSlice';
 
 const store = configureStore({
   reducer: {
@@ -19,6 +20,7 @@ const store = configureStore({
     investorActions: investorActionsReducer,
     wallets: walletReducer,
     investors: investorsReducer,
+    positions: positionsReducer,
   },
 });
 

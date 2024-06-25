@@ -2,12 +2,10 @@ import { useEffect, useState } from 'react';
 import { AiOutlineExpandAlt } from 'react-icons/ai';
 import AppTable from '../components/AppTable';
 import InvestorActionsDialog from '../components/Dialogs/InvestorActionsDialog';
-import { DataItem, Investor, Wallet } from '../types';
+import { Investor, Position, Wallet } from '../types';
 import {
   investorTableColumn,
-  investorTableSampleData,
   positionsTableColumn,
-  positionsTableSampleData,
   walletsTableColumn,
 } from '../constants/data/positionsPage';
 import AddWalletDialog from '../components/Dialogs/AddWalletDialog';
@@ -17,6 +15,7 @@ import PaginationControls from '../components/PaginationControls';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { fetchWallets } from '../redux/api/wallets';
 import { fetchInvestors } from '../redux/api/investors';
+import { fetchPositions } from '../redux/api/positions';
 
 const Positions = () => {
   const [investorDialogOpen, setInvestorDialogOpen] = useState(true);
@@ -27,12 +26,14 @@ const Positions = () => {
 
   const wallets = useAppSelector((state) => state.wallets);
   const investors = useAppSelector((state) => state.investors);
+  const positions = useAppSelector((state) => state.positions);
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(fetchWallets());
     dispatch(fetchInvestors());
+    dispatch(fetchPositions());
   }, []);
 
   return (
@@ -85,10 +86,16 @@ const Positions = () => {
                 </div>
 
                 <div className="overflow-x-auto max-h-[40vh]">
-                  <AppTable<Investor>
-                    columns={investorTableColumn}
-                    data={investors.data}
-                  />
+                  {wallets.loading ? (
+                    <div className="text-sm text-white/90 w-full h-full flex justify-center items-center">
+                      Loading investors...
+                    </div>
+                  ) : (
+                    <AppTable<Investor>
+                      columns={investorTableColumn}
+                      data={investors.data}
+                    />
+                  )}
                 </div>
                 <PaginationControls />
               </div>
@@ -108,13 +115,19 @@ const Positions = () => {
           </div>
 
           <div className="overflow-x-auto max-h-[80vh]">
-            <AppTable<DataItem>
-              columns={positionsTableColumn}
-              data={positionsTableSampleData}
-              onRowClick={(item) => {
-                console.log(item);
-              }}
-            />
+            {wallets.loading ? (
+              <div className="text-sm text-white/90 w-full h-full flex justify-center items-center">
+                Loading positions...
+              </div>
+            ) : (
+              <AppTable<Position>
+                columns={positionsTableColumn}
+                data={positions.data}
+                onRowClick={(item) => {
+                  console.log(item);
+                }}
+              />
+            )}
           </div>
           <PaginationControls />
         </div>

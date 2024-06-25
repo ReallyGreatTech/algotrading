@@ -25,7 +25,6 @@ const investorsSlice = createSlice({
     builder.addCase(
       fetchInvestors.fulfilled,
       (state, action: PayloadAction<{ results: Investor[] }>) => {
-		console.log(action.payload)
         state.data = action.payload.results;
         state.loading = false;
       }

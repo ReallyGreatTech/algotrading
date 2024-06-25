@@ -1,13 +1,13 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { apiClient } from './apiClient';
-import { Investor } from '../../types';
+import { Position } from '../../types';
 
-export const fetchInvestors = createAsyncThunk(
-  'tokens/fetchInvestors',
+export const fetchPositions = createAsyncThunk(
+  'tokens/fetchPositions',
   async (_, { rejectWithValue }) => {
     try {
-      const { data } = await apiClient.get<{ results: Investor[] }>(
-        '/investors'
+      const { data } = await apiClient.get<{ results: Position[] }>(
+        '/positions'
       );
 
       return data;
