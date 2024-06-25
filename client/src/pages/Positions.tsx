@@ -57,7 +57,7 @@ const Positions = () => {
                   </button>
                 </div>
 
-                <div className="overflow-x-auto max-h-[40vh]">
+                <div className="overflow-x-auto h-[40vh] max-h-[40vh]">
                   {wallets.loading ? (
                     <div className="text-sm text-white/90 w-full h-full flex justify-center items-center">
                       Loading wallets...
@@ -85,8 +85,8 @@ const Positions = () => {
                   </button>
                 </div>
 
-                <div className="overflow-x-auto max-h-[40vh]">
-                  {wallets.loading ? (
+                <div className="overflow-x-auto h-[40vh] max-h-[40vh]">
+                  {investors.loading ? (
                     <div className="text-sm text-white/90 w-full h-full flex justify-center items-center">
                       Loading investors...
                     </div>
@@ -115,7 +115,7 @@ const Positions = () => {
           </div>
 
           <div className="overflow-x-auto max-h-[80vh]">
-            {wallets.loading ? (
+            {positions.loading ? (
               <div className="text-sm text-white/90 w-full h-full flex justify-center items-center">
                 Loading positions...
               </div>

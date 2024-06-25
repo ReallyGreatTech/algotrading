@@ -31,7 +31,7 @@ export const investorActionsSlice = createSlice({
         state.error = '';
       }
     );
-    builder.addCase(fetchInvestorActions.rejected, (state, action) => {
+    builder.addCase(fetchInvestorActions.rejected, (state) => {
       state.loading = false;
       state.data = [];
       state.error = 'Failed to fetch data';
