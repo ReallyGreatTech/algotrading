@@ -254,7 +254,7 @@ const FundingRates = () => {
             </div>
             <div
               className="overflow-x-auto text-black  min-h-[520px] h-auto max-h-[1000px]"
-              style={{ maxHeight: chartContainerHeight - 70 }}
+              style={{ height: chartContainerHeight + 100 }}
             >
               {marketDataLoading ? (
                 <div className="text-center text-white flex h-full w-full pt-16 justify-center">

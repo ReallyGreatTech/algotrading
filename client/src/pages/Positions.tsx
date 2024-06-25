@@ -14,7 +14,6 @@ import {
 import AddWalletDialog from '../components/Dialogs/AddWalletDialog';
 import AddInvestorDialog from '../components/Dialogs/AddInvestorDialog';
 import PositionsTableDialog from '../components/Dialogs/PositionsTableDialog';
-import { MdNavigateBefore, MdNavigateNext } from 'react-icons/md';
 import PaginationControls from '../components/PaginationControls';
 
 const Positions = () => {
