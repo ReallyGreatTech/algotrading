@@ -24,10 +24,12 @@ import { AiOutlineExpandAlt } from 'react-icons/ai';
 import { Bars } from 'react-loader-spinner';
 import HistoryChart from '../components/Charts/HistoryChart';
 import { formatTimestamp } from '../utils/formatTime';
-import { fetchSelectedFundingHistory } from '../redux/features/selectedfundingHistory/selectedfundingHistorySlice';
 import { fetchCryptoComparePrices } from '../utils/fetchCryptoPrices';
 import TradingViewChart from '../components/TradingViewChart';
-import { fetchFundingHistory } from '../redux/api/fundingHistory';
+import {
+  fetchFundingHistory,
+  fetchSelectedFundingHistory,
+} from '../redux/api/fundingHistory';
 import { fetchTokens } from '../redux/api/tokens';
 import { fetchMarket } from '../redux/api/markets';
 
@@ -230,9 +232,7 @@ const FundingRates = () => {
                 label="Exchange"
                 options={availableExchanges}
                 placeholder="Search/Enter Exchange:"
-                onSelectionChange={() => {
-                  // setSelectedExchanges(selectedOptions)
-                }}
+                onSelectionChange={() => {}}
               />
             </div>
           </div>

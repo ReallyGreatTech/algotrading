@@ -151,3 +151,14 @@ export interface FetchMarketParams {
   funding_normalization?: number;
   min_open_interest_usd?: number;
 }
+
+export interface RowParams {
+  token: string;
+  exchange: string;
+}
+
+export interface SelectedFundingHistoryState {
+  loading: boolean;
+  data: FundingHistory[];
+  error: string;
+}
