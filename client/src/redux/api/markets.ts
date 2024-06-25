@@ -4,15 +4,14 @@ import axios from 'axios';
 
 export const fetchMarket = createAsyncThunk(
   'market/fetchMarket',
-  async (params: FetchMarketParams = {}) => {
-    console.log(params);
+  async (params: FetchMarketParams = {}, { rejectWithValue }) => {
     try {
       const results = await axios.get('http://3.76.134.149:8000/api/markets', {
         params,
       });
       return results.data.results;
     } catch (error) {
-      console.log(error);
+      rejectWithValue('Something went wrong while fetching the markets');
     }
   }
 );
