@@ -1,34 +1,17 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import axios from "axios";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-interface TokenInitialState {
-  selectedToken: string;
-  loading: boolean;
-  tokens: string[];
-  error: string;
-}
+import { TokenInitialState } from '../../../types';
+import { fetchTokens } from '../../api/tokens';
 
 const initialState: TokenInitialState = {
-  selectedToken: "",
+  selectedToken: '',
   loading: false,
   tokens: [],
-  error: "",
+  error: '',
 };
 
-export const fetchTokens = createAsyncThunk(
-  "tokens/fetchTokens",
-  async (_, { rejectWithValue }) => {
-    try {
-      const response = await axios.get("http://3.76.134.149:8000/api/tokens");
-      return response.data;
-    } catch (error: any) {
-      return rejectWithValue(error.response?.data || error.message);
-    }
-  }
-);
-
 const tokenSlice = createSlice({
-  name: "token",
+  name: 'token',
   initialState,
   reducers: {
     updateSelectedToken: (state, action) => {

@@ -15,20 +15,20 @@ const fundingHistorySlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(fetchFundingHistory.pending, (state) => {
       state.loading = true;
-      state.error = ''; // Clear error on pending
+      state.error = '';
     });
     builder.addCase(
       fetchFundingHistory.fulfilled,
       (state, action: PayloadAction<FundingHistory[]>) => {
         state.loading = false;
-        state.data = action.payload || []; // Ensure data is an array
-        state.error = ''; // Clear error on fulfilled
+        state.data = action.payload || [];
+        state.error = '';
       }
     );
     builder.addCase(fetchFundingHistory.rejected, (state, action) => {
       state.loading = false;
       state.data = [];
-      state.error = action.payload || 'Failed to fetch data'; // Use payload error if available
+      state.error = action.payload || 'Failed to fetch data';
     });
   },
 });
