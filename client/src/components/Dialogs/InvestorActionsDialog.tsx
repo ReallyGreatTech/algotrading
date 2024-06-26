@@ -2,11 +2,11 @@ import { DialogProps, InvestorAction } from '../../types';
 import { IoMdClose } from 'react-icons/io';
 import AppTable from '../AppTable';
 import Dialog from './AppDialog';
-import {
-  investorActionTableColumn,
-  investorActionTableSampleData,
-} from '../../constants/data/positionsPage';
+import { investorActionTableColumn } from '../../constants/data/positionsPage';
 import { MdNavigateBefore, MdNavigateNext } from 'react-icons/md';
+import { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { fetchInvestorActions } from '../../redux/api/investorActions';
 
 interface InvestorActionsDialogProps extends DialogProps {}
 
@@ -15,6 +15,15 @@ const InvestorActionsDialog = ({
   onClose,
   ...rest
 }: InvestorActionsDialogProps) => {
+  const dispatch = useAppDispatch();
+  const investorActions = useAppSelector((state) => state.investorActions);
+
+  useEffect(() => {
+    if (!open) return;
+
+    dispatch(fetchInvestorActions({}));
+  }, [open]);
+
   return (
     <Dialog {...rest} open={open} onClose={onClose} maxWidth="xl" fullWidth>
       <div className="border-2 border-white/10 overflow-hidden rounded-2xl bg-gray-800">
@@ -30,12 +39,18 @@ const InvestorActionsDialog = ({
         </div>
 
         <div className="mb-5">
-          <div className="overflow-x-auto max-h-[22em]">
-            <AppTable<InvestorAction>
-              columns={investorActionTableColumn}
-              data={investorActionTableSampleData}
-            />
-          </div>
+          {investorActions.loading ? (
+            <div className="py-10 text-center text-sm text-white/90">
+              Loading investor actions...
+            </div>
+          ) : (
+            <div className="overflow-x-auto max-h-[22em]">
+              <AppTable<InvestorAction>
+                columns={investorActionTableColumn}
+                data={investorActions.data}
+              />
+            </div>
+          )}
         </div>
 
         <div className="flex justify-end p-3 gap-2">

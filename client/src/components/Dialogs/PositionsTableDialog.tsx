@@ -1,12 +1,10 @@
-import { DataItem, DialogProps } from '../../types';
+import { Position, DialogProps } from '../../types';
 import { IoMdClose } from 'react-icons/io';
 import AppTable from '../AppTable';
 import Dialog from './AppDialog';
-import {
-  positionsTableColumn,
-  positionsTableSampleData,
-} from '../../constants/data/positionsPage';
+import { positionsTableColumn } from '../../constants/data/positionsPage';
 import { MdNavigateBefore, MdNavigateNext } from 'react-icons/md';
+import { useAppSelector } from '../../hooks';
 
 interface PositionsTableDialogProps extends DialogProps {}
 
@@ -15,6 +13,8 @@ const PositionsTableDialog = ({
   onClose,
   ...rest
 }: PositionsTableDialogProps) => {
+  const positions = useAppSelector((state) => state.positions);
+
   return (
     <Dialog {...rest} open={open} onClose={onClose} maxWidth="full" fullWidth>
       <div className="border-2 border-white/10 overflow-hidden rounded-2xl bg-gray-800">
@@ -31,9 +31,9 @@ const PositionsTableDialog = ({
 
         <div className="mb-5">
           <div className="overflow-x-auto h-[30em]">
-            <AppTable<DataItem>
+            <AppTable<Position>
               columns={positionsTableColumn}
-              data={positionsTableSampleData}
+              data={positions.data}
             />
           </div>
         </div>

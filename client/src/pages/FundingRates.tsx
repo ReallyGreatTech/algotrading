@@ -1,7 +1,12 @@
 import AppTable from '../components/AppTable';
 import PrimaryButton from '../components/PrimaryButton';
 import { GrNext } from 'react-icons/gr';
-import { OrderbookItem, PriceChartDataItem } from '../types';
+import {
+  FetchMarketParams,
+  Market,
+  OrderbookItem,
+  PriceChartDataItem,
+} from '../types';
 import {
   fundingRatesTableColumn,
   orderBookData,
@@ -11,48 +16,22 @@ import {
 import SearchInput from '../components/SearchInput';
 import { useAppSelector, useAppDispatch } from '../hooks';
 import { useEffect, useRef, useState } from 'react';
-import {
-  fetchTokens,
-  updateSelectedToken,
-} from '../redux/features/tokens/tokenSlice';
-import { fetchFundingHistory } from '../redux/features/fundingHistory/fundingHistorySlice';
+import { updateSelectedToken } from '../redux/features/tokens/tokenSlice';
 import { getUniqueExchanges } from '../utils/getUniqueExchanges';
 import ExchangeSearchInput from '../components/ExchangeSearchInput';
-import {
-  FetchMarketParams,
-  // fetchMarket,
-  loadMarkets,
-} from '../redux/features/market/marketSlice';
 import TimeFilter from '../components/TimeFilter';
 import { AiOutlineExpandAlt } from 'react-icons/ai';
-// import PriceChart from "../components/PriceChart";
 import { Bars } from 'react-loader-spinner';
 import HistoryChart from '../components/Charts/HistoryChart';
-// import HistoryChart from "../components/charts/HistoryChart";
 import { formatTimestamp } from '../utils/formatTime';
-import { fetchSelectedFundingHistory } from '../redux/features/selectedfundingHistory/selectedfundingHistorySlice';
 import { fetchCryptoComparePrices } from '../utils/fetchCryptoPrices';
 import TradingViewChart from '../components/TradingViewChart';
-
-interface Market {
-  id: 246;
-  funding_rate_latest: 0.0112817623;
-  funding_rate_latest_annual: 98.8282373976;
-  funding_interval_hours: 1;
-  open_interest: 23.0788502447;
-  open_interest_usd: 1113.02371075;
-  volume_24h: null;
-  volume_24h_usd: null;
-  mark_price: null;
-  mark_price_usd: 48.227;
-  oracle_price_usd: null;
-  average_funding: null;
-  origin_symbol: 'ORDIUSD';
-  token: 'ORDI';
-  exchange: 'hmx-arbitrum';
-  created_at: '2024-06-08T14:10:28.732290';
-  updated_at: '2024-06-14T10:02:11.347750';
-}
+import {
+  fetchFundingHistory,
+  fetchSelectedFundingHistory,
+} from '../redux/api/fundingHistory';
+import { fetchTokens } from '../redux/api/tokens';
+import { fetchMarket } from '../redux/api/markets';
 
 const FundingRates = () => {
   const chartContainer = useRef<HTMLDivElement | null>(null);
@@ -87,7 +66,7 @@ const FundingRates = () => {
   useEffect(() => {
     dispatch(fetchTokens());
 
-    dispatch(loadMarkets({}));
+    dispatch(fetchMarket({}));
   }, []);
 
   useEffect(() => {
@@ -127,7 +106,7 @@ const FundingRates = () => {
   };
 
   const handleGoClick = () => {
-    dispatch(loadMarkets(getMarketParams()));
+    dispatch(fetchMarket(getMarketParams()));
   };
 
   const getFundingData = () => {
@@ -173,7 +152,6 @@ const FundingRates = () => {
       };
     });
 
-    // Rotate the data array
     return transformedData.reverse();
   };
 
@@ -189,8 +167,6 @@ const FundingRates = () => {
   const fundingData = useAppSelector((state) => {
     return state.selecetedFundingHistory.data;
   });
-
-  // console.log('SELECTED ROW RESPONSE DATA', fundingData);
 
   return (
     <section className="text-white pb-10">
@@ -256,9 +232,7 @@ const FundingRates = () => {
                 label="Exchange"
                 options={availableExchanges}
                 placeholder="Search/Enter Exchange:"
-                onSelectionChange={() => {
-                  // setSelectedExchanges(selectedOptions)
-                }}
+                onSelectionChange={() => {}}
               />
             </div>
           </div>
@@ -280,7 +254,7 @@ const FundingRates = () => {
             </div>
             <div
               className="overflow-x-auto text-black  min-h-[520px] h-auto max-h-[1000px]"
-              style={{ maxHeight: chartContainerHeight - 70 }}
+              style={{ height: chartContainerHeight + 100 }}
             >
               {marketDataLoading ? (
                 <div className="text-center text-white flex h-full w-full pt-16 justify-center">
@@ -292,7 +266,6 @@ const FundingRates = () => {
                   columns={fundingRatesTableColumn}
                   data={filteredMarketData}
                   onRowClick={(item) => {
-                    // console.log(item.token, item.exchange);
                     setSelectedRow(item);
 
                     dispatch(
@@ -302,7 +275,6 @@ const FundingRates = () => {
                       })
                     );
 
-                    console.log('Calling api');
                     setPriceChartData([]);
                     fetchCryptoComparePrices(item.token, 30).then((prices) => {
                       setPriceChartData(prices);
@@ -330,11 +302,6 @@ const FundingRates = () => {
                 </div>
               </div>
               <div>
-                {/* <HistoryChart data={data.map(item => ({
-              timestamp: item.timestamp,
-              funding: item.annual_funding // or item.daily_funding or item.annual_funding based on your need
-            }))} /> */}
-
                 <HistoryChart data={getFundingData()} />
               </div>
             </div>
@@ -347,7 +314,6 @@ const FundingRates = () => {
               </div>
 
               <div className="h-[500px]">
-                {/* <PriceChart data={priceChartData} /> */}
                 <TradingViewChart />
               </div>
             </div>
