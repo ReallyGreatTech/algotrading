@@ -19,8 +19,8 @@ export const positionsTableColumn: TableColumn<DataItem>[] = [
     value: 'time',
   },
   {
-    label: 'Platform',
-    value: 'platform',
+    label: 'Token',
+    value: 'token',
   },
   {
     label: 'Direction',
@@ -45,65 +45,75 @@ export const positionsTableColumn: TableColumn<DataItem>[] = [
     tableHeadCellClassName: 'min-w-[10em]',
   },
   {
-    label: 'Leverage',
-    value: 'leverage',
+    label: 'Non Leverage',
+    value: 'nonLeverageValue',
+    tableHeadCellClassName: 'min-w-[12em]',
   },
   {
-    label: 'Position Size',
-    value: 'positionSize',
-    tableHeadCellClassName: 'min-w-[10em]',
+    label: 'Average Daily Funding',
+    value: 'nonLeverageValue',
+    tableHeadCellClassName: 'min-w-[12em]',
   },
+  // {
+  //   label: 'Leverage',
+  //   value: 'leverage',
+  // },
+  // {
+  //   label: 'Position Size',
+  //   value: 'positionSize',
+  //   tableHeadCellClassName: 'min-w-[10em]',
+  // },
   {
-    label: 'Entry Price',
+    label: 'SL',
     value: 'entryPrice',
     tableHeadCellClassName: 'min-w-[10em]',
   },
   {
-    label: 'MarkPrice',
+    label: 'TP',
     value: 'markPrice',
   },
   {
     label: 'Liquidation',
     value: 'liquidation',
   },
+  // {
+  //   label: 'Funding Recieved Rate',
+  //   value: 'fundingRecievedRate',
+  //   tableHeadCellClassName: 'min-w-[15em]',
+  // },
   {
-    label: 'Funding Recieved Rate',
-    value: 'fundingRecievedRate',
-    tableHeadCellClassName: 'min-w-[15em]',
-  },
-  {
-    label: 'Funding Recieved',
+    label: '%SL',
     value: 'fundingRecieved',
     tableHeadCellClassName: 'min-w-[10em]',
   },
   {
-    label: 'Funding Paid Rate',
+    label: '%TP',
     value: 'fundingPaidRate',
     tableHeadCellClassName: 'min-w-[10em]',
   },
-  {
-    label: 'Funding Paid',
-    value: 'fundingPaid',
-    tableHeadCellClassName: 'min-w-[10em]',
-  },
-  {
-    label: 'ROI',
-    value: 'roi',
-  },
-  {
-    label: 'Unrealized PnL',
-    value: 'unrealizedPnl',
-    tableHeadCellClassName: 'min-w-[10em]',
-  },
-  {
-    label: 'Wallet Asset',
-    value: 'walletAsset',
-    tableHeadCellClassName: 'min-w-[10em]',
-  },
-  {
-    label: 'Account',
-    value: 'account',
-  },
+  // {
+  //   label: 'Funding Paid',
+  //   value: 'fundingPaid',
+  //   tableHeadCellClassName: 'min-w-[10em]',
+  // },
+  // {
+  //   label: 'ROI',
+  //   value: 'roi',
+  // },
+  // {
+  //   label: 'Unrealized PnL',
+  //   value: 'unrealizedPnl',
+  //   tableHeadCellClassName: 'min-w-[10em]',
+  // },
+  // {
+  //   label: 'Wallet Asset',
+  //   value: 'walletAsset',
+  //   tableHeadCellClassName: 'min-w-[10em]',
+  // },
+  // {
+  //   label: 'Account',
+  //   value: 'account',
+  // },
 ];
 
 export const positionsTableSampleData = [
@@ -120,13 +130,16 @@ export const positionsTableSampleData = [
     markPrice: '15.489',
     liquidation: '8.996',
     fundingRecievedRate: '2.67',
-    fundingRecieved: '321.945829',
+    fundingRecieved: '31.94',
     fundingPaidRate: '__',
     fundingPaid: '__',
     roi: '8.30%',
     unrealizedPnl: '1236.44',
     walletAsset: '4860.27',
     account: '__',
+    token: 'BTC',
+    nonLeverageValue: '11619',
+    totalFundingReceived: '11619',
   },
   {
     id: '2',
@@ -148,6 +161,9 @@ export const positionsTableSampleData = [
     unrealizedPnl: '829.33',
     walletAsset: '3521.18',
     account: '__',
+    token: 'ETH',
+    nonLeverageValue: '8432',
+    totalFundingReceived: '8432',
   },
   {
     id: '3',
@@ -162,13 +178,16 @@ export const positionsTableSampleData = [
     markPrice: '17.845',
     liquidation: '10.432',
     fundingRecievedRate: '1.24',
-    fundingRecieved: '239.482710',
+    fundingRecieved: '23.48',
     fundingPaidRate: '__',
     fundingPaid: '__',
     roi: '6.12%',
     unrealizedPnl: '1045.87',
     walletAsset: '4278.49',
     account: '__',
+    token: 'LTC',
+    nonLeverageValue: '9574',
+    totalFundingReceived: '9574',
   },
   {
     id: '4',
@@ -190,6 +209,9 @@ export const positionsTableSampleData = [
     unrealizedPnl: '1129.66',
     walletAsset: '5012.38',
     account: '__',
+    token: 'XRP',
+    nonLeverageValue: '12459',
+    totalFundingReceived: '12459',
   },
   {
     id: '5',
@@ -204,13 +226,16 @@ export const positionsTableSampleData = [
     markPrice: '18.234',
     liquidation: '12.876',
     fundingRecievedRate: '2.45',
-    fundingRecieved: '284.937620',
+    fundingRecieved: '24.93',
     fundingPaidRate: '__',
     fundingPaid: '__',
     roi: '9.34%',
     unrealizedPnl: '1357.24',
     walletAsset: '5347.61',
     account: '__',
+    token: 'ADA',
+    nonLeverageValue: '13241',
+    totalFundingReceived: '13241',
   },
 ];
 
@@ -232,7 +257,7 @@ export const walletsTableColumn: TableColumn<Wallet>[] = [
     },
   },
   {
-    label: 'Initial Investment',
+    label: 'Total Investment',
     value: 'initialInvestment',
   },
   {
