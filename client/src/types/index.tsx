@@ -175,3 +175,12 @@ export interface SelectedFundingHistoryState {
   data: FundingHistory[];
   error: string;
 }
+
+export interface ExchangeBalance {
+  id: number;
+  exchange: string;
+  balance: number;
+  createdAt: string;
+  updatedAt: string;
+  wallet: number;
+}

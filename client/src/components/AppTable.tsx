@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import { TableColumn } from '../types';
 
 interface AppTableProps<T> {
@@ -7,8 +7,9 @@ interface AppTableProps<T> {
   tableHeadRowClassName?: string;
   tableBodyRowClassName?: string;
   tableBodyClassName?: string;
-  onRowClick?(row: T): void;
   selectedRow?: T;
+  expansionId: boolean;
+  onRowClick?(row: T): void;
 }
 
 const AppTable = <T extends {}>({
@@ -17,7 +18,9 @@ const AppTable = <T extends {}>({
   data = [],
   tableHeadRowClassName,
   tableBodyRowClassName,
+
   tableBodyClassName,
+
   onRowClick,
 }: AppTableProps<T>) => {
   const renderCell = (row: T, column: TableColumn<T>): ReactNode => {
@@ -52,25 +55,33 @@ const AppTable = <T extends {}>({
 
       <tbody className={tableBodyClassName}>
         {data.map((row, dDndex) => (
-          <tr
-            key={dDndex}
-            onClick={() => raiseRowclick(row)}
-            className={`text-white/80 border-b border-white/10 last:border-b-0 hover:bg-primary/90 ${
-              selectedRow === row ? 'bg-primary' : ''
-            }
+          <React.Fragment>
+            <tr
+              key={dDndex}
+              onClick={() => raiseRowclick(row)}
+              className={`text-white/80 border-b border-white/10 last:border-b-0 hover:bg-primary/90 ${
+                selectedRow === row ? 'bg-primary' : ''
+              }
             }} ${tableBodyRowClassName}`}
-          >
-            {columns.map((c, cIndex) => (
-              <td
-                className={`py-3 px-2 text-sm ${
-                  c.tableBodyCellClassName || ''
-                }`}
-                key={`${dDndex}_${cIndex}`}
-              >
-                {renderCell(row, c)}
+            >
+              {columns.map((c, cIndex) => (
+                <td
+                  className={`py-3 px-2 text-sm ${
+                    c.tableBodyCellClassName || ''
+                  }`}
+                  key={`${dDndex}_${cIndex}`}
+                >
+                  {renderCell(row, c)}
+                </td>
+              ))}
+            </tr>
+
+            {/* <tr>
+              <td className="bg-red-500  w-full" colSpan={columns.length}>
+                <div className="py-10 flex justify-center">Hello World</div>
               </td>
-            ))}
-          </tr>
+            </tr> */}
+          </React.Fragment>
         ))}
       </tbody>
     </table>

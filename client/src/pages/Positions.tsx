@@ -2,10 +2,12 @@ import { useEffect, useState } from 'react';
 import { AiOutlineExpandAlt } from 'react-icons/ai';
 import AppTable from '../components/AppTable';
 import InvestorActionsDialog from '../components/Dialogs/InvestorActionsDialog';
-import { Investor, Position, Wallet } from '../types';
+import { ExchangeBalance, Investor, Position, Wallet } from '../types';
 import {
+  exchangesBalanceTableColumn,
   investorTableColumn,
   positionsTableColumn,
+  sampleExchangeBalanceData,
   walletsTableColumn,
 } from '../constants/data/positionsPage';
 import AddWalletDialog from '../components/Dialogs/AddWalletDialog';
@@ -101,6 +103,29 @@ const Positions = () => {
               </div>
             </div>
           </div>
+        </div>
+
+        <div className="border-2 border-white/10 overflow-hidden rounded-2xl bg-gray-800 mb-5">
+          <div className="flex p-5 justify-between items-center">
+            <h3 className="text-white/90 font-semibold">Exchange balance</h3>
+          </div>
+
+          <div className="overflow-x-auto max-h-[80vh]">
+            {positions.loading ? (
+              <div className="text-sm text-white/90 w-full h-full flex justify-center items-center">
+                Loading positions...
+              </div>
+            ) : (
+              <AppTable<ExchangeBalance>
+                columns={exchangesBalanceTableColumn}
+                data={sampleExchangeBalanceData}
+                onRowClick={(item) => {
+                  console.log(item);
+                }}
+              />
+            )}
+          </div>
+          <PaginationControls />
         </div>
 
         <div className="border-2 border-white/10 overflow-hidden rounded-2xl bg-gray-800">
