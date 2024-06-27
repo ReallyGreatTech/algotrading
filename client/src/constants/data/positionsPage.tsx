@@ -90,6 +90,60 @@ export const positionsTableColumn: TableColumn<Position>[] = [
   },
 ];
 
+export const subPositionsTableColumn: TableColumn<Position>[] = [
+  {
+    label: 'Token',
+    value: 'token',
+  },
+  {
+    label: 'Direction',
+    value: 'direction',
+    render(item) {
+      return (
+        <div
+          className={`py-1 px-5 rounded-full uppercase max-w-[100px] ${
+            item.direction.toLowerCase() === 'short'
+              ? 'bg-[#EF4444]'
+              : 'bg-[#419E6A]'
+          }`}
+        >
+          {item.direction}
+        </div>
+      );
+    },
+  },
+
+  {
+    label: 'Funding Rate',
+    value: 'fundingRate',
+    tableHeadCellClassName: 'min-w-[12em]',
+    render: () => `${Math.floor(Math.random() * 100)}%`,
+  },
+  {
+    label: 'Entry Price',
+    value: 'entryPrice',
+    tableHeadCellClassName: 'min-w-[12em]',
+    render: () => `${Math.floor(Math.random() * 10000)}`,
+  },
+  {
+    label: 'Mark Price',
+    value: 'markPrice',
+    tableHeadCellClassName: 'min-w-[12em]',
+    render: () => `${Math.floor(Math.random() * 10000)}`,
+  },
+  {
+    label: 'Liquidation',
+    value: 'liquidation',
+    render: () => `${Math.floor(Math.random() * 10000)}`,
+  },
+  {
+    label: 'Exchange Balance',
+    value: 'exchangeBalance',
+    tableHeadCellClassName: 'min-w-[12em]',
+    render: () => `${Math.floor(Math.random() * 10000)}`,
+  },
+];
+
 export const exchangesBalanceTableColumn: TableColumn<ExchangeBalance>[] = [
   {
     label: 'ID',

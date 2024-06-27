@@ -8,6 +8,7 @@ import {
   investorTableColumn,
   positionsTableColumn,
   sampleExchangeBalanceData,
+  subPositionsTableColumn,
   walletsTableColumn,
 } from '../constants/data/positionsPage';
 import AddWalletDialog from '../components/Dialogs/AddWalletDialog';
@@ -18,11 +19,18 @@ import { useAppDispatch, useAppSelector } from '../hooks';
 import { fetchWallets } from '../redux/api/wallets';
 import { fetchInvestors } from '../redux/api/investors';
 import { fetchPositions } from '../redux/api/positions';
+import {
+  MdOutlineKeyboardArrowDown,
+  MdOutlineKeyboardArrowRight,
+} from 'react-icons/md';
 
 const Positions = () => {
   const [investorDialogOpen, setInvestorDialogOpen] = useState(true);
   const [addWalletDialogOpen, setAddWalletDialogOpen] = useState(false);
   const [addInvestorDialogOpen, setAddInvestorDialogOpen] = useState(false);
+  const [expandedPosition, setExpandedPosition] = useState<number | undefined>(
+    undefined
+  );
   const [addPositionsTableDialogOpen, setAddPositionsTableDialogOpen] =
     useState(false);
 
@@ -31,6 +39,14 @@ const Positions = () => {
   const positions = useAppSelector((state) => state.positions);
 
   const dispatch = useAppDispatch();
+
+  const handlePositionsRowExpansion = (item: Position) => {
+    if (expandedPosition !== item.id && expandedPosition !== undefined) {
+      setExpandedPosition(item.id);
+    } else if (expandedPosition === undefined) {
+      setExpandedPosition(item.id);
+    } else setExpandedPosition(undefined);
+  };
 
   useEffect(() => {
     dispatch(fetchWallets());
@@ -53,7 +69,11 @@ const Positions = () => {
                   <h3 className="text-white/90 font-semibold">Wallets</h3>
                   <button
                     className="text-white bg-primary hover:bg-primary/90 px-5 py-2 rounded-md"
-                    onClick={() => setAddWalletDialogOpen(true)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+
+                      setAddWalletDialogOpen(true);
+                    }}
                   >
                     Add Wallet
                   </button>
@@ -119,9 +139,6 @@ const Positions = () => {
               <AppTable<ExchangeBalance>
                 columns={exchangesBalanceTableColumn}
                 data={sampleExchangeBalanceData}
-                onRowClick={(item) => {
-                  console.log(item);
-                }}
               />
             )}
           </div>
@@ -146,11 +163,42 @@ const Positions = () => {
               </div>
             ) : (
               <AppTable<Position>
-                columns={positionsTableColumn}
+                columns={[
+                  {
+                    label: '',
+                    value: 'expand-button',
+                    render(item) {
+                      return (
+                        <button
+                          className="p-2 hover:bg-primary-dark rounded-full"
+                          onClick={() => handlePositionsRowExpansion(item)}
+                        >
+                          {item.id === expandedPosition ? (
+                            <MdOutlineKeyboardArrowDown />
+                          ) : (
+                            <MdOutlineKeyboardArrowRight />
+                          )}
+                        </button>
+                      );
+                    },
+                  },
+                  ...positionsTableColumn,
+                ]}
                 data={positions.data}
-                onRowClick={(item) => {
-                  console.log(item);
-                }}
+                expansionId={expandedPosition}
+                expansionProperty={'id'}
+                expandComponent={
+                  <div className="bg-[#334154] p-5">
+                    <div className="border-1 border-white/50 ">
+                      <AppTable<Position>
+                        tableHeadRowClassName="bg-gray-900"
+                        tableBodyRowClassName="bg-[#334154] border-3 border-white/50"
+                        columns={subPositionsTableColumn}
+                        data={positions.data.slice(-3)}
+                      />
+                    </div>
+                  </div>
+                }
               />
             )}
           </div>

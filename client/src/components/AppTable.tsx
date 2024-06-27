@@ -7,8 +7,11 @@ interface AppTableProps<T> {
   tableHeadRowClassName?: string;
   tableBodyRowClassName?: string;
   tableBodyClassName?: string;
+  tableClassName?: string;
   selectedRow?: T;
-  expansionId: boolean;
+  expansionId?: T[keyof T];
+  expansionProperty?: keyof T;
+  expandComponent?: ReactNode;
   onRowClick?(row: T): void;
 }
 
@@ -16,11 +19,13 @@ const AppTable = <T extends {}>({
   columns = [],
   selectedRow,
   data = [],
+  expansionId,
+  expansionProperty,
+  expandComponent,
+  tableClassName,
   tableHeadRowClassName,
   tableBodyRowClassName,
-
   tableBodyClassName,
-
   onRowClick,
 }: AppTableProps<T>) => {
   const renderCell = (row: T, column: TableColumn<T>): ReactNode => {
@@ -36,7 +41,7 @@ const AppTable = <T extends {}>({
   };
 
   return (
-    <table className="w-full bg-gray-800 max-h-[600px]">
+    <table className={'w-full bg-gray-800 max-h-[600px] ' + tableClassName}>
       <thead>
         <tr
           className={`bg-[#334154] text-white/90 text-sm ${tableHeadRowClassName}`}
@@ -55,9 +60,8 @@ const AppTable = <T extends {}>({
 
       <tbody className={tableBodyClassName}>
         {data.map((row, dDndex) => (
-          <React.Fragment>
+          <React.Fragment key={dDndex}>
             <tr
-              key={dDndex}
               onClick={() => raiseRowclick(row)}
               className={`text-white/80 border-b border-white/10 last:border-b-0 hover:bg-primary/90 ${
                 selectedRow === row ? 'bg-primary' : ''
@@ -76,11 +80,11 @@ const AppTable = <T extends {}>({
               ))}
             </tr>
 
-            {/* <tr>
-              <td className="bg-red-500  w-full" colSpan={columns.length}>
-                <div className="py-10 flex justify-center">Hello World</div>
-              </td>
-            </tr> */}
+            {row[expansionProperty as keyof T] === expansionId ? (
+              <tr className="border-0">
+                <td colSpan={columns.length}>{<div>{expandComponent}</div>}</td>
+              </tr>
+            ) : null}
           </React.Fragment>
         ))}
       </tbody>
