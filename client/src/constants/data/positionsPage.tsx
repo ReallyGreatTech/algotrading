@@ -9,6 +9,7 @@ import {
 } from '../../types';
 import { shortenString } from '../../utils/stringTool';
 import { RiDeleteBin5Line } from 'react-icons/ri';
+import InvestorRowActionButtons from '../../components/InvestorRowActionButtons';
 
 export const positionsTableColumn: TableColumn<Position>[] = [
   {
@@ -94,6 +95,12 @@ export const subPositionsTableColumn: TableColumn<Position>[] = [
   {
     label: 'Token',
     value: 'token',
+  },
+  {
+    label: 'Funding Rate',
+    value: 'fundingRate',
+    tableHeadCellClassName: 'min-w-[12em]',
+    render: () => `${Math.floor(Math.random() * 100)}`,
   },
   {
     label: 'Direction',
@@ -234,13 +241,11 @@ export const walletsTableColumn: TableColumn<Wallet>[] = [
   },
   {
     label: 'Total Investment',
-    value: 'initialInvestment',
-    render: () => 'N/A',
+    value: 'total_investment',
   },
   {
     label: 'Current Value',
-    value: 'currentValue',
-    render: () => 'N/A',
+    value: 'current_value',
   },
   {
     label: '',
@@ -270,52 +275,54 @@ export const walletsTableColumn: TableColumn<Wallet>[] = [
   },
 ];
 
-export const investorTableColumn = [
+export const investorTableColumn: TableColumn<Investor>[] = [
   {
     label: 'Investor Name',
     value: 'name',
   },
   {
     label: '% From Wallet',
-    value: 'percentageFromWallet',
-    render: () => 'N/A',
+    value: 'percentage_of_wallet',
+    render: (entity) => {
+      const [investorWallet] = entity.wallets.filter((w) => {
+        const investorInWallet = w.investors.find(
+          (investor) => investor.id === entity.id
+        );
+
+        if (investorInWallet?.id === entity.id) return w;
+      });
+
+      const investorInWallet = investorWallet?.investors.find(
+        (i) => i.id === entity.id
+      );
+      if (investorInWallet?.percentage_of_wallet)
+        return `${investorInWallet.percentage_of_wallet.toFixed(2)}`;
+      
+      return '0.00';
+    },
   },
   {
     label: 'Joined Time',
     value: 'joinedTime',
-    render(investor: Investor) {
+    render(investor) {
       return new Date(investor.join_time_manual).toLocaleString();
     },
   },
   {
     label: 'Total Investment',
     value: 'totalInvestment',
-    render: () => 'N/A',
+    render: (item) => {
+      let total = 0;
+      item.wallets.forEach((w) => (total += w.total_investment));
+
+      return total.toFixed(2);
+    },
   },
   {
     label: '',
     value: '',
-    render(item: any) {
-      return (
-        <div className="flex gap-4">
-          <button
-            onClick={() => {
-              console.log('Editing: ', item);
-            }}
-            className="p-1 hover:bg-primary-dark rounded-full"
-          >
-            <FiEdit2 />
-          </button>
-          <button
-            onClick={() => {
-              console.log('Deleting: ', item);
-            }}
-            className="p-1 hover:bg-primary-dark rounded-full"
-          >
-            <RiDeleteBin5Line />
-          </button>
-        </div>
-      );
+    render(investor) {
+      return <InvestorRowActionButtons investor={investor} />;
     },
   },
 ];
