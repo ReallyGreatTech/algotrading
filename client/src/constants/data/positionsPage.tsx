@@ -27,14 +27,16 @@ export const positionsTableColumn: TableColumn<Position>[] = [
   {
     label: 'Token',
     value: 'token',
+    tableHeadCellClassName: 'min-w-[5em]',
   },
   {
     label: 'Direction',
     value: 'direction',
+
     render(item) {
       return (
         <div
-          className={`py-1 px-5 rounded-full uppercase ${
+          className={`py-1 px-5 mr-6 rounded-full uppercase ${
             item.direction.toLowerCase() === 'short'
               ? 'bg-[#EF4444]'
               : 'bg-[#419E6A]'
@@ -51,10 +53,9 @@ export const positionsTableColumn: TableColumn<Position>[] = [
     tableHeadCellClassName: 'min-w-[10em]',
   },
   {
-    label: 'Non Leverage',
-    value: 'nonLeverage',
+    label: 'Leverage Amount',
+    value: 'leveraged_amount',
     tableHeadCellClassName: 'min-w-[12em]',
-    render: () => 'N/A',
   },
   {
     label: 'Average Daily Funding',
@@ -69,13 +70,15 @@ export const positionsTableColumn: TableColumn<Position>[] = [
     render: () => 'N/A',
   },
   {
-    label: 'TP',
+    label: 'Entry Price',
     value: 'entry_price',
+    tableHeadCellClassName: 'min-w-[12em]',
   },
   {
-    label: 'Liquidation',
-    value: 'liquidation',
-    render: () => 'N/A',
+    label: 'Liquidation Price',
+    value: 'liquidation_price',
+    tableHeadCellClassName: 'min-w-[12em]',
+    // render: () => 'N/A',
   },
   {
     label: '%SL',
@@ -297,7 +300,7 @@ export const investorTableColumn: TableColumn<Investor>[] = [
       );
       if (investorInWallet?.percentage_of_wallet)
         return `${investorInWallet.percentage_of_wallet.toFixed(2)}`;
-      
+
       return '0.00';
     },
   },
