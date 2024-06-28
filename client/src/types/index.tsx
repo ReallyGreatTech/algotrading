@@ -37,20 +37,38 @@ export interface Position {
 export interface Wallet {
   name: string;
   address: string;
-  id: string;
+  id: number;
   investors: Investor[];
   start_time_manual: string;
+  total_investment: number;
+  current_value: number;
   createdAt: string;
   updatedAt: string;
 }
 
 export interface Investor {
+  id: number;
   name: string;
   wallets: Wallet[];
   actions: InvestorAction[];
   join_time_manual: string;
+  total_investment: number;
   createdAt: string;
   updated: string;
+  percentage_of_wallet?: number;
+}
+
+export interface AddInvestorData {
+  name: string;
+  join_time_manual: string;
+}
+
+export interface UpdateInvestorData {
+  id: number;
+  data: {
+    name?: string;
+    join_time_manual?: string;
+  };
 }
 
 export interface InvestorAction {

@@ -3,6 +3,8 @@ import { IoMdClose } from 'react-icons/io';
 import Dialog from './AppDialog';
 import Input from '../Input';
 import InputLabel from '../InputLabel';
+import { useAppDispatch } from '../../hooks';
+import { addInvestor } from '../../redux/api/investors';
 
 interface AddInvestorDialogProps extends DialogProps {}
 
@@ -11,6 +13,17 @@ const AddInvestorDialog = ({
   onClose,
   ...rest
 }: AddInvestorDialogProps) => {
+  const dispatch = useAppDispatch();
+
+  const handleAddInvestor = () => {
+    dispatch(
+      addInvestor({
+        name: 'John Doe 284837',
+        join_time_manual: '2024-06-27T11:28:11.063Z',
+      })
+    );
+  };
+
   return (
     <Dialog {...rest} open={open} onClose={onClose} maxWidth="xl" fullWidth>
       <div className="border-2 border-white/10 overflow-hidden rounded-2xl bg-gray-800">
@@ -76,7 +89,10 @@ const AddInvestorDialog = ({
           >
             Cancel
           </button>
-          <button className="py-3 px-5 bg-primary rounded-lg text-white shadow-primary">
+          <button
+            className="py-3 px-5 bg-primary rounded-lg text-white shadow-primary"
+            onClick={handleAddInvestor}
+          >
             Add Investor
           </button>
         </div>
