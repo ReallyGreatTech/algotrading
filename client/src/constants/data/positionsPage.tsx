@@ -10,6 +10,7 @@ import {
 import { shortenString } from '../../utils/stringTool';
 import { RiDeleteBin5Line } from 'react-icons/ri';
 import InvestorRowActionButtons from '../../components/InvestorRowActionButtons';
+import { get24HourDateTime } from '../../utils/dateUtils';
 
 export const positionsTableColumn: TableColumn<Position>[] = [
   {
@@ -170,58 +171,17 @@ export const exchangesBalanceTableColumn: TableColumn<ExchangeBalance>[] = [
   },
   {
     label: 'Created At',
-    value: 'createdAt',
+    value: 'created_at',
+    render: (item) => get24HourDateTime(new Date(item.created_at)),
   },
   {
     label: 'Updated At',
-    value: 'updatedAt',
+    value: 'updated_at',
+    render: (item) => get24HourDateTime(new Date(item.updated_at)),
   },
   {
     label: 'Wallet',
     value: 'wallet',
-  },
-];
-
-export const sampleExchangeBalanceData = [
-  {
-    id: 1,
-    exchange: 'Binance',
-    balance: 1500.25,
-    createdAt: '2023-06-01T12:00:00Z',
-    updatedAt: '2023-06-15T12:00:00Z',
-    wallet: 101,
-  },
-  {
-    id: 2,
-    exchange: 'Coinbase',
-    balance: 2500.5,
-    createdAt: '2023-06-02T14:30:00Z',
-    updatedAt: '2023-06-16T14:30:00Z',
-    wallet: 102,
-  },
-  {
-    id: 3,
-    exchange: 'Kraken',
-    balance: 500.75,
-    createdAt: '2023-06-03T16:45:00Z',
-    updatedAt: '2023-06-17T16:45:00Z',
-    wallet: 103,
-  },
-  {
-    id: 4,
-    exchange: 'Bitfinex',
-    balance: 3000.0,
-    createdAt: '2023-06-04T18:00:00Z',
-    updatedAt: '2023-06-18T18:00:00Z',
-    wallet: 104,
-  },
-  {
-    id: 5,
-    exchange: 'Huobi',
-    balance: 1200.3,
-    createdAt: '2023-06-05T20:15:00Z',
-    updatedAt: '2023-06-19T20:15:00Z',
-    wallet: 105,
   },
 ];
 
