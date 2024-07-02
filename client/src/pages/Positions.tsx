@@ -7,7 +7,6 @@ import {
   exchangesBalanceTableColumn,
   investorTableColumn,
   positionsTableColumn,
-  sampleExchangeBalanceData,
   subPositionsTableColumn,
   walletsTableColumn,
 } from '../constants/data/positionsPage';
@@ -46,6 +45,16 @@ const Positions = () => {
     } else if (expandedPosition === undefined) {
       setExpandedPosition(item.id);
     } else setExpandedPosition(undefined);
+  };
+
+  const getExchanges = (wallets: Wallet[]): ExchangeBalance[] => {
+    const exchangesBalances: ExchangeBalance[] = [];
+
+    wallets.forEach((w) =>
+      w.exchange_balances.forEach((e) => exchangesBalances.push(e))
+    );
+
+    return exchangesBalances;
   };
 
   useEffect(() => {
@@ -138,7 +147,7 @@ const Positions = () => {
             ) : (
               <AppTable<ExchangeBalance>
                 columns={exchangesBalanceTableColumn}
-                data={sampleExchangeBalanceData}
+                data={getExchanges(wallets.data)}
               />
             )}
           </div>

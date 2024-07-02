@@ -39,6 +39,7 @@ export interface Wallet {
   address: string;
   id: number;
   investors: Investor[];
+  exchange_balances: ExchangeBalance[];
   start_time_manual: string;
   total_investment: number;
   current_value: number;
@@ -198,7 +199,7 @@ export interface ExchangeBalance {
   id: number;
   exchange: string;
   balance: number;
-  createdAt: string;
-  updatedAt: string;
+  created_at: string;
+  updated_at: string;
   wallet: number;
 }
