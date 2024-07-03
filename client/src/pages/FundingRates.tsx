@@ -260,18 +260,6 @@ const FundingRates = () => {
   
     return transformedData;
   };
-  
-  
-  const parseTimestamp = (timestampStr: any) => {
-    const [monthDayTime, hourMinute] = timestampStr.split('|');
-    const [month, day] = monthDayTime.split(' ');
-    const [hour, minute] = hourMinute.split(':');
-  
-    const monthNumber = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].indexOf(month) + 1;
-  
-    return new Date(new Date().getFullYear(), monthNumber - 1, parseInt(day), parseInt(hour), parseInt(minute));
-  };
-  
 
   const handleTimeRangeChange = (range: string) => {
     setTimeRange(range);
