@@ -30,24 +30,24 @@ export const positionsTableColumn: TableColumn<Position>[] = [
     value: 'token',
     tableHeadCellClassName: 'min-w-[5em]',
   },
-  {
-    label: 'Direction',
-    value: 'direction',
+  // {
+    // label: 'Direction',
+    // value: 'direction',
 
-    render(item) {
-      return (
-        <div
-          className={`py-1 px-5 mr-6 rounded-full uppercase ${
-            item.direction.toLowerCase() === 'short'
-              ? 'bg-[#EF4444]'
-              : 'bg-[#419E6A]'
-          }`}
-        >
-          {item.direction}
-        </div>
-      );
-    },
-  },
+    // render(item) {
+    //   return (
+    //     <div
+    //       className={`py-1 px-5 mr-6 rounded-full uppercase ${
+    //         item.direction.toLowerCase() === 'short'
+    //           ? 'bg-[#EF4444]'
+    //           : 'bg-[#419E6A]'
+    //       }`}
+    //     >
+    //       {item.direction}
+    //     </div>
+    //   );
+    // },
+  // },
   {
     label: 'Leverage',
     value: 'leverage',
@@ -147,12 +147,12 @@ export const subPositionsTableColumn: TableColumn<Position>[] = [
     value: 'liquidation',
     render: () => `${Math.floor(Math.random() * 10000)}`,
   },
-  {
-    label: 'Exchange Balance',
-    value: 'exchangeBalance',
-    tableHeadCellClassName: 'min-w-[12em]',
-    render: () => `${Math.floor(Math.random() * 10000)}`,
-  },
+  // {
+  //   label: 'Exchange Balance',
+  //   value: 'exchangeBalance',
+  //   tableHeadCellClassName: 'min-w-[12em]',
+  //   render: () => `${Math.floor(Math.random() * 10000)}`,
+  // },
 ];
 
 export const exchangesBalanceTableColumn: TableColumn<ExchangeBalance>[] = [
