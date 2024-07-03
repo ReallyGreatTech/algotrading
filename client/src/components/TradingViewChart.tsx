@@ -1,5 +1,4 @@
-// TradingViewWidget.tsx
-import React, { useEffect, useRef, memo } from 'react';
+import { useEffect, useRef, memo } from 'react';
 
 const TradingViewWidget: React.FC = () => {
   const container = useRef<HTMLDivElement>(null);
