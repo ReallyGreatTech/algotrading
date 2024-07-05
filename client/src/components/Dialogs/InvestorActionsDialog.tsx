@@ -4,9 +4,8 @@ import AppTable from '../AppTable';
 import Dialog from './AppDialog';
 import { investorActionTableColumn } from '../../constants/data/positionsPage';
 import { MdNavigateBefore, MdNavigateNext } from 'react-icons/md';
-import { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '../../hooks';
-import { fetchInvestorActions } from '../../redux/api/investorActions';
+
+import { useAppSelector } from '../../hooks';
 
 interface InvestorActionsDialogProps extends DialogProps {}
 
@@ -15,14 +14,7 @@ const InvestorActionsDialog = ({
   onClose,
   ...rest
 }: InvestorActionsDialogProps) => {
-  const dispatch = useAppDispatch();
   const investorActions = useAppSelector((state) => state.investorActions);
-
-  useEffect(() => {
-    if (!open) return;
-
-    dispatch(fetchInvestorActions({}));
-  }, [open]);
 
   return (
     <Dialog {...rest} open={open} onClose={onClose} maxWidth="xl" fullWidth>
@@ -44,7 +36,7 @@ const InvestorActionsDialog = ({
               Loading investor actions...
             </div>
           ) : (
-            <div className="overflow-x-auto max-h-[22em]">
+            <div className="overflow-x-auto min-h-14 max-h-[22em]">
               <AppTable<InvestorAction>
                 columns={investorActionTableColumn}
                 data={investorActions.data}

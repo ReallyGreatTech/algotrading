@@ -81,6 +81,11 @@ export interface InvestorAction {
   time: string;
   wallet: number;
 }
+
+export interface InvestorActionQueryParams {
+  investor?: number;
+}
+
 export interface TableItem {
   id?: number;
   funding_rate_latest?: number;
