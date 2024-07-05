@@ -17,7 +17,7 @@ import PaginationControls from '../components/PaginationControls';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { fetchWallets } from '../redux/api/wallets';
 import { fetchInvestors } from '../redux/api/investors';
-import { fetchPositions } from '../redux/api/positions';
+import { fetchPositions, fetchSubPositions } from '../redux/api/positions';
 import {
   MdOutlineKeyboardArrowDown,
   MdOutlineKeyboardArrowRight,
@@ -36,13 +36,16 @@ const Positions = () => {
   const wallets = useAppSelector((state) => state.wallets);
   const investors = useAppSelector((state) => state.investors);
   const positions = useAppSelector((state) => state.positions);
+  const subPositions = useAppSelector((state) => state.subPositions);
 
   const dispatch = useAppDispatch();
 
   const handlePositionsRowExpansion = (item: Position) => {
     if (expandedPosition !== item.id && expandedPosition !== undefined) {
+      dispatch(fetchSubPositions({ token: item.token }));
       setExpandedPosition(item.id);
     } else if (expandedPosition === undefined) {
+      dispatch(fetchSubPositions({ token: item.token }));
       setExpandedPosition(item.id);
     } else setExpandedPosition(undefined);
   };
@@ -140,7 +143,7 @@ const Positions = () => {
           </div>
 
           <div className="overflow-x-auto max-h-[80vh]">
-            {positions.loading ? (
+            {wallets.loading ? (
               <div className="text-sm text-white/90 w-full h-full flex justify-center items-center">
                 Loading positions...
               </div>
@@ -199,12 +202,18 @@ const Positions = () => {
                 expandComponent={
                   <div className="bg-[#334154] p-5">
                     <div className="border-1 border-white/50 ">
-                      <AppTable<Position>
-                        tableHeadRowClassName="bg-gray-900"
-                        tableBodyRowClassName="bg-[#334154] border-3 border-white/50"
-                        columns={subPositionsTableColumn}
-                        data={positions.data.slice(-3)}
-                      />
+                      {subPositions.loading ? (
+                        <p className="text-xs text-white/90 py-8">
+                          Loading sub positions...
+                        </p>
+                      ) : (
+                        <AppTable<Position>
+                          tableHeadRowClassName="bg-gray-900"
+                          tableBodyRowClassName="bg-[#334154] border-3 border-white/50"
+                          columns={subPositionsTableColumn}
+                          data={subPositions.data.slice(-3)}
+                        />
+                      )}
                     </div>
                   </div>
                 }

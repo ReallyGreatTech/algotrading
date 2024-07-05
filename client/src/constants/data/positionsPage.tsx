@@ -31,22 +31,22 @@ export const positionsTableColumn: TableColumn<Position>[] = [
     tableHeadCellClassName: 'min-w-[5em]',
   },
   // {
-    // label: 'Direction',
-    // value: 'direction',
+  // label: 'Direction',
+  // value: 'direction',
 
-    // render(item) {
-    //   return (
-    //     <div
-    //       className={`py-1 px-5 mr-6 rounded-full uppercase ${
-    //         item.direction.toLowerCase() === 'short'
-    //           ? 'bg-[#EF4444]'
-    //           : 'bg-[#419E6A]'
-    //       }`}
-    //     >
-    //       {item.direction}
-    //     </div>
-    //   );
-    // },
+  // render(item) {
+  //   return (
+  //     <div
+  //       className={`py-1 px-5 mr-6 rounded-full uppercase ${
+  //         item.direction.toLowerCase() === 'short'
+  //           ? 'bg-[#EF4444]'
+  //           : 'bg-[#419E6A]'
+  //       }`}
+  //     >
+  //       {item.direction}
+  //     </div>
+  //   );
+  // },
   // },
   {
     label: 'Leverage',
@@ -66,9 +66,13 @@ export const positionsTableColumn: TableColumn<Position>[] = [
   },
   {
     label: 'SL',
-    value: 'entryPrice',
+    value: 'stop_loss',
     tableHeadCellClassName: 'min-w-[10em]',
-    render: () => 'N/A',
+  },
+  {
+    label: 'TP',
+    value: 'take_profit',
+    tableHeadCellClassName: 'min-w-[10em]',
   },
   {
     label: 'Entry Price',
@@ -103,7 +107,6 @@ export const subPositionsTableColumn: TableColumn<Position>[] = [
   {
     label: 'Funding Rate',
     value: 'fundingRate',
-    tableHeadCellClassName: 'min-w-[12em]',
     render: () => `${Math.floor(Math.random() * 100)}`,
   },
   {
@@ -112,7 +115,7 @@ export const subPositionsTableColumn: TableColumn<Position>[] = [
     render(item) {
       return (
         <div
-          className={`py-1 px-5 rounded-full uppercase max-w-[100px] ${
+          className={`py-1 px-5 rounded-full uppercase max-w-[80px] ${
             item.direction.toLowerCase() === 'short'
               ? 'bg-[#EF4444]'
               : 'bg-[#419E6A]'
@@ -123,36 +126,38 @@ export const subPositionsTableColumn: TableColumn<Position>[] = [
       );
     },
   },
-
-  {
-    label: 'Funding Rate',
-    value: 'fundingRate',
-    tableHeadCellClassName: 'min-w-[12em]',
-    render: () => `${Math.floor(Math.random() * 100)}%`,
-  },
   {
     label: 'Entry Price',
-    value: 'entryPrice',
-    tableHeadCellClassName: 'min-w-[12em]',
-    render: () => `${Math.floor(Math.random() * 10000)}`,
+    value: 'entry_price',
   },
   {
-    label: 'Mark Price',
+    label: 'Market Price',
     value: 'markPrice',
-    tableHeadCellClassName: 'min-w-[12em]',
-    render: () => `${Math.floor(Math.random() * 10000)}`,
+    render: () => `Unknown`,
   },
   {
     label: 'Liquidation',
-    value: 'liquidation',
-    render: () => `${Math.floor(Math.random() * 10000)}`,
+    value: 'liquidation_price',
   },
-  // {
-  //   label: 'Exchange Balance',
-  //   value: 'exchangeBalance',
-  //   tableHeadCellClassName: 'min-w-[12em]',
-  //   render: () => `${Math.floor(Math.random() * 10000)}`,
-  // },
+  {
+    label: 'Exchange Balance',
+    value: 'exchangeBalance',
+    render: () => `Unknown`,
+  },
+  {
+    label: 'Daily Funding',
+    value: 'daily_funding',
+    render: () => `Unknown`,
+  },
+  {
+    label: '% Daily Funding',
+    value: 'daily_funding',
+    render: () => `Unknown`,
+  },
+  {
+    label: 'Unrealized PNL',
+    value: 'unrealized_pnl',
+  },
 ];
 
 export const exchangesBalanceTableColumn: TableColumn<ExchangeBalance>[] = [
