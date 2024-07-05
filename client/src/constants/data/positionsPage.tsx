@@ -30,24 +30,6 @@ export const positionsTableColumn: TableColumn<Position>[] = [
     value: 'token',
     tableHeadCellClassName: 'min-w-[5em]',
   },
-  // {
-  // label: 'Direction',
-  // value: 'direction',
-
-  // render(item) {
-  //   return (
-  //     <div
-  //       className={`py-1 px-5 mr-6 rounded-full uppercase ${
-  //         item.direction.toLowerCase() === 'short'
-  //           ? 'bg-[#EF4444]'
-  //           : 'bg-[#419E6A]'
-  //       }`}
-  //     >
-  //       {item.direction}
-  //     </div>
-  //   );
-  // },
-  // },
   {
     label: 'Leverage',
     value: 'leverage',
@@ -57,6 +39,12 @@ export const positionsTableColumn: TableColumn<Position>[] = [
     label: 'Leverage Amount',
     value: 'leveraged_amount',
     tableHeadCellClassName: 'min-w-[12em]',
+  },
+  {
+    label: 'Average Mark Price',
+    value: 'average_mark_price',
+    tableHeadCellClassName: 'min-w-[12em]',
+    render: () => 'N/A',
   },
   {
     label: 'Average Daily Funding',
@@ -131,8 +119,13 @@ export const subPositionsTableColumn: TableColumn<Position>[] = [
     value: 'entry_price',
   },
   {
-    label: 'Market Price',
+    label: 'Mark Price',
     value: 'markPrice',
+    render: () => `Unknown`,
+  },
+  {
+    label: 'Daily Funding',
+    value: 'daily_funding',
     render: () => `Unknown`,
   },
   {
@@ -142,11 +135,6 @@ export const subPositionsTableColumn: TableColumn<Position>[] = [
   {
     label: 'Exchange Balance',
     value: 'exchangeBalance',
-    render: () => `Unknown`,
-  },
-  {
-    label: 'Daily Funding',
-    value: 'daily_funding',
     render: () => `Unknown`,
   },
   {
@@ -295,16 +283,16 @@ export const investorTableColumn: TableColumn<Investor>[] = [
   },
 ];
 
-export const investorActionTableColumn = [
+export const investorActionTableColumn: TableColumn<InvestorAction>[] = [
   {
     label: 'Investor Name',
     value: 'investorName',
-    render: () => 'Unknown',
+    render: (investor) => `Investor ${investor.investor}`,
   },
   {
     label: 'Action',
     value: 'action',
-    render(item: InvestorAction) {
+    render(item) {
       return (
         <span
           className={`py-1 px-5 rounded-full uppercase ${

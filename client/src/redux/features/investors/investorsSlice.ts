@@ -5,15 +5,18 @@ import {
   deleteInvestor,
   fetchInvestors,
 } from '../../api/investors';
+import { AppDispatch } from '../../store';
 
 interface InvestorsState {
   loading: boolean;
+  selectedInvestor: number | undefined;
   data: Investor[];
   error: string;
 }
 
 const initialState: InvestorsState = {
   loading: false,
+  selectedInvestor: undefined,
   data: [],
   error: '',
 };
@@ -21,7 +24,11 @@ const initialState: InvestorsState = {
 const investorsSlice = createSlice({
   name: 'investors',
   initialState,
-  reducers: {},
+  reducers: {
+    investorSelected(investors, action) {
+      investors.selectedInvestor = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     //fetch investors
     builder.addCase(fetchInvestors.pending, (state) => {
@@ -67,3 +74,8 @@ const investorsSlice = createSlice({
 });
 
 export default investorsSlice.reducer;
+const { investorSelected } = investorsSlice.actions;
+
+export const selectInvestor = (id: number) => (dispatch: AppDispatch) => {
+  dispatch(investorSelected(id));
+};

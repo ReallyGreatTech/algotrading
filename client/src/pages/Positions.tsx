@@ -22,9 +22,10 @@ import {
   MdOutlineKeyboardArrowDown,
   MdOutlineKeyboardArrowRight,
 } from 'react-icons/md';
+import { fetchInvestorActions } from '../redux/api/investorActions';
 
 const Positions = () => {
-  const [investorDialogOpen, setInvestorDialogOpen] = useState(true);
+  const [investorDialogOpen, setInvestorDialogOpen] = useState(false);
   const [addWalletDialogOpen, setAddWalletDialogOpen] = useState(false);
   const [addInvestorDialogOpen, setAddInvestorDialogOpen] = useState(false);
   const [expandedPosition, setExpandedPosition] = useState<number | undefined>(
@@ -48,6 +49,11 @@ const Positions = () => {
       dispatch(fetchSubPositions({ token: item.token }));
       setExpandedPosition(item.id);
     } else setExpandedPosition(undefined);
+  };
+
+  const handleSelectInvestor = (investor: Investor) => {
+    dispatch(fetchInvestorActions({ investor: investor.id }));
+    setInvestorDialogOpen(true);
   };
 
   const getExchanges = (wallets: Wallet[]): ExchangeBalance[] => {
@@ -126,6 +132,8 @@ const Positions = () => {
                     </div>
                   ) : (
                     <AppTable<Investor>
+                      tableBodyRowClassName="cursor-pointer"
+                      onRowClick={handleSelectInvestor}
                       columns={investorTableColumn}
                       data={investors.data}
                     />
