@@ -91,15 +91,17 @@ export const subPositionsTableColumn: TableColumn<Position>[] = [
   {
     label: 'Token',
     value: 'token',
+    tableHeadCellClassName: 'min-w-[8em]',
   },
   {
     label: 'Funding Rate',
     value: 'fundingRate',
-    render: () => `${Math.floor(Math.random() * 100)}`,
+    render: () => `Unknown`,
   },
   {
     label: 'Direction',
     value: 'direction',
+    tableHeadCellClassName: 'min-w-[8em]',
     render(item) {
       return (
         <div
@@ -115,18 +117,24 @@ export const subPositionsTableColumn: TableColumn<Position>[] = [
     },
   },
   {
-    label: 'Entry Price',
-    value: 'entry_price',
+    label: 'Exchange',
+    value: 'exchange',
+    tableHeadCellClassName: 'min-w-[7em]',
   },
   {
     label: 'Mark Price',
     value: 'markPrice',
+    tableHeadCellClassName: 'min-w-[8em]',
     render: () => `Unknown`,
   },
   {
     label: 'Daily Funding',
     value: 'daily_funding',
     render: () => `Unknown`,
+  },
+  {
+    label: 'Entry Price',
+    value: 'entry_price',
   },
   {
     label: 'Liquidation',
