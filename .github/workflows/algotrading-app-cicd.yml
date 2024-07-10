@@ -9,7 +9,7 @@ on:
 env:
     APP_DIR: "${{ github.workspace }}/client"
     DEPLOY_DIR: "${{ github.workspace }}/client/deploy-package"
-    SECRET_NAME: "/ripley-secrets"
+    SECRET_NAME: "/ripley-ui-secrets"
     BUILD_ENV_FILE_SCRIPT: "${{ github.workspace }}/build-env.py"
 
 permissions:
