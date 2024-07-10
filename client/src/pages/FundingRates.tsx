@@ -157,12 +157,10 @@ const FundingRates = () => {
   //   return transformedData.reverse();
   // };
 
-
-
   // const getFundingData = () => {
   //   const now = new Date();
   //   let startDate;
-  
+
   //   switch (timeRange) {
   //     case '1D':
   //       startDate = subDays(now, 1);
@@ -176,16 +174,16 @@ const FundingRates = () => {
   //     default:
   //       startDate = subDays(now, 1);
   //   }
-  
+
   //   const filteredData = fundingData.filter((item) => {
   //     const itemDate = new Date(item.timestamp);
   //     return isAfter(itemDate, startDate);
   //   });
-  
+
   //   const transformedData = filteredData.map((item) => {
   //     const formattedTimestamp = formatTimestamp(item.timestamp);
   //     let funding;
-  
+
   //     switch (selectedTimeFilter) {
   //       case '1H':
   //         funding = item.hourly_funding;
@@ -199,21 +197,20 @@ const FundingRates = () => {
   //       default:
   //         funding = item.annual_funding;
   //     }
-  
+
   //     return {
   //       timestamp: formattedTimestamp,
   //       funding,
   //     };
   //   });
-  
+
   //   return transformedData.reverse();
   // };
-
 
   const getFundingData = () => {
     const now = new Date();
     let startDate;
-  
+
     switch (timeRange) {
       case '1D':
         startDate = subDays(now, 1);
@@ -227,37 +224,39 @@ const FundingRates = () => {
       default:
         startDate = subDays(now, 1);
     }
-  
+
     const filteredData = fundingData.filter((item) => {
       // Directly create a Date object from the timestamp string
       const itemDate = new Date(item.timestamp);
       return isAfter(itemDate, startDate);
     });
-  
-    const transformedData = filteredData.map((item) => {
-      const formattedTimestamp = formatTimestamp(item.timestamp);
-      let funding;
-  
-      switch (selectedTimeFilter) {
-        case '1H':
-          funding = item.hourly_funding;
-          break;
-        case '1D':
-          funding = item.daily_funding;
-          break;
-        case '1Y':
-          funding = item.annual_funding;
-          break;
-        default:
-          funding = item.annual_funding;
-      }
-  
-      return {
-        timestamp: formattedTimestamp,
-        funding,
-      };
-    }).reverse(); // Ensure the data is sorted in descending order
-  
+
+    const transformedData = filteredData
+      .map((item) => {
+        const formattedTimestamp = formatTimestamp(item.timestamp);
+        let funding;
+
+        switch (selectedTimeFilter) {
+          case '1H':
+            funding = item.hourly_funding;
+            break;
+          case '1D':
+            funding = item.daily_funding;
+            break;
+          case '1Y':
+            funding = item.annual_funding;
+            break;
+          default:
+            funding = item.annual_funding;
+        }
+
+        return {
+          timestamp: formattedTimestamp,
+          funding,
+        };
+      })
+      .reverse(); // Ensure the data is sorted in descending order
+
     return transformedData;
   };
 
@@ -279,7 +278,7 @@ const FundingRates = () => {
   });
 
   return (
-    <section className="text-white pb-10">
+    <section className="text-white pb-10 ">
       <div className="w-full">
         <div className="py-5">
           <h1
@@ -406,18 +405,20 @@ const FundingRates = () => {
                 </h3>
                 <div className="flex  items-center gap-2">
                   <TimeFilter />
-                  <div  className='text-white/40 pl-2 border-l-white/40 border-l-[1px]'>Timelines:</div>
+                  <div className="text-white/40 pl-2 border-l-white/40 border-l-[1px]">
+                    Timelines:
+                  </div>
                   <select
-          value={timeRange}
-          // onChange={(e) => setTimeRange(e.target.value)}
-          onChange={(e) => handleTimeRangeChange(e.target.value)}
-          className="bg-gray-800 text-white border border-white/20 rounded-md p-1"
-        >
-          <option value="1D">1 Day</option>
-          <option value="1W">1 Week</option>
-          <option value="1Y">1 Year</option>
-        </select>
-   
+                    value={timeRange}
+                    // onChange={(e) => setTimeRange(e.target.value)}
+                    onChange={(e) => handleTimeRangeChange(e.target.value)}
+                    className="bg-gray-800 text-white border border-white/20 rounded-md p-1"
+                  >
+                    <option value="1D">1 Day</option>
+                    <option value="1W">1 Week</option>
+                    <option value="1Y">1 Year</option>
+                  </select>
+
                   <button className="text-white p-2 hover:bg-primary-dark rounded-full">
                     <AiOutlineExpandAlt size="1.4rem" />
                   </button>

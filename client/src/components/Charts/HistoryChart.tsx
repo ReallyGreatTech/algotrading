@@ -38,7 +38,6 @@
 //     useEffect(() => {
 //     // let root = am5.Root.new(chartRef.current);
 //     let root = am5.Root.new("chartdiv");
-    
 
 //     root.setThemes([am5themes_Animated.new(root)]);
 
@@ -48,7 +47,7 @@
 //         panY: true,
 //         wheelX: 'panX',
 //         wheelY: 'zoomX',
-//         pinchZoomX: true, 
+//         pinchZoomX: true,
 //       })
 //     );
 
@@ -97,7 +96,6 @@
 //       fontSize: "12px",
 //     });
 
-
 //     let series = chart.series.push(
 //       am5xy.LineSeries.new(root, {
 //         name: 'Funding',
@@ -107,7 +105,7 @@
 //         categoryXField: 'timestamp',
 //         tooltip: am5.Tooltip.new(root, {
 //           labelText: '{valueY}',
-       
+
 //           // label: {
 //           //   fill: am5.color(0xffffff), // Set tooltip text to white
 //           // }
@@ -161,8 +159,6 @@
 //     //   strokeDasharray: [4, 4],
 //     // });
 
-    
-
 //      // Add a red target line at value 0 on y-axis
 //      let targetLine = chart.plotContainer.children.push(
 //       am5.Line.new(root, {
@@ -180,7 +176,7 @@
 //     yAxis.on("height", () => {
 //       targetLine.set("y", yAxis.valueToPosition(0) * chart.plotContainer.height());
 //     });
-    
+
 //     xAxis.data.setAll(data);
 
 //     return () => {
@@ -188,15 +184,13 @@
 //     };
 //   }, [data]);
 
-//   return <div 
+//   return <div
 //   id= "chartdiv"
-//   ref={chartRef} 
+//   ref={chartRef}
 //   style={{ width: '100%', height: '500px' }}></div>;
 // };
 
 // export default HistoryChart;
-
-
 
 // In HistoryChart.tsx
 import * as am5 from '@amcharts/amcharts5';
@@ -222,55 +216,61 @@ const HistoryChart = ({ data, timeRange }: HistoryChartProps) => {
       console.error('Chart container not found.');
       return;
     }
-    
 
     let root = am5.Root.new(chartRef.current);
 
     root.setThemes([am5themes_Animated.new(root)]);
 
-    let chart = root.container.children.push(am5xy.XYChart.new(root, {
-      panX: true,
-      panY: true,
-      wheelX: 'panX',
-      wheelY: 'zoomX',
-      pinchZoomX: true,
-    }));
+    let chart = root.container.children.push(
+      am5xy.XYChart.new(root, {
+        panX: true,
+        panY: true,
+        wheelX: 'panX',
+        wheelY: 'zoomX',
+        pinchZoomX: true,
+      })
+    );
 
-    let xAxis = chart.xAxes.push(am5xy.DateAxis.new(root, {
-      renderer: am5xy.AxisRendererX.new(root, {}),
-      tooltip: am5.Tooltip.new(root, {}),
-      baseInterval: { timeUnit: "hour", count: 1 }, // Set baseInterval to 1 day
-    }));
-    
+    let xAxis = chart.xAxes.push(
+      am5xy.DateAxis.new(root, {
+        renderer: am5xy.AxisRendererX.new(root, {}),
+        tooltip: am5.Tooltip.new(root, {}),
+        baseInterval: { timeUnit: 'hour', count: 1 }, // Set baseInterval to 1 day
+      })
+    );
 
-    const xRenderer = xAxis.get("renderer");
+    const xRenderer = xAxis.get('renderer');
     xRenderer.labels.template.setAll({
       fill: am5.color(0xffffff),
-      fontSize: "12px",
+      fontSize: '12px',
     });
 
-    let yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
-      renderer: am5xy.AxisRendererY.new(root, {
-        opposite: true,
-      }),
-    }));
+    let yAxis = chart.yAxes.push(
+      am5xy.ValueAxis.new(root, {
+        renderer: am5xy.AxisRendererY.new(root, {
+          opposite: true,
+        }),
+      })
+    );
 
-    const yRenderer = yAxis.get("renderer");
+    const yRenderer = yAxis.get('renderer');
     yRenderer.labels.template.setAll({
       fill: am5.color(0xffffff),
-      fontSize: "12px",
+      fontSize: '12px',
     });
 
-    let series = chart.series.push(am5xy.LineSeries.new(root, {
-      name: 'Funding',
-      xAxis: xAxis,
-      yAxis: yAxis,
-      valueYField: 'funding',
-      valueXField: 'timestamp',
-      // tooltip: am5.Tooltip.new(root, {
-      //   labelText: "{valueX.formatDate()}: {valueY}",
-      // }),
-    }));
+    let series = chart.series.push(
+      am5xy.LineSeries.new(root, {
+        name: 'Funding',
+        xAxis: xAxis,
+        yAxis: yAxis,
+        valueYField: 'funding',
+        valueXField: 'timestamp',
+        // tooltip: am5.Tooltip.new(root, {
+        //   labelText: "{valueX.formatDate()}: {valueY}",
+        // }),
+      })
+    );
 
     series.setAll({
       tooltipText: "{valueX.formatDate('MMM dd, yyyy HH:mm')}: ${valueY}",
@@ -278,50 +278,69 @@ const HistoryChart = ({ data, timeRange }: HistoryChartProps) => {
         getFillFromSprite: false,
         getStrokeFromSprite: false,
         autoTextColor: false,
-        pointerOrientation: "horizontal",
-        labelText: "{tooltipText}"
-      })
+        pointerOrientation: 'horizontal',
+        labelText: '{tooltipText}',
+      }),
     });
-    
+
     // Customize tooltip appearance
-    const tooltip = series.get("tooltip");
+    const tooltip = series.get('tooltip');
     if (tooltip) {
-      const background = tooltip.get("background");
+      const background = tooltip.get('background');
       if (background) {
         background.setAll({
           fill: am5.color(0x000000),
           fillOpacity: 0.8,
           stroke: am5.color(0xffffff),
-          strokeOpacity: 0.5
+          strokeOpacity: 0.5,
         });
       }
-    
-    //   const label = tooltip.get("label");
-    //   if (label) {
-    //     label.setAll({
-    //       fill: am5.color(0xffffff),
-    //       fontSize: 12
-    //     });
-    //   }
+
+      //   const label = tooltip.get("label");
+      //   if (label) {
+      //     label.setAll({
+      //       fill: am5.color(0xffffff),
+      //       fontSize: 12
+      //     });
+      //   }
     }
 
-
     // Custom timestamp parser
-    console.log('incoming data:',data)
+
     const parseTimestamp = (timestampStr: string): Date => {
       // Split the string to isolate the date and time components
       const [monthDayTime, hourMinute] = timestampStr.split('|');
       const [month, day] = monthDayTime.split(' ');
       const [hour, minute] = hourMinute.split(':');
-    
+
       // Convert the month abbreviation to a number (0-indexed)
-      const monthNumber = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].indexOf(month) + 1;
-    
+      const monthNumber =
+        [
+          'Jan',
+          'Feb',
+          'Mar',
+          'Apr',
+          'May',
+          'Jun',
+          'Jul',
+          'Aug',
+          'Sep',
+          'Oct',
+          'Nov',
+          'Dec',
+        ].indexOf(month) + 1;
+
       // Construct a new Date object using the extracted month, day, and time
-      return new Date(new Date().getFullYear(), monthNumber - 1, parseInt(day), parseInt(hour), parseInt(minute));
+      return new Date(
+        new Date().getFullYear(),
+        monthNumber - 1,
+        parseInt(day),
+        parseInt(hour),
+        parseInt(minute)
+      );
     };
     // Process data
-    const processedData = data.map(item => ({
+    const processedData = data.map((item) => ({
       timestamp: parseTimestamp(item.timestamp).getTime(),
       funding: item.funding,
     }));
