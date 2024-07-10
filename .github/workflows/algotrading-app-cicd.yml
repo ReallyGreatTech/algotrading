@@ -9,6 +9,8 @@ on:
 env:
     APP_DIR: "${{ github.workspace }}/client"
     DEPLOY_DIR: "${{ github.workspace }}/client/deploy-package"
+    SECRET_NAME: "/ripley-ui-secrets"
+    BUILD_ENV_FILE_SCRIPT: "${{ github.workspace }}/build-env.py"
 
 permissions:
     id-token: write
@@ -47,6 +49,9 @@ jobs:
               id: build_dist
               run: |
                   cd ${APP_DIR}
+                  echo "Creating .env for ${{ steps.env_check.outputs.ENV_NAME_TAG }}"
+                  aws ssm get-parameter --name /aws/reference/secretsmanager/${SECRET_NAME} --with-decryption | jq -r .Parameter.Value > env.json
+                  python3 ${BUILD_ENV_FILE_SCRIPT} env.json .env
                   docker build -t algotrading:latest .
 
             - name: Copy Distribution or Package Files
