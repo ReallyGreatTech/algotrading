@@ -4,6 +4,7 @@ import {
   Investor,
   InvestorAction,
   Position,
+  StatExchange,
   TableColumn,
   Wallet,
 } from '../../types';
@@ -11,6 +12,7 @@ import { shortenString } from '../../utils/stringTool';
 import { RiDeleteBin5Line } from 'react-icons/ri';
 import InvestorRowActionButtons from '../../components/InvestorRowActionButtons';
 import { get24HourDateTime } from '../../utils/dateUtils';
+import moment from 'moment';
 
 export const positionsTableColumn: TableColumn<Position>[] = [
   {
@@ -318,5 +320,33 @@ export const investorActionTableColumn: TableColumn<InvestorAction>[] = [
     label: 'Amount',
     value: 'amount',
     render: (item: InvestorAction) => item.amount.toFixed(4),
+  },
+];
+
+export const statusExchangesColumns: TableColumn<StatExchange>[] = [
+  { label: 'Exchange', value: 'exchange' },
+  { label: 'History Count', value: 'history_count' },
+  {
+    label: 'Latest Update',
+    value: 'latest_update',
+    render: (item) => {
+      let timeUpdated = moment(item.latest_update).fromNow();
+      return timeUpdated[0].toUpperCase() + timeUpdated.slice(1);
+    },
+  },
+  {
+    label: 'Warning',
+    value: 'warning',
+    render: (item) => {
+      return item.warning ? (
+        <div className="text-white/90 px-4 py-2 rounded-full bg-yellow-600 inline opacity-80">
+          Warning
+        </div>
+      ) : (
+        <div className="text-white/90 px-4 py-2 rounded-full bg-green-600 inline opacity-80">
+          All good
+        </div>
+      );
+    },
   },
 ];

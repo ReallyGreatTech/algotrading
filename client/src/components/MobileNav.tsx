@@ -11,7 +11,7 @@ const menuItems = [
 ];
 
 const MobileNav = () => {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const location = useLocation();
 
   useEffect(() => {

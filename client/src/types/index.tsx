@@ -208,3 +208,17 @@ export interface ExchangeBalance {
   updated_at: string;
   wallet: number;
 }
+
+export interface StatExchange {
+  exchange: string;
+  markets_count: number;
+  history_count: number;
+  latest_update: string;
+  latest_update_ts: number;
+  warning: false;
+}
+
+export interface Stat {
+  exchanges_count: number;
+  exchanges: StatExchange[];
+}
