@@ -326,6 +326,7 @@ export const investorActionTableColumn: TableColumn<InvestorAction>[] = [
 export const statusExchangesColumns: TableColumn<StatExchange>[] = [
   { label: 'Exchange', value: 'exchange' },
   { label: 'History Count', value: 'history_count' },
+  { label: 'Market Count', value: 'markets_count' },
   {
     label: 'Latest Update',
     value: 'latest_update',
