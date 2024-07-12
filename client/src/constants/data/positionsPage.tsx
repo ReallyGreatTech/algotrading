@@ -13,6 +13,12 @@ import { RiDeleteBin5Line } from 'react-icons/ri';
 import InvestorRowActionButtons from '../../components/InvestorRowActionButtons';
 import { get24HourDateTime } from '../../utils/dateUtils';
 import moment from 'moment';
+import { deleteWallet } from '../../redux/api/wallets';
+import { useAppDispatch } from '../../hooks';
+
+
+const dispatch = useAppDispatch()
+
 
 export const positionsTableColumn: TableColumn<Position>[] = [
   {
@@ -189,39 +195,40 @@ export const exchangesBalanceTableColumn: TableColumn<ExchangeBalance>[] = [
 ];
 
 export const walletsTableColumn: TableColumn<Wallet>[] = [
+  
   {
-    label: 'Wallet',
-    value: 'wallet',
+    label: "Wallet Address",
+    value: "address",
     render(item: Wallet) {
       return shortenString(item.address, 10);
     },
-    tableHeadCellClassName: '',
-    tableBodyCellClassName: '',
+    tableHeadCellClassName: "",
+    tableBodyCellClassName: "",
   },
   {
-    label: 'Start Time',
-    value: 'startTime',
+    label: "Start Time",
+    value: "startTime",
     render(item: Wallet) {
       return new Date(item.start_time_manual).toLocaleString();
     },
   },
   {
-    label: 'Total Investment',
-    value: 'total_investment',
+    label: "Total Investment",
+    value: "total_investment",
   },
   {
-    label: 'Current Value',
-    value: 'current_value',
+    label: "Current Value",
+    value: "current_value",
   },
   {
-    label: '',
-    value: '',
+    label: "",
+    value: "",
     render(item) {
       return (
         <div className="flex gap-4">
           <button
             onClick={() => {
-              console.log('Editing: ', item);
+              console.log("Editing: ", item);
             }}
             className="p-1 hover:bg-primary-dark rounded-full"
           >
@@ -229,7 +236,8 @@ export const walletsTableColumn: TableColumn<Wallet>[] = [
           </button>
           <button
             onClick={() => {
-              console.log('Deleting: ', item);
+             dispatch(deleteWallet(item.id))
+              console.log("Deleting: ", item);
             }}
             className="p-1 hover:bg-primary-dark rounded-full"
           >
@@ -331,7 +339,7 @@ export const statusExchangesColumns: TableColumn<StatExchange>[] = [
     label: 'Latest Update',
     value: 'latest_update',
     render: (item) => {
-      let timeUpdated = moment(item.latest_update).fromNow();
+      const timeUpdated = moment(item.latest_update).fromNow();
       return timeUpdated[0].toUpperCase() + timeUpdated.slice(1);
     },
   },

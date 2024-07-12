@@ -222,3 +222,11 @@ export interface Stat {
   exchanges_count: number;
   exchanges: StatExchange[];
 }
+
+
+export interface WalletItem {
+  name: string
+  address: string
+  balance: string
+  
+}
