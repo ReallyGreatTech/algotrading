@@ -61,7 +61,6 @@ export interface Investor {
 
 export interface AddInvestorData {
   name: string;
-  join_time_manual: string;
 }
 
 export interface UpdateInvestorData {

@@ -9,6 +9,7 @@ import { AppDispatch } from '../../store';
 
 interface InvestorsState {
   loading: boolean;
+  isPending: boolean;
   selectedInvestor: number | undefined;
   data: Investor[];
   error: string;
@@ -16,6 +17,7 @@ interface InvestorsState {
 
 const initialState: InvestorsState = {
   loading: false,
+  isPending: false,
   selectedInvestor: undefined,
   data: [],
   error: '',
@@ -32,17 +34,17 @@ const investorsSlice = createSlice({
   extraReducers: (builder) => {
     //fetch investors
     builder.addCase(fetchInvestors.pending, (state) => {
-      state.loading = true;
+      state.isPending = true;
     });
     builder.addCase(
       fetchInvestors.fulfilled,
       (state, action: PayloadAction<{ results: Investor[] }>) => {
         state.data = action.payload.results;
-        state.loading = false;
+        state.isPending = false;
       }
     );
     builder.addCase(fetchInvestors.rejected, (state, action) => {
-      state.loading = false;
+      state.isPending = false;
       state.data = [];
       state.error = action.payload as string;
     });
@@ -60,15 +62,19 @@ const investorsSlice = createSlice({
     });
 
     //Delete investor
-    builder.addCase(deleteInvestor.pending, () => {});
+    builder.addCase(deleteInvestor.pending, (state) => {
+      state.isPending = true;
+    });
     builder.addCase(
       deleteInvestor.fulfilled,
-      (state, action: PayloadAction<Investor>) => {
+      (state, action: PayloadAction<{ id: number }>) => {
         state.data = state.data.filter((d) => d.id !== action.payload.id);
+        state.isPending = false;
       }
     );
     builder.addCase(deleteInvestor.rejected, (state, action) => {
       state.error = action.payload as string;
+      state.isPending = false;
     });
   },
 });

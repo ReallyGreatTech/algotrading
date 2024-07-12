@@ -19,17 +19,10 @@ export const fetchInvestors = createAsyncThunk(
 
 export const addInvestor = createAsyncThunk(
   'tokens/addInvestor',
-  async (data: AddInvestorData, { rejectWithValue }) => {
-    try {
-      const { data: investor } = await apiClient.post<Investor>(
-        '/investors',
-        data
-      );
+  async (data: AddInvestorData, {}) => {
+    const { data: investor } = await apiClient.post('/investors/', data);
 
-      return investor;
-    } catch (error: unknown) {
-      return rejectWithValue('An error occured while adding an investor.');
-    }
+    return investor;
   }
 );
 
@@ -53,8 +46,9 @@ export const deleteInvestor = createAsyncThunk(
   'tokens/deleteInvestor',
   async (id: number, { rejectWithValue }) => {
     try {
-      const { data } = await apiClient.post<Investor>(`/investors/${id}`);
-      return data;
+      await apiClient.delete<Investor>(`/investors/${id}/`);
+
+      return { id };
     } catch (error: any) {
       return rejectWithValue('An error occured while deleting an investor.');
     }

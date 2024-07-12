@@ -2,9 +2,9 @@ import { DialogProps } from '../../types';
 import { IoMdClose } from 'react-icons/io';
 import Dialog from './AppDialog';
 import Input from '../Input';
-import InputLabel from '../InputLabel';
-import { useAppDispatch } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { addInvestor } from '../../redux/api/investors';
+import { useState } from 'react';
 
 interface AddInvestorDialogProps extends DialogProps {}
 
@@ -14,14 +14,18 @@ const AddInvestorDialog = ({
   ...rest
 }: AddInvestorDialogProps) => {
   const dispatch = useAppDispatch();
+  const investors = useAppSelector((state) => state.investors);
+  const [name, setName] = useState('');
 
-  const handleAddInvestor = () => {
-    dispatch(
-      addInvestor({
-        name: 'John Doe 284837',
-        join_time_manual: '2024-06-27T11:28:11.063Z',
-      })
-    );
+  const handleAddInvestor = async () => {
+    if (name)
+      await dispatch(
+        addInvestor({
+          name,
+        })
+      );
+
+    onClose();
   };
 
   return (
@@ -46,38 +50,9 @@ const AddInvestorDialog = ({
                   autoFocus
                   placeholder="Add investor name"
                   label="Investor Name"
+                  onChange={({ target: input }) => setName(input.value)}
                 />
               </div>
-            </div>
-
-            <div className="col-span-2">
-              <Input
-                placeholder="Add percentage"
-                label="Percentage From Wallet"
-              />
-            </div>
-
-            <div>
-              <InputLabel>Joined Time</InputLabel>
-              <div className="grid grid-cols-2 gap-5">
-                <div className="col-span-1">
-                  <div className="col-span-2">
-                    <Input type="date" className="uppercase" />
-                  </div>
-                </div>
-                <div className="col-span-1">
-                  <div className="col-span-2">
-                    <Input type="time" />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="col-span-2">
-              <Input
-                placeholder="Add initial investment"
-                label="Initial Investment"
-              />
             </div>
           </div>
         </div>
@@ -93,7 +68,7 @@ const AddInvestorDialog = ({
             className="py-3 px-5 bg-primary rounded-lg text-white shadow-primary"
             onClick={handleAddInvestor}
           >
-            Add Investor
+            {investors.isPending ? 'Adding investor...' : 'Add Investor'}
           </button>
         </div>
       </div>
