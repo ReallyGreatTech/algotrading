@@ -19,7 +19,7 @@ export const fetchInvestors = createAsyncThunk(
 
 export const addInvestor = createAsyncThunk(
   'tokens/addInvestor',
-  async (data: AddInvestorData, { rejectWithValue }) => {
+  async (data: AddInvestorData, {}) => {
     const { data: investor } = await apiClient.post('/investors/', data);
 
     return investor;
