@@ -79,7 +79,6 @@ const Positions = () => {
     dispatch(fetchWallets());
     dispatch(fetchInvestors());
     dispatch(fetchPositions());
-
     dispatch(fetchStatsRecurrently());
   }, []);
 
