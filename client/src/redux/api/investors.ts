@@ -11,8 +11,8 @@ export const fetchInvestors = createAsyncThunk(
       );
 
       return data;
-    } catch (error: any) {
-      return rejectWithValue(error.response?.data || error.message);
+    } catch (error: unknown) {
+      return rejectWithValue("Something went wrong ");
     }
   }
 );
@@ -49,7 +49,7 @@ export const deleteInvestor = createAsyncThunk(
       await apiClient.delete<Investor>(`/investors/${id}/`);
 
       return { id };
-    } catch (error: any) {
+    } catch (error: unknown) {
       return rejectWithValue('An error occured while deleting an investor.');
     }
   }

@@ -1,4 +1,4 @@
-import { FiEdit2 } from 'react-icons/fi';
+
 import {
   ExchangeBalance,
   Investor,
@@ -9,15 +9,13 @@ import {
   Wallet,
 } from '../../types';
 import { shortenString } from '../../utils/stringTool';
-import { RiDeleteBin5Line } from 'react-icons/ri';
 import InvestorRowActionButtons from '../../components/InvestorRowActionButtons';
 import { get24HourDateTime } from '../../utils/dateUtils';
-import moment from 'moment';
-import { deleteWallet } from '../../redux/api/wallets';
-import { useAppDispatch } from '../../hooks';
+import moment from 'moment'
+import WalletRowActionButtons from '../../components/WalletRowActionButtons';
 
 
-const dispatch = useAppDispatch()
+// const dispatch = useAppDispatch()
 
 
 export const positionsTableColumn: TableColumn<Position>[] = [
@@ -223,28 +221,8 @@ export const walletsTableColumn: TableColumn<Wallet>[] = [
   {
     label: "",
     value: "",
-    render(item) {
-      return (
-        <div className="flex gap-4">
-          <button
-            onClick={() => {
-              console.log("Editing: ", item);
-            }}
-            className="p-1 hover:bg-primary-dark rounded-full"
-          >
-            <FiEdit2 />
-          </button>
-          <button
-            onClick={() => {
-             dispatch(deleteWallet(item.id))
-              console.log("Deleting: ", item);
-            }}
-            className="p-1 hover:bg-primary-dark rounded-full"
-          >
-            <RiDeleteBin5Line />
-          </button>
-        </div>
-      );
+    render(wallet) {
+      return <WalletRowActionButtons wallet={wallet} />;
     },
   },
 ];

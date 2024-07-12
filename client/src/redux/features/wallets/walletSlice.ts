@@ -39,8 +39,10 @@ const walletsSlice = createSlice({
     builder.addCase(addWallet.fulfilled, (state,action) => {
         state.data.push(action.payload)
     })
-    builder.addCase(deleteWallet.fulfilled, (state,action) => {
-      state.data.filter((it)=>it.id!==action.payload)
+    builder.addCase(deleteWallet.fulfilled, (state, action) => {
+      
+      state.data = state.data.filter((wallet) => wallet.id !== action.payload.id)
+      console.log(action.payload)
     })
   },
   

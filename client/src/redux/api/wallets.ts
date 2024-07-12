@@ -30,12 +30,8 @@ export const deleteWallet = createAsyncThunk(
   "tokens/deleteWallet",
   async (walletId: number, { rejectWithValue }) => {
     try {
-      const { data } = await apiClient.delete("/wallets/", {
-        params: {
-          id: walletId,
-        },
-      });
-      return data;
+      await apiClient.delete(`/wallets/${walletId}`);
+      return { id: walletId };
     } catch (error: any) {
       return rejectWithValue(error.response?.data || error.message);
     }
