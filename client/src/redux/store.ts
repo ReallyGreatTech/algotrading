@@ -9,6 +9,8 @@ import investorActionsReducer from './features/investorActions/investorActionsSl
 import walletReducer from './features/wallets/walletSlice';
 import investorsReducer from './features/investors/investorsSlice';
 import positionsReducer from './features/positions/positionsSlice';
+import subPositionsReducer from './features/sub_positions/sub-positions';
+import statsReducer from './features/stats/statsSlice';
 
 const store = configureStore({
   reducer: {
@@ -21,6 +23,8 @@ const store = configureStore({
     wallets: walletReducer,
     investors: investorsReducer,
     positions: positionsReducer,
+    subPositions: subPositionsReducer,
+    stats: statsReducer,
   },
 });
 

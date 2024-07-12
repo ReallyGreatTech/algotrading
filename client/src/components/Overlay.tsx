@@ -27,13 +27,15 @@ const Overlay = ({
   return (
     open && (
       <div
-        className="fixed top-0 bottom-0 right-0 left-0 w-full h-screen bg-black/60 flex items-center justify-center"
+        className="fixed top-0 bottom-0 right-0 left-0 w-full h-screen bg-black/60 flex items-center justify-center z-10"
         onClick={onClose}
       >
         <div
+          style={{
+            ...rootStyle,
+          }}
           className={`${rootClassName}`}
           onClick={(e) => e.stopPropagation()}
-          style={rootStyle}
         >
           {children}
         </div>

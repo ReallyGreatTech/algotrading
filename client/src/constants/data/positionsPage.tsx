@@ -4,6 +4,7 @@ import {
   Investor,
   InvestorAction,
   Position,
+  StatExchange,
   TableColumn,
   Wallet,
 } from '../../types';
@@ -11,6 +12,7 @@ import { shortenString } from '../../utils/stringTool';
 import { RiDeleteBin5Line } from 'react-icons/ri';
 import InvestorRowActionButtons from '../../components/InvestorRowActionButtons';
 import { get24HourDateTime } from '../../utils/dateUtils';
+import moment from 'moment';
 
 export const positionsTableColumn: TableColumn<Position>[] = [
   {
@@ -31,24 +33,6 @@ export const positionsTableColumn: TableColumn<Position>[] = [
     tableHeadCellClassName: 'min-w-[5em]',
   },
   {
-    label: 'Direction',
-    value: 'direction',
-
-    render(item) {
-      return (
-        <div
-          className={`py-1 px-5 mr-6 rounded-full uppercase ${
-            item.direction.toLowerCase() === 'short'
-              ? 'bg-[#EF4444]'
-              : 'bg-[#419E6A]'
-          }`}
-        >
-          {item.direction}
-        </div>
-      );
-    },
-  },
-  {
     label: 'Leverage',
     value: 'leverage',
     tableHeadCellClassName: 'min-w-[10em]',
@@ -59,6 +43,12 @@ export const positionsTableColumn: TableColumn<Position>[] = [
     tableHeadCellClassName: 'min-w-[12em]',
   },
   {
+    label: 'Average Mark Price',
+    value: 'average_mark_price',
+    tableHeadCellClassName: 'min-w-[12em]',
+    render: () => 'N/A',
+  },
+  {
     label: 'Average Daily Funding',
     value: 'nonLeverageValue',
     tableHeadCellClassName: 'min-w-[12em]',
@@ -66,9 +56,13 @@ export const positionsTableColumn: TableColumn<Position>[] = [
   },
   {
     label: 'SL',
-    value: 'entryPrice',
+    value: 'stop_loss',
     tableHeadCellClassName: 'min-w-[10em]',
-    render: () => 'N/A',
+  },
+  {
+    label: 'TP',
+    value: 'take_profit',
+    tableHeadCellClassName: 'min-w-[10em]',
   },
   {
     label: 'Entry Price',
@@ -99,20 +93,21 @@ export const subPositionsTableColumn: TableColumn<Position>[] = [
   {
     label: 'Token',
     value: 'token',
+    tableHeadCellClassName: 'min-w-[8em]',
   },
   {
     label: 'Funding Rate',
     value: 'fundingRate',
-    tableHeadCellClassName: 'min-w-[12em]',
-    render: () => `${Math.floor(Math.random() * 100)}`,
+    render: () => `Unknown`,
   },
   {
     label: 'Direction',
     value: 'direction',
+    tableHeadCellClassName: 'min-w-[8em]',
     render(item) {
       return (
         <div
-          className={`py-1 px-5 rounded-full uppercase max-w-[100px] ${
+          className={`py-1 px-5 rounded-full uppercase max-w-[80px] ${
             item.direction.toLowerCase() === 'short'
               ? 'bg-[#EF4444]'
               : 'bg-[#419E6A]'
@@ -123,35 +118,43 @@ export const subPositionsTableColumn: TableColumn<Position>[] = [
       );
     },
   },
-
   {
-    label: 'Funding Rate',
-    value: 'fundingRate',
-    tableHeadCellClassName: 'min-w-[12em]',
-    render: () => `${Math.floor(Math.random() * 100)}%`,
-  },
-  {
-    label: 'Entry Price',
-    value: 'entryPrice',
-    tableHeadCellClassName: 'min-w-[12em]',
-    render: () => `${Math.floor(Math.random() * 10000)}`,
+    label: 'Exchange',
+    value: 'exchange',
+    tableHeadCellClassName: 'min-w-[7em]',
   },
   {
     label: 'Mark Price',
     value: 'markPrice',
-    tableHeadCellClassName: 'min-w-[12em]',
-    render: () => `${Math.floor(Math.random() * 10000)}`,
+    tableHeadCellClassName: 'min-w-[8em]',
+    render: () => `Unknown`,
+  },
+  {
+    label: 'Daily Funding',
+    value: 'daily_funding',
+    render: () => `Unknown`,
+  },
+  {
+    label: 'Entry Price',
+    value: 'entry_price',
   },
   {
     label: 'Liquidation',
-    value: 'liquidation',
-    render: () => `${Math.floor(Math.random() * 10000)}`,
+    value: 'liquidation_price',
   },
   {
     label: 'Exchange Balance',
     value: 'exchangeBalance',
-    tableHeadCellClassName: 'min-w-[12em]',
-    render: () => `${Math.floor(Math.random() * 10000)}`,
+    render: () => `Unknown`,
+  },
+  {
+    label: '% Daily Funding',
+    value: 'daily_funding',
+    render: () => `Unknown`,
+  },
+  {
+    label: 'Unrealized PNL',
+    value: 'unrealized_pnl',
   },
 ];
 
@@ -290,16 +293,16 @@ export const investorTableColumn: TableColumn<Investor>[] = [
   },
 ];
 
-export const investorActionTableColumn = [
+export const investorActionTableColumn: TableColumn<InvestorAction>[] = [
   {
     label: 'Investor Name',
     value: 'investorName',
-    render: () => 'Unknown',
+    render: (investor) => `Investor ${investor.investor}`,
   },
   {
     label: 'Action',
     value: 'action',
-    render(item: InvestorAction) {
+    render(item) {
       return (
         <span
           className={`py-1 px-5 rounded-full uppercase ${
@@ -317,5 +320,34 @@ export const investorActionTableColumn = [
     label: 'Amount',
     value: 'amount',
     render: (item: InvestorAction) => item.amount.toFixed(4),
+  },
+];
+
+export const statusExchangesColumns: TableColumn<StatExchange>[] = [
+  { label: 'Exchange', value: 'exchange' },
+  { label: 'History Count', value: 'history_count' },
+  { label: 'Market Count', value: 'markets_count' },
+  {
+    label: 'Latest Update',
+    value: 'latest_update',
+    render: (item) => {
+      let timeUpdated = moment(item.latest_update).fromNow();
+      return timeUpdated[0].toUpperCase() + timeUpdated.slice(1);
+    },
+  },
+  {
+    label: 'Warning',
+    value: 'warning',
+    render: (item) => {
+      return item.warning ? (
+        <div className="text-white/90 px-4 py-2 rounded-full bg-yellow-600 inline opacity-80">
+          Warning
+        </div>
+      ) : (
+        <div className="text-white/90 px-4 py-2 rounded-full bg-green-600 inline opacity-80">
+          All good
+        </div>
+      );
+    },
   },
 ];

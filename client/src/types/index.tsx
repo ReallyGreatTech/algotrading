@@ -81,6 +81,11 @@ export interface InvestorAction {
   time: string;
   wallet: number;
 }
+
+export interface InvestorActionQueryParams {
+  investor?: number;
+}
+
 export interface TableItem {
   id?: number;
   funding_rate_latest?: number;
@@ -202,4 +207,18 @@ export interface ExchangeBalance {
   created_at: string;
   updated_at: string;
   wallet: number;
+}
+
+export interface StatExchange {
+  exchange: string;
+  markets_count: number;
+  history_count: number;
+  latest_update: string;
+  latest_update_ts: number;
+  warning: false;
+}
+
+export interface Stat {
+  exchanges_count: number;
+  exchanges: StatExchange[];
 }

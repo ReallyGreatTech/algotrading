@@ -32,6 +32,7 @@ import {
 } from '../redux/api/fundingHistory';
 import { fetchTokens } from '../redux/api/tokens';
 import { fetchMarket } from '../redux/api/markets';
+import { subDays, subYears, isAfter } from 'date-fns';
 
 const FundingRates = () => {
   const chartContainer = useRef<HTMLDivElement | null>(null);
@@ -62,6 +63,7 @@ const FundingRates = () => {
   const dispatch = useAppDispatch();
 
   const [availableExchanges, setAvailableExchanges] = useState<string[]>([]);
+  const [timeRange, setTimeRange] = useState('1D');
 
   useEffect(() => {
     dispatch(fetchTokens());
@@ -109,50 +111,157 @@ const FundingRates = () => {
     dispatch(fetchMarket(getMarketParams()));
   };
 
+  // const getFundingData = () => {
+  //   const now = new Date();
+  //   const today = now.toISOString().split('T')[0];
+  //   const yesterday = new Date(now.setDate(now.getDate() - 1))
+  //     .toISOString()
+  //     .split('T')[0];
+  //   const twoDaysAgo = new Date(now.setDate(now.getDate() - 1))
+  //     .toISOString()
+  //     .split('T')[0];
+
+  //   const filteredData = fundingData.filter((item) => {
+  //     const itemDate = new Date(item.timestamp).toISOString().split('T')[0];
+  //     return (
+  //       itemDate === today || itemDate === yesterday || itemDate === twoDaysAgo
+  //     );
+  //   });
+
+  //   const transformedData = filteredData.map((item) => {
+  //     const formattedTimestamp = formatTimestamp(item.timestamp);
+  //     const itemDate = new Date(item.timestamp).toISOString().split('T')[0]; // Simplified date string for chart display
+  //     let funding;
+
+  //     switch (selectedTimeFilter) {
+  //       case '1H':
+  //         funding = item.hourly_funding;
+  //         break;
+  //       case '1D':
+  //         funding = item.daily_funding;
+  //         break;
+  //       case '1Y':
+  //         funding = item.annual_funding;
+  //         break;
+  //       default:
+  //         funding = item.annual_funding;
+  //     }
+
+  //     return {
+  //       timestamp: formattedTimestamp, // This is for display purposes elsewhere
+  //       chartDate: itemDate, // This is for chart display
+  //       funding,
+  //     };
+  //   });
+
+  //   return transformedData.reverse();
+  // };
+
+  // const getFundingData = () => {
+  //   const now = new Date();
+  //   let startDate;
+
+  //   switch (timeRange) {
+  //     case '1D':
+  //       startDate = subDays(now, 1);
+  //       break;
+  //     case '1W':
+  //       startDate = subDays(now, 7);
+  //       break;
+  //     case '1Y':
+  //       startDate = subYears(now, 1);
+  //       break;
+  //     default:
+  //       startDate = subDays(now, 1);
+  //   }
+
+  //   const filteredData = fundingData.filter((item) => {
+  //     const itemDate = new Date(item.timestamp);
+  //     return isAfter(itemDate, startDate);
+  //   });
+
+  //   const transformedData = filteredData.map((item) => {
+  //     const formattedTimestamp = formatTimestamp(item.timestamp);
+  //     let funding;
+
+  //     switch (selectedTimeFilter) {
+  //       case '1H':
+  //         funding = item.hourly_funding;
+  //         break;
+  //       case '1D':
+  //         funding = item.daily_funding;
+  //         break;
+  //       case '1Y':
+  //         funding = item.annual_funding;
+  //         break;
+  //       default:
+  //         funding = item.annual_funding;
+  //     }
+
+  //     return {
+  //       timestamp: formattedTimestamp,
+  //       funding,
+  //     };
+  //   });
+
+  //   return transformedData.reverse();
+  // };
+
   const getFundingData = () => {
     const now = new Date();
-    const today = now.toISOString().split('T')[0];
-    const yesterday = new Date(now.setDate(now.getDate() - 1))
-      .toISOString()
-      .split('T')[0];
-    const twoDaysAgo = new Date(now.setDate(now.getDate() - 1))
-      .toISOString()
-      .split('T')[0];
+    let startDate;
+
+    switch (timeRange) {
+      case '1D':
+        startDate = subDays(now, 1);
+        break;
+      case '1W':
+        startDate = subDays(now, 7);
+        break;
+      case '1Y':
+        startDate = subYears(now, 1);
+        break;
+      default:
+        startDate = subDays(now, 1);
+    }
 
     const filteredData = fundingData.filter((item) => {
-      const itemDate = new Date(item.timestamp).toISOString().split('T')[0];
-      return (
-        itemDate === today || itemDate === yesterday || itemDate === twoDaysAgo
-      );
+      // Directly create a Date object from the timestamp string
+      const itemDate = new Date(item.timestamp);
+      return isAfter(itemDate, startDate);
     });
 
-    const transformedData = filteredData.map((item) => {
-      const formattedTimestamp = formatTimestamp(item.timestamp);
-      const itemDate = new Date(item.timestamp).toISOString().split('T')[0]; // Simplified date string for chart display
-      let funding;
+    const transformedData = filteredData
+      .map((item) => {
+        const formattedTimestamp = formatTimestamp(item.timestamp);
+        let funding;
 
-      switch (selectedTimeFilter) {
-        case '1H':
-          funding = item.hourly_funding;
-          break;
-        case '1D':
-          funding = item.daily_funding;
-          break;
-        case '1Y':
-          funding = item.annual_funding;
-          break;
-        default:
-          funding = item.annual_funding;
-      }
+        switch (selectedTimeFilter) {
+          case '1H':
+            funding = item.hourly_funding;
+            break;
+          case '1D':
+            funding = item.daily_funding;
+            break;
+          case '1Y':
+            funding = item.annual_funding;
+            break;
+          default:
+            funding = item.annual_funding;
+        }
 
-      return {
-        timestamp: formattedTimestamp, // This is for display purposes elsewhere
-        chartDate: itemDate, // This is for chart display
-        funding,
-      };
-    });
+        return {
+          timestamp: formattedTimestamp,
+          funding,
+        };
+      })
+      .reverse(); // Ensure the data is sorted in descending order
 
-    return transformedData.reverse();
+    return transformedData;
+  };
+
+  const handleTimeRangeChange = (range: string) => {
+    setTimeRange(range);
   };
 
   const handleTestDispatch = () => {
@@ -169,7 +278,7 @@ const FundingRates = () => {
   });
 
   return (
-    <section className="text-white pb-10">
+    <section className="text-white pb-10 ">
       <div className="w-full">
         <div className="py-5">
           <h1
@@ -296,13 +405,28 @@ const FundingRates = () => {
                 </h3>
                 <div className="flex  items-center gap-2">
                   <TimeFilter />
+                  <div className="text-white/40 pl-2 border-l-white/40 border-l-[1px]">
+                    Timelines:
+                  </div>
+                  <select
+                    value={timeRange}
+                    // onChange={(e) => setTimeRange(e.target.value)}
+                    onChange={(e) => handleTimeRangeChange(e.target.value)}
+                    className="bg-gray-800 text-white border border-white/20 rounded-md p-1"
+                  >
+                    <option value="1D">1 Day</option>
+                    <option value="1W">1 Week</option>
+                    <option value="1Y">1 Year</option>
+                  </select>
+
                   <button className="text-white p-2 hover:bg-primary-dark rounded-full">
                     <AiOutlineExpandAlt size="1.4rem" />
                   </button>
                 </div>
               </div>
               <div>
-                <HistoryChart data={getFundingData()} />
+                {/* <HistoryChart data={getFundingData()} /> */}
+                <HistoryChart data={getFundingData()} timeRange={timeRange} />
               </div>
             </div>
 

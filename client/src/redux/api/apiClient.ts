@@ -1,6 +1,9 @@
 import axios from 'axios';
 
+const apiBaseURL =
+  import.meta.env.VITE_API_BASE_URL ||
+  'https://api-algo.reallygreattech.com/api';
+
 export const apiClient = axios.create({
-  // baseURL: 'http://3.76.134.149:8000/api',
-  baseURL: import.meta.env.VITE_ALGO_TRADING_API_URL,
+  baseURL: apiBaseURL,
 });

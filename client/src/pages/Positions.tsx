@@ -2,11 +2,18 @@ import { useEffect, useState } from 'react';
 import { AiOutlineExpandAlt } from 'react-icons/ai';
 import AppTable from '../components/AppTable';
 import InvestorActionsDialog from '../components/Dialogs/InvestorActionsDialog';
-import { ExchangeBalance, Investor, Position, Wallet } from '../types';
+import {
+  ExchangeBalance,
+  Investor,
+  Position,
+  StatExchange,
+  Wallet,
+} from '../types';
 import {
   exchangesBalanceTableColumn,
   investorTableColumn,
   positionsTableColumn,
+  statusExchangesColumns,
   subPositionsTableColumn,
   walletsTableColumn,
 } from '../constants/data/positionsPage';
@@ -17,14 +24,16 @@ import PaginationControls from '../components/PaginationControls';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { fetchWallets } from '../redux/api/wallets';
 import { fetchInvestors } from '../redux/api/investors';
-import { fetchPositions } from '../redux/api/positions';
+import { fetchPositions, fetchSubPositions } from '../redux/api/positions';
 import {
   MdOutlineKeyboardArrowDown,
   MdOutlineKeyboardArrowRight,
 } from 'react-icons/md';
+import { fetchInvestorActions } from '../redux/api/investorActions';
+import { fetchStatsRecurrently } from '../redux/features/stats/statsSlice';
 
 const Positions = () => {
-  const [investorDialogOpen, setInvestorDialogOpen] = useState(true);
+  const [investorDialogOpen, setInvestorDialogOpen] = useState(false);
   const [addWalletDialogOpen, setAddWalletDialogOpen] = useState(false);
   const [addInvestorDialogOpen, setAddInvestorDialogOpen] = useState(false);
   const [expandedPosition, setExpandedPosition] = useState<number | undefined>(
@@ -36,15 +45,24 @@ const Positions = () => {
   const wallets = useAppSelector((state) => state.wallets);
   const investors = useAppSelector((state) => state.investors);
   const positions = useAppSelector((state) => state.positions);
+  const subPositions = useAppSelector((state) => state.subPositions);
+  const stats = useAppSelector((state) => state.stats);
 
   const dispatch = useAppDispatch();
 
   const handlePositionsRowExpansion = (item: Position) => {
     if (expandedPosition !== item.id && expandedPosition !== undefined) {
+      dispatch(fetchSubPositions({ token: item.token }));
       setExpandedPosition(item.id);
     } else if (expandedPosition === undefined) {
+      dispatch(fetchSubPositions({ token: item.token }));
       setExpandedPosition(item.id);
     } else setExpandedPosition(undefined);
+  };
+
+  const handleSelectInvestor = (investor: Investor) => {
+    dispatch(fetchInvestorActions({ investor: investor.id }));
+    setInvestorDialogOpen(true);
   };
 
   const getExchanges = (wallets: Wallet[]): ExchangeBalance[] => {
@@ -61,6 +79,8 @@ const Positions = () => {
     dispatch(fetchWallets());
     dispatch(fetchInvestors());
     dispatch(fetchPositions());
+
+    dispatch(fetchStatsRecurrently());
   }, []);
 
   return (
@@ -123,6 +143,8 @@ const Positions = () => {
                     </div>
                   ) : (
                     <AppTable<Investor>
+                      tableBodyRowClassName="cursor-pointer"
+                      onRowClick={handleSelectInvestor}
                       columns={investorTableColumn}
                       data={investors.data}
                     />
@@ -140,7 +162,7 @@ const Positions = () => {
           </div>
 
           <div className="overflow-x-auto max-h-[80vh]">
-            {positions.loading ? (
+            {wallets.loading ? (
               <div className="text-sm text-white/90 w-full h-full flex justify-center items-center">
                 Loading positions...
               </div>
@@ -154,7 +176,7 @@ const Positions = () => {
           <PaginationControls />
         </div>
 
-        <div className="border-2 border-white/10 overflow-hidden rounded-2xl bg-gray-800">
+        <div className="border-2 border-white/10 overflow-hidden rounded-2xl bg-gray-800 mb-5">
           <div className="flex p-5 justify-between items-center">
             <h3 className="text-white/90 font-semibold">Positions Table</h3>
             <button
@@ -199,15 +221,41 @@ const Positions = () => {
                 expandComponent={
                   <div className="bg-[#334154] p-5">
                     <div className="border-1 border-white/50 ">
-                      <AppTable<Position>
-                        tableHeadRowClassName="bg-gray-900"
-                        tableBodyRowClassName="bg-[#334154] border-3 border-white/50"
-                        columns={subPositionsTableColumn}
-                        data={positions.data.slice(-3)}
-                      />
+                      {subPositions.loading ? (
+                        <p className="text-xs text-white/90 py-8">
+                          Loading sub positions...
+                        </p>
+                      ) : (
+                        <AppTable<Position>
+                          tableHeadRowClassName="bg-gray-900"
+                          tableBodyRowClassName="bg-[#334154] border-3 border-white/50"
+                          columns={subPositionsTableColumn}
+                          data={subPositions.data.slice(-3)}
+                        />
+                      )}
                     </div>
                   </div>
                 }
+              />
+            )}
+          </div>
+          <PaginationControls />
+        </div>
+
+        <div className="border-2 border-white/10 overflow-hidden rounded-2xl bg-gray-800 mb-5">
+          <div className="flex p-5 justify-between items-center">
+            <h3 className="text-white/90 font-semibold">Stats</h3>
+          </div>
+
+          <div className="overflow-x-auto max-h-[80vh]">
+            {stats.loading ? (
+              <div className="text-sm text-white/90 w-full h-full flex justify-center items-center">
+                Loading Stats...
+              </div>
+            ) : (
+              <AppTable<StatExchange>
+                columns={statusExchangesColumns}
+                data={stats.data.exchanges}
               />
             )}
           </div>
