@@ -10,7 +10,7 @@ import {
 } from '../../types';
 import { shortenString } from '../../utils/stringTool';
 import { RiDeleteBin5Line } from 'react-icons/ri';
-import InvestorRowActionButtons from '../../components/InvestorRowActionButtons';
+import InvestorRowActions from '../../components/InvestorRowActions';
 import { get24HourDateTime } from '../../utils/dateUtils';
 import moment from 'moment';
 
@@ -288,7 +288,7 @@ export const investorTableColumn: TableColumn<Investor>[] = [
     label: '',
     value: '',
     render(investor) {
-      return <InvestorRowActionButtons investor={investor} />;
+      return <InvestorRowActions investor={investor} />;
     },
   },
 ];

@@ -4,16 +4,13 @@ import { RiDeleteBin5Line } from 'react-icons/ri';
 import { useAppDispatch } from '../hooks';
 import { deleteInvestor } from '../redux/api/investors';
 import { useState } from 'react';
-import AddInvestorDialog from './Dialogs/AddInvestorDialog';
 import EditInvestorDialog from './Dialogs/EditInvestorDialog';
 
-interface InvestorRowActionButtonsProps {
+interface InvestorRowActionsProps {
   investor: Investor;
 }
 
-const InvestorRowActionButtons = ({
-  investor,
-}: InvestorRowActionButtonsProps) => {
+const InvestorRowActions = ({ investor }: InvestorRowActionsProps) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const dispatch = useAppDispatch();
   const [deleting, setDeleting] = useState(false);
@@ -32,7 +29,7 @@ const InvestorRowActionButtons = ({
 
           setDialogOpen(true);
         }}
-        className="p-1 hover:bg-primary-dark rounded-full"
+        className="p-4 md:p-2 hover:bg-primary-dark rounded-full"
       >
         <FiEdit2 />
       </button>
@@ -42,7 +39,7 @@ const InvestorRowActionButtons = ({
 
           handleDeleteInvestor();
         }}
-        className={`p-1 hover:bg-primary-dark rounded-full ${
+        className={`p-4 md:p-2 hover:bg-primary-dark rounded-full ${
           deleting ? 'animate-spin' : ''
         }`}
       >
@@ -59,4 +56,4 @@ const InvestorRowActionButtons = ({
   );
 };
 
-export default InvestorRowActionButtons;
+export default InvestorRowActions;

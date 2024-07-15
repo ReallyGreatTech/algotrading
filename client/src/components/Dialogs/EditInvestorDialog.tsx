@@ -72,7 +72,9 @@ const EditInvestorDialog = ({
             Cancel
           </button>
           <button
-            className="py-3 px-5 bg-primary rounded-lg text-white shadow-primary"
+            className={`py-3 px-5 bg-primary rounded-lg text-white shadow-primary ${
+              investors.isPending ? 'animate-pulse' : 'animate-none'
+            }`}
             onClick={handleUpdateInvestor}
           >
             {investors.isPending ? 'Updating investor...' : 'Update Investor'}
