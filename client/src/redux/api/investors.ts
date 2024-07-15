@@ -27,11 +27,11 @@ export const addInvestor = createAsyncThunk(
 );
 
 export const updateInvestor = createAsyncThunk(
-  'tokens/addInvestor',
+  'tokens/updateInvestor',
   async (updateData: UpdateInvestorData, { rejectWithValue }) => {
     try {
       const { data: investor } = await apiClient.put<Investor>(
-        `/investors/${updateData.id}`,
+        `/investors/${updateData.id}/`,
         updateData.data
       );
 

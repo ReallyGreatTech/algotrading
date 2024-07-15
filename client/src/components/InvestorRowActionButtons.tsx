@@ -4,6 +4,8 @@ import { RiDeleteBin5Line } from 'react-icons/ri';
 import { useAppDispatch } from '../hooks';
 import { deleteInvestor } from '../redux/api/investors';
 import { useState } from 'react';
+import AddInvestorDialog from './Dialogs/AddInvestorDialog';
+import EditInvestorDialog from './Dialogs/EditInvestorDialog';
 
 interface InvestorRowActionButtonsProps {
   investor: Investor;
@@ -12,6 +14,7 @@ interface InvestorRowActionButtonsProps {
 const InvestorRowActionButtons = ({
   investor,
 }: InvestorRowActionButtonsProps) => {
+  const [dialogOpen, setDialogOpen] = useState(false);
   const dispatch = useAppDispatch();
   const [deleting, setDeleting] = useState(false);
 
@@ -24,8 +27,10 @@ const InvestorRowActionButtons = ({
   return (
     <div className="flex gap-4">
       <button
-        onClick={() => {
-          console.log('Editing: ', investor);
+        onClick={(e) => {
+          e.stopPropagation();
+
+          setDialogOpen(true);
         }}
         className="p-1 hover:bg-primary-dark rounded-full"
       >
@@ -43,6 +48,13 @@ const InvestorRowActionButtons = ({
       >
         <RiDeleteBin5Line />
       </button>
+
+      <EditInvestorDialog
+        investor={investor}
+        open={dialogOpen}
+        rootStyle={{ maxWidth: '38em' }}
+        onClose={() => setDialogOpen(false)}
+      />
     </div>
   );
 };
