@@ -37,6 +37,7 @@ export interface Position {
 export interface Wallet {
   name: string;
   address: string;
+  balance: number;
   id: number;
   investors: Investor[];
   exchange_balances: ExchangeBalance[];
@@ -45,6 +46,15 @@ export interface Wallet {
   current_value: number;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface UpdateWalletData {
+  id: number;
+  data: {
+    name?: string;
+    address?: string;
+    balance?: string;
+  };
 }
 
 export interface Investor {
@@ -222,10 +232,8 @@ export interface Stat {
   exchanges: StatExchange[];
 }
 
-
 export interface WalletItem {
-  name: string
-  address: string
-  balance: string
-  
+  name: string;
+  address: string;
+  balance: string;
 }

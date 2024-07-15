@@ -35,17 +35,17 @@ const investorsSlice = createSlice({
   extraReducers: (builder) => {
     //fetch investors
     builder.addCase(fetchInvestors.pending, (state) => {
-      state.isPending = true;
+      state.loading = true;
     });
     builder.addCase(
       fetchInvestors.fulfilled,
       (state, action: PayloadAction<{ results: Investor[] }>) => {
         state.data = action.payload.results;
-        state.isPending = false;
+        state.loading = false;
       }
     );
     builder.addCase(fetchInvestors.rejected, (state, action) => {
-      state.isPending = false;
+      state.loading = false;
       state.data = [];
       state.error = action.payload as string;
     });

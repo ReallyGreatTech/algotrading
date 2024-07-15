@@ -12,7 +12,7 @@ export const fetchInvestors = createAsyncThunk(
 
       return data;
     } catch (error: unknown) {
-      return rejectWithValue("Something went wrong ");
+      return rejectWithValue('Something went wrong ');
     }
   }
 );
@@ -30,7 +30,7 @@ export const updateInvestor = createAsyncThunk(
   'tokens/updateInvestor',
   async (updateData: UpdateInvestorData, { rejectWithValue }) => {
     try {
-      const { data: investor } = await apiClient.put<Investor>(
+      const { data: investor } = await apiClient.patch<Investor>(
         `/investors/${updateData.id}/`,
         updateData.data
       );
