@@ -1,4 +1,3 @@
-import { FiEdit2 } from 'react-icons/fi';
 import {
   ExchangeBalance,
   Investor,
@@ -13,6 +12,9 @@ import { RiDeleteBin5Line } from 'react-icons/ri';
 import InvestorRowActions from '../../components/InvestorRowActions';
 import { get24HourDateTime } from '../../utils/dateUtils';
 import moment from 'moment';
+import WalletRowActionButtons from '../../components/WalletRowActionButtons';
+
+// const dispatch = useAppDispatch()
 
 export const positionsTableColumn: TableColumn<Position>[] = [
   {
@@ -190,8 +192,8 @@ export const exchangesBalanceTableColumn: TableColumn<ExchangeBalance>[] = [
 
 export const walletsTableColumn: TableColumn<Wallet>[] = [
   {
-    label: 'Wallet',
-    value: 'wallet',
+    label: 'Wallet Address',
+    value: 'address',
     render(item: Wallet) {
       return shortenString(item.address, 10);
     },
@@ -216,27 +218,8 @@ export const walletsTableColumn: TableColumn<Wallet>[] = [
   {
     label: '',
     value: '',
-    render(item) {
-      return (
-        <div className="flex gap-4">
-          <button
-            onClick={() => {
-              console.log('Editing: ', item);
-            }}
-            className="p-1 hover:bg-primary-dark rounded-full"
-          >
-            <FiEdit2 />
-          </button>
-          <button
-            onClick={() => {
-              console.log('Deleting: ', item);
-            }}
-            className="p-1 hover:bg-primary-dark rounded-full"
-          >
-            <RiDeleteBin5Line />
-          </button>
-        </div>
-      );
+    render(wallet) {
+      return <WalletRowActionButtons wallet={wallet} />;
     },
   },
 ];
@@ -331,7 +314,7 @@ export const statusExchangesColumns: TableColumn<StatExchange>[] = [
     label: 'Latest Update',
     value: 'latest_update',
     render: (item) => {
-      let timeUpdated = moment(item.latest_update).fromNow();
+      const timeUpdated = moment(item.latest_update).fromNow();
       return timeUpdated[0].toUpperCase() + timeUpdated.slice(1);
     },
   },

@@ -1,12 +1,30 @@
-import { DialogProps } from '../../types';
-import { IoMdClose } from 'react-icons/io';
-import Dialog from './AppDialog';
-import Input from '../Input';
-import InputLabel from '../InputLabel';
+import { DialogProps } from "../../types";
+import { IoMdClose } from "react-icons/io";
+import Dialog from "./AppDialog";
+import Input from "../Input";
+import { useAppDispatch } from "../../hooks";
+import { addWallet } from "../../redux/api/wallets";
+import { useState } from "react";
 
 interface AddWalletDialogProps extends DialogProps {}
 
 const AddWalletDialog = ({ open, onClose, ...rest }: AddWalletDialogProps) => {
+
+  const [walletFormData, setWalletFormData] = useState({
+    name: "",
+    address: "",
+    balance:""
+  }) 
+
+  const dispatch = useAppDispatch();
+
+  const handleAddWallet = () => {
+    dispatch(
+      addWallet(walletFormData)
+    );
+    onClose();
+  };
+
   return (
     <Dialog {...rest} open={open} onClose={onClose} maxWidth="xl" fullWidth>
       <div className="border-2 border-white/10 overflow-hidden rounded-2xl bg-gray-800">
@@ -26,14 +44,21 @@ const AddWalletDialog = ({ open, onClose, ...rest }: AddWalletDialogProps) => {
             <div>
               <div className="col-span-2">
                 <Input
+                  value={walletFormData.name}
                   autoFocus
-                  placeholder="Add Wallet ID"
-                  label="Wallet ID"
+                  placeholder="Add Wallet name"
+                  label="Wallet Name"
+                  onChange={(evt) =>
+                    setWalletFormData({
+                      ...walletFormData,
+                      name: evt.target.value,
+                    })
+                  }
                 />
               </div>
             </div>
 
-            <div>
+            {/* <div>
               <InputLabel>Start Time</InputLabel>
               <div className="grid grid-cols-2 gap-5">
                 <div className="col-span-1">
@@ -47,18 +72,32 @@ const AddWalletDialog = ({ open, onClose, ...rest }: AddWalletDialogProps) => {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
 
             <div className="col-span-2">
               <Input
-                placeholder="Add initial investment"
-                label="Initial Investment"
+                placeholder="Add address "
+                label="Wallet wallet address"
+                value={walletFormData.address}
+                onChange={(evt) =>
+                  setWalletFormData({
+                    ...walletFormData,
+                    address: evt.target.value,
+                  })
+                }
               />
             </div>
             <div className="col-span-2">
               <Input
-                placeholder="Add current investment"
-                label="Current Investment"
+                placeholder="Add wallet balance"
+                label="Wallet Balance"
+                value={walletFormData.balance}
+                onChange={(evt) =>
+                  setWalletFormData({
+                    ...walletFormData,
+                    balance: evt.target.value,
+                  })
+                }
               />
             </div>
           </div>
@@ -71,7 +110,10 @@ const AddWalletDialog = ({ open, onClose, ...rest }: AddWalletDialogProps) => {
           >
             Cancel
           </button>
-          <button className="py-3 px-5 bg-primary rounded-lg text-white shadow-primary">
+          <button
+            className="py-3 px-5 bg-primary rounded-lg text-white shadow-primary"
+            onClick={handleAddWallet}
+          >
             Add Wallet
           </button>
         </div>

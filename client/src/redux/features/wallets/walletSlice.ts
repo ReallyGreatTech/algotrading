@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
 import { Wallet } from '../../../types';
 import { fetchTokens } from '../../api/tokens';
-import { fetchWallets } from '../../api/wallets';
+import { addWallet, deleteWallet, fetchWallets } from '../../api/wallets';
+
 
 interface WalletsState {
   loading: boolean;
@@ -18,7 +18,7 @@ const initialState: WalletsState = {
 
 const walletsSlice = createSlice({
   name: 'wallets',
-  initialState,
+  initialState,  
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchWallets.pending, (state) => {
@@ -36,7 +36,16 @@ const walletsSlice = createSlice({
       state.data = [];
       state.error = action.payload as string;
     });
+    builder.addCase(addWallet.fulfilled, (state,action) => {
+        state.data.push(action.payload)
+    })
+    builder.addCase(deleteWallet.fulfilled, (state, action) => {
+      
+      state.data = state.data.filter((wallet) => wallet.id !== action.payload.id)
+      console.log(action.payload)
+    })
   },
+  
 });
 
 export default walletsSlice.reducer;
