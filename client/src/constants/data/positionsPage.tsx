@@ -8,7 +8,6 @@ import {
   Wallet,
 } from '../../types';
 import { shortenString } from '../../utils/stringTool';
-import { RiDeleteBin5Line } from 'react-icons/ri';
 import InvestorRowActions from '../../components/InvestorRowActions';
 import { get24HourDateTime } from '../../utils/dateUtils';
 import moment from 'moment';
