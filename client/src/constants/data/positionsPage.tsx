@@ -3,6 +3,7 @@ import {
   Investor,
   InvestorAction,
   Position,
+  PositionsGroup,
   StatExchange,
   TableColumn,
   Wallet,
@@ -13,20 +14,18 @@ import { get24HourDateTime } from '../../utils/dateUtils';
 import moment from 'moment';
 import WalletRowActionButtons from '../../components/WalletRowActionButtons';
 
-// const dispatch = useAppDispatch()
-
-export const positionsTableColumn: TableColumn<Position>[] = [
+export const positionsTableColumn: TableColumn<PositionsGroup>[] = [
   {
     label: 'Date',
-    value: 'date',
+    value: 'min_opened_at',
     tableHeadCellClassName: 'min-w-[8em]',
-    render: (item) => new Date(item.opened_at).toLocaleDateString(),
+    render: (item) => new Date(item.min_opened_at).toLocaleDateString(),
   },
   {
     label: 'Time',
     value: 'opened_at',
     tableHeadCellClassName: 'min-w-[8em]',
-    render: (item) => new Date(item.opened_at).toLocaleTimeString(),
+    render: (item) => new Date(item.min_opened_at).toLocaleTimeString(),
   },
   {
     label: 'Token',
@@ -34,59 +33,99 @@ export const positionsTableColumn: TableColumn<Position>[] = [
     tableHeadCellClassName: 'min-w-[5em]',
   },
   {
-    label: 'Leverage',
-    value: 'leverage',
-    tableHeadCellClassName: 'min-w-[10em]',
+    label: 'Leverage Amount',
+    value: 'leveraged_value',
+    tableHeadCellClassName: 'min-w-[12em]',
   },
   {
-    label: 'Leverage Amount',
-    value: 'leveraged_amount',
+    label: 'Non-Leverage Amount',
+    value: 'non_leveraged_value',
     tableHeadCellClassName: 'min-w-[12em]',
   },
   {
     label: 'Average Mark Price',
-    value: 'average_mark_price',
+    value: 'avg_mark_price_usd',
     tableHeadCellClassName: 'min-w-[12em]',
-    render: () => 'N/A',
   },
   {
     label: 'Average Daily Funding',
-    value: 'nonLeverageValue',
+    value: 'average_funding_rate',
     tableHeadCellClassName: 'min-w-[12em]',
-    render: () => 'N/A',
+    render: (item) => {
+      return item.avg_daily_funding_usd ? item.avg_daily_funding_usd : 0;
+    },
   },
   {
     label: 'SL',
     value: 'stop_loss',
     tableHeadCellClassName: 'min-w-[10em]',
+    render(item) {
+      return (item.min_stop_loss + item.max_stop_loss) / 2;
+    },
   },
   {
     label: 'TP',
     value: 'take_profit',
     tableHeadCellClassName: 'min-w-[10em]',
+    render(item) {
+      return (item.min_take_profit + item.max_take_profit) / 2;
+    },
   },
   {
     label: 'Entry Price',
     value: 'entry_price',
     tableHeadCellClassName: 'min-w-[12em]',
+    render: (item) => {
+      let totalEntryPrice = 0;
+
+      if (!item.positions.length) return 0;
+
+      item.positions.forEach((p) => {
+        totalEntryPrice += p.entry_price;
+      });
+
+      return totalEntryPrice / item.positions.length;
+    },
   },
   {
     label: 'Liquidation Price',
-    value: 'liquidation_price',
+    value: 'min_liquidation_price',
     tableHeadCellClassName: 'min-w-[12em]',
-    // render: () => 'N/A',
+    render: (item) => {
+      return (item.min_liquidation_price + item.max_liquidation_price) / 2;
+    },
   },
   {
     label: '%SL',
     value: 'fundingRecieved',
     tableHeadCellClassName: 'min-w-[10em]',
-    render: () => 'N/A',
+    render: (item) => {
+      let total_percent = 0;
+
+      if (!item.positions.length) return 0;
+
+      item.positions.forEach((p) => {
+        total_percent += p.percent_stop_loss;
+      });
+
+      return total_percent / item.positions.length;
+    },
   },
   {
     label: '%TP',
     value: 'fundingPaidRate',
     tableHeadCellClassName: 'min-w-[10em]',
-    render: () => 'N/A',
+    render: (item) => {
+      let total_percent = 0;
+
+      if (!item.positions.length) return 0;
+
+      item.positions.forEach((p) => {
+        total_percent += p.percent_take_profit;
+      });
+
+      return total_percent / item.positions.length;
+    },
   },
 ];
 
@@ -126,9 +165,9 @@ export const subPositionsTableColumn: TableColumn<Position>[] = [
   },
   {
     label: 'Mark Price',
-    value: 'markPrice',
+    value: 'mark_price_usd',
     tableHeadCellClassName: 'min-w-[8em]',
-    render: () => `Unknown`,
+    // render: () => `Unknown`,
   },
   {
     label: 'Daily Funding',

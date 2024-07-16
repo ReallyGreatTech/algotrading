@@ -32,6 +32,28 @@ export interface Position {
   updated_at: string;
   trading_pair: string;
   wallet: number;
+  percent_take_profit: number;
+  percent_stop_loss: number;
+  mark_price_usd: number;
+}
+
+export interface PositionsGroup {
+  token: string;
+  positions: Position[];
+  min_opened_at: string;
+  max_closed_at: string | null;
+  non_leveraged_value: number;
+  leveraged_value: number;
+  total_funding_received_usd: number;
+  avg_mark_price_usd: number;
+  avg_daily_funding_usd: number | null;
+  delta_pnl: number;
+  min_stop_loss: number;
+  max_stop_loss: number;
+  min_take_profit: number;
+  max_take_profit: number;
+  min_liquidation_price: number;
+  max_liquidation_price: number;
 }
 
 export interface Wallet {
