@@ -13,7 +13,7 @@ import {
 import {
   exchangesBalanceTableColumn,
   investorTableColumn,
-  positionsTableColumn,
+  positionGroupsTableColumn,
   statusExchangesColumns,
   subPositionsTableColumn,
   walletsTableColumn,
@@ -213,7 +213,7 @@ const Positions = () => {
                       );
                     },
                   },
-                  ...positionsTableColumn,
+                  ...positionGroupsTableColumn,
                 ]}
                 data={positionGroups.data}
                 expansionId={expandedPosition}
