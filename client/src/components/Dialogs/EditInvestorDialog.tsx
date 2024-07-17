@@ -1,27 +1,33 @@
-import { DialogProps } from '../../types';
+import { DialogProps, Investor } from '../../types';
 import { IoMdClose } from 'react-icons/io';
 import Dialog from './AppDialog';
 import Input from '../Input';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { addInvestor } from '../../redux/api/investors';
+import { updateInvestor } from '../../redux/api/investors';
 import { useState } from 'react';
 
-interface AddInvestorDialogProps extends DialogProps {}
+interface EditInvestorDialogProps extends DialogProps {
+  investor: Investor;
+}
 
-const AddInvestorDialog = ({
+const EditInvestorDialog = ({
   open,
   onClose,
+  investor,
   ...rest
-}: AddInvestorDialogProps) => {
+}: EditInvestorDialogProps) => {
   const dispatch = useAppDispatch();
   const investors = useAppSelector((state) => state.investors);
-  const [name, setName] = useState('');
+  const [name, setName] = useState(investor.name);
 
-  const handleAddInvestor = async () => {
+  const handleUpdateInvestor = async () => {
     if (name)
       await dispatch(
-        addInvestor({
-          name,
+        updateInvestor({
+          id: investor.id,
+          data: {
+            name,
+          },
         })
       );
 
@@ -32,7 +38,7 @@ const AddInvestorDialog = ({
     <Dialog {...rest} open={open} onClose={onClose} maxWidth="xl" fullWidth>
       <div className="border-2 border-white/10 overflow-hidden rounded-2xl bg-gray-800">
         <div className="flex justify-between items-center px-3 py-6">
-          <h3 className="text-white/80 font-semibold text-xl">Add Investor</h3>
+          <h3 className="text-white/80 font-semibold text-xl">Edit Investor</h3>
           <button
             onClick={onClose}
             className="p-4 rounded-lg border-2 border-primary bg-[#121C2D] text-white shadow-primary"
@@ -50,6 +56,7 @@ const AddInvestorDialog = ({
                   autoFocus
                   placeholder="Add investor name"
                   label="Investor Name"
+                  value={name}
                   onChange={({ target: input }) => setName(input.value)}
                 />
               </div>
@@ -65,10 +72,12 @@ const AddInvestorDialog = ({
             Cancel
           </button>
           <button
-            className="py-3 px-5 bg-primary rounded-lg text-white shadow-primary"
-            onClick={handleAddInvestor}
+            className={`py-3 px-5 bg-primary rounded-lg text-white shadow-primary ${
+              investors.isPending ? 'animate-pulse' : 'animate-none'
+            }`}
+            onClick={handleUpdateInvestor}
           >
-            {investors.isPending ? 'Adding investor...' : 'Add Investor'}
+            {investors.isPending ? 'Updating investor...' : 'Update Investor'}
           </button>
         </div>
       </div>
@@ -76,4 +85,4 @@ const AddInvestorDialog = ({
   );
 };
 
-export default AddInvestorDialog;
+export default EditInvestorDialog;

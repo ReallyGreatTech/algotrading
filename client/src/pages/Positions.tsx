@@ -6,6 +6,7 @@ import {
   ExchangeBalance,
   Investor,
   Position,
+  PositionsGroup,
   StatExchange,
   Wallet,
 } from '../types';
@@ -36,7 +37,7 @@ const Positions = () => {
   const [investorDialogOpen, setInvestorDialogOpen] = useState(false);
   const [addWalletDialogOpen, setAddWalletDialogOpen] = useState(false);
   const [addInvestorDialogOpen, setAddInvestorDialogOpen] = useState(false);
-  const [expandedPosition, setExpandedPosition] = useState<number | undefined>(
+  const [expandedPosition, setExpandedPosition] = useState<string | undefined>(
     undefined
   );
   const [addPositionsTableDialogOpen, setAddPositionsTableDialogOpen] =
@@ -44,19 +45,19 @@ const Positions = () => {
 
   const wallets = useAppSelector((state) => state.wallets);
   const investors = useAppSelector((state) => state.investors);
-  const positions = useAppSelector((state) => state.positions);
+  const positionGroups = useAppSelector((state) => state.positions);
   const subPositions = useAppSelector((state) => state.subPositions);
   const stats = useAppSelector((state) => state.stats);
 
   const dispatch = useAppDispatch();
 
-  const handlePositionsRowExpansion = (item: Position) => {
-    if (expandedPosition !== item.id && expandedPosition !== undefined) {
+  const handlePositionsRowExpansion = (item: PositionsGroup) => {
+    if (expandedPosition !== item.token && expandedPosition !== undefined) {
       dispatch(fetchSubPositions({ token: item.token }));
-      setExpandedPosition(item.id);
+      setExpandedPosition(item.token);
     } else if (expandedPosition === undefined) {
       dispatch(fetchSubPositions({ token: item.token }));
-      setExpandedPosition(item.id);
+      setExpandedPosition(item.token);
     } else setExpandedPosition(undefined);
   };
 
@@ -79,7 +80,6 @@ const Positions = () => {
     dispatch(fetchWallets());
     dispatch(fetchInvestors());
     dispatch(fetchPositions());
-
     dispatch(fetchStatsRecurrently());
   }, []);
 
@@ -164,7 +164,7 @@ const Positions = () => {
           <div className="overflow-x-auto max-h-[80vh]">
             {wallets.loading ? (
               <div className="text-sm text-white/90 w-full h-full flex justify-center items-center">
-                Loading positions...
+                Loading exchange balances...
               </div>
             ) : (
               <AppTable<ExchangeBalance>
@@ -188,12 +188,12 @@ const Positions = () => {
           </div>
 
           <div className="overflow-x-auto max-h-[80vh]">
-            {positions.loading ? (
+            {positionGroups.loading ? (
               <div className="text-sm text-white/90 w-full h-full flex justify-center items-center">
                 Loading positions...
               </div>
             ) : (
-              <AppTable<Position>
+              <AppTable<PositionsGroup>
                 columns={[
                   {
                     label: '',
@@ -204,7 +204,7 @@ const Positions = () => {
                           className="p-2 hover:bg-primary-dark rounded-full"
                           onClick={() => handlePositionsRowExpansion(item)}
                         >
-                          {item.id === expandedPosition ? (
+                          {item.token === expandedPosition ? (
                             <MdOutlineKeyboardArrowDown />
                           ) : (
                             <MdOutlineKeyboardArrowRight />
@@ -215,9 +215,9 @@ const Positions = () => {
                   },
                   ...positionsTableColumn,
                 ]}
-                data={positions.data}
+                data={positionGroups.data}
                 expansionId={expandedPosition}
-                expansionProperty={'id'}
+                expansionProperty={'token'}
                 expandComponent={
                   <div className="bg-[#334154] p-5">
                     <div className="border-1 border-white/50 ">
@@ -230,7 +230,7 @@ const Positions = () => {
                           tableHeadRowClassName="bg-gray-900"
                           tableBodyRowClassName="bg-[#334154] border-3 border-white/50"
                           columns={subPositionsTableColumn}
-                          data={subPositions.data.slice(-3)}
+                          data={subPositions.data}
                         />
                       )}
                     </div>

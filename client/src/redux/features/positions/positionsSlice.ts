@@ -1,10 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Position } from '../../../types';
+import { PositionsGroup } from '../../../types';
 import { fetchPositions } from '../../api/positions';
 
 interface PositionsState {
   loading: boolean;
-  data: Position[];
+  data: PositionsGroup[];
   error: string;
 }
 
@@ -24,8 +24,8 @@ const positionsSlice = createSlice({
     });
     builder.addCase(
       fetchPositions.fulfilled,
-      (state, action: PayloadAction<{ results: Position[] }>) => {
-        state.data = action.payload.results;
+      (state, action: PayloadAction<PositionsGroup[]>) => {
+        state.data = action.payload;
         state.loading = false;
       }
     );

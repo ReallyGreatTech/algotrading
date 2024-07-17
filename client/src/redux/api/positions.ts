@@ -1,13 +1,13 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { apiClient } from './apiClient';
-import { Position } from '../../types';
+import { Position, PositionsGroup } from '../../types';
 
 export const fetchPositions = createAsyncThunk(
   'tokens/fetchPositions',
   async (_, { rejectWithValue }) => {
     try {
-      const { data } = await apiClient.get<{ results: Position[] }>(
-        '/positions'
+      const { data } = await apiClient.get<PositionsGroup[]>(
+        '/position-groups/'
       );
 
       return data;

@@ -4,11 +4,13 @@ import {
   addInvestor,
   deleteInvestor,
   fetchInvestors,
+  updateInvestor,
 } from '../../api/investors';
 import { AppDispatch } from '../../store';
 
 interface InvestorsState {
   loading: boolean;
+  isPending: boolean;
   selectedInvestor: number | undefined;
   data: Investor[];
   error: string;
@@ -16,6 +18,7 @@ interface InvestorsState {
 
 const initialState: InvestorsState = {
   loading: false,
+  isPending: false,
   selectedInvestor: undefined,
   data: [],
   error: '',
@@ -59,16 +62,42 @@ const investorsSlice = createSlice({
       state.error = action.payload as string;
     });
 
+    // Update investor
+    builder.addCase(updateInvestor.pending, (state) => {
+      state.isPending = true;
+    });
+    builder.addCase(
+      updateInvestor.fulfilled,
+      (state, action: PayloadAction<Investor>) => {
+        const updatedInvestor = action.payload;
+        const index = state.data.findIndex(
+          (investor) => investor.id === updatedInvestor.id
+        );
+
+        if (index > -1) state.data[index] = updatedInvestor;
+
+        state.isPending = false;
+      }
+    );
+    builder.addCase(updateInvestor.rejected, (state, action) => {
+      state.error = action.payload as string;
+      state.isPending = false;
+    });
+
     //Delete investor
-    builder.addCase(deleteInvestor.pending, () => {});
+    builder.addCase(deleteInvestor.pending, (state) => {
+      state.isPending = true;
+    });
     builder.addCase(
       deleteInvestor.fulfilled,
-      (state, action: PayloadAction<Investor>) => {
+      (state, action: PayloadAction<{ id: number }>) => {
         state.data = state.data.filter((d) => d.id !== action.payload.id);
+        state.isPending = false;
       }
     );
     builder.addCase(deleteInvestor.rejected, (state, action) => {
       state.error = action.payload as string;
+      state.isPending = false;
     });
   },
 });
