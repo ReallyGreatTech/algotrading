@@ -1,4 +1,4 @@
-import { LocalStorageMarketData, Market } from '../types';
+import { LocalStorageMarketData } from '../types';
 
 export const martketsData: LocalStorageMarketData = {
   hidden: [],
