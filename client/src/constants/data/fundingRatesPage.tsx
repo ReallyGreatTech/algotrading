@@ -1,7 +1,5 @@
-import { Tab } from '../../types';
-
-import { BsBookmarkStarFill } from 'react-icons/bs';
-import { FaEyeSlash, FaFilter } from 'react-icons/fa';
+import { Tab, Market } from '../../types';
+import FundingRateMarketActions from '../../components/FundingRateMarketActions';
 
 export const fundingRatesTableColumn = [
   {
@@ -45,20 +43,8 @@ export const fundingRatesTableColumn = [
   {
     label: 'Actions',
     value: '',
-    render: () => {
-      return (
-        <div className="flex gap-3 items-center justify-center ">
-          <span className=" hover:cursor-pointer hover:text-red-400 w-[2rem] h-[2rem] rounded-full flex items-center justify-center">
-            <FaEyeSlash size={'1.2rem'} />
-          </span>
-          <span className=" hover:cursor-pointer hover:text-yellow-400 w-[2rem] h-[2rem] rounded-full flex items-center justify-center">
-            <FaFilter />
-          </span>
-          <span className=" hover:cursor-pointer hover:text-green-400 w-[2rem] h-[2rem] rounded-full flex items-center justify-center">
-            <BsBookmarkStarFill />
-          </span>
-        </div>
-      );
+    render: (item: Market) => {
+      return <FundingRateMarketActions market={item} />;
     },
   },
 ];

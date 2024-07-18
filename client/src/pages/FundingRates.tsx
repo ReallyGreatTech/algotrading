@@ -65,12 +65,19 @@ const FundingRates = () => {
   const [_, setPriceChartData] = useState<PriceChartDataItem[]>([]);
   const selectedToken = useAppSelector((state) => state.token.selectedToken);
   const selectedTimeFilter = useAppSelector((state) => state.timefilter.time);
+  const localStorageMarketsData = useAppSelector(
+    (state) => state.localStorageMarketData
+  );
+
   const dispatch = useAppDispatch();
 
   const [availableExchanges, setAvailableExchanges] = useState<string[]>([]);
   const [timeRange, setTimeRange] = useState('1D');
 
   useEffect(() => {
+    const marketsData = localStorage.getItem('marketsData');
+    if (marketsData) {
+    }
     dispatch(fetchTokens());
 
     dispatch(fetchMarket({}));
@@ -186,6 +193,18 @@ const FundingRates = () => {
     return state.selecetedFundingHistory.data;
   });
 
+  const getUnhiddenMarket = () => {
+    const hidden = localStorageMarketsData.data.hidden;
+    let data: Market[] = filteredMarketData;
+
+    data = data.filter((m) => {
+      const index = hidden.findIndex((hm) => hm.id === m.id);
+      if (index == -1) return m;
+    });
+
+    return data;
+  };
+
   return (
     <section className="text-white pb-10 ">
       <div className="w-full">
@@ -290,7 +309,13 @@ const FundingRates = () => {
                 <AppTable<Market>
                   selectedRow={selecetedRow}
                   columns={fundingRatesTableColumn}
-                  data={filteredMarketData}
+                  data={
+                    fundingHistoryTab.label === 'Favorite'
+                      ? localStorageMarketsData.data.favourites
+                      : fundingHistoryTab.label === 'Hidden'
+                      ? localStorageMarketsData.data.hidden
+                      : getUnhiddenMarket()
+                  }
                   onRowClick={(item) => {
                     setSelectedRow(item);
 
