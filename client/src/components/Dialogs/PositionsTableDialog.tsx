@@ -2,7 +2,7 @@ import { Position, DialogProps } from '../../types';
 import { IoMdClose } from 'react-icons/io';
 import AppTable from '../AppTable';
 import Dialog from './AppDialog';
-import { positionsTableColumn } from '../../constants/data/positionsPage';
+import { subPositionsTableColumn } from '../../constants/data/positionsPage';
 import { MdNavigateBefore, MdNavigateNext } from 'react-icons/md';
 import { useAppSelector } from '../../hooks';
 
@@ -13,7 +13,7 @@ const PositionsTableDialog = ({
   onClose,
   ...rest
 }: PositionsTableDialogProps) => {
-  const positions = useAppSelector((state) => state.positions);
+  const positions = useAppSelector((state) => state.subPositions);
 
   return (
     <Dialog {...rest} open={open} onClose={onClose} maxWidth="full" fullWidth>
@@ -32,7 +32,7 @@ const PositionsTableDialog = ({
         <div className="mb-5">
           <div className="overflow-x-auto h-[30em]">
             <AppTable<Position>
-              columns={positionsTableColumn}
+              columns={subPositionsTableColumn}
               data={positions.data}
             />
           </div>

@@ -1,35 +1,31 @@
-
 import {
   ExchangeBalance,
   Investor,
   InvestorAction,
   Position,
+  PositionsGroup,
   StatExchange,
   TableColumn,
   Wallet,
 } from '../../types';
 import { shortenString } from '../../utils/stringTool';
-import InvestorRowActionButtons from '../../components/InvestorRowActionButtons';
+import InvestorRowActions from '../../components/InvestorRowActions';
 import { get24HourDateTime } from '../../utils/dateUtils';
-import moment from 'moment'
+import moment from 'moment';
 import WalletRowActionButtons from '../../components/WalletRowActionButtons';
 
-
-// const dispatch = useAppDispatch()
-
-
-export const positionsTableColumn: TableColumn<Position>[] = [
+export const positionGroupsTableColumn: TableColumn<PositionsGroup>[] = [
   {
     label: 'Date',
-    value: 'date',
+    value: 'min_opened_at',
     tableHeadCellClassName: 'min-w-[8em]',
-    render: (item) => new Date(item.opened_at).toLocaleDateString(),
+    render: (item) => new Date(item.min_opened_at).toLocaleDateString(),
   },
   {
     label: 'Time',
     value: 'opened_at',
     tableHeadCellClassName: 'min-w-[8em]',
-    render: (item) => new Date(item.opened_at).toLocaleTimeString(),
+    render: (item) => new Date(item.min_opened_at).toLocaleTimeString(),
   },
   {
     label: 'Token',
@@ -37,59 +33,77 @@ export const positionsTableColumn: TableColumn<Position>[] = [
     tableHeadCellClassName: 'min-w-[5em]',
   },
   {
-    label: 'Leverage',
-    value: 'leverage',
-    tableHeadCellClassName: 'min-w-[10em]',
+    label: 'Non-Leverage Amount',
+    value: 'non_leveraged_value',
+    tableHeadCellClassName: 'min-w-[12em]',
   },
   {
     label: 'Leverage Amount',
-    value: 'leveraged_amount',
+    value: 'leveraged_value',
+    tableHeadCellClassName: 'min-w-[12em]',
+  },
+  {
+    label: 'Total Funding Paid',
+    value: 'total_funding_received_usd',
     tableHeadCellClassName: 'min-w-[12em]',
   },
   {
     label: 'Average Mark Price',
-    value: 'average_mark_price',
+    value: 'avg_mark_price_usd',
     tableHeadCellClassName: 'min-w-[12em]',
-    render: () => 'N/A',
   },
   {
     label: 'Average Daily Funding',
-    value: 'nonLeverageValue',
+    value: 'average_funding_rate',
     tableHeadCellClassName: 'min-w-[12em]',
-    render: () => 'N/A',
+    render: (item) => {
+      return item.avg_daily_funding_usd ? item.avg_daily_funding_usd : 0;
+    },
+  },
+  {
+    label: 'Delta PNL',
+    value: 'delta_pnl',
+    tableHeadCellClassName: 'min-w-[12em]',
   },
   {
     label: 'SL',
     value: 'stop_loss',
     tableHeadCellClassName: 'min-w-[10em]',
+    render(item) {
+      return (item.min_stop_loss + item.max_stop_loss) / 2;
+    },
   },
   {
     label: 'TP',
     value: 'take_profit',
     tableHeadCellClassName: 'min-w-[10em]',
+    render(item) {
+      return (item.min_take_profit + item.max_take_profit) / 2;
+    },
   },
   {
     label: 'Entry Price',
     value: 'entry_price',
     tableHeadCellClassName: 'min-w-[12em]',
+    render: (item) => {
+      let totalEntryPrice = 0;
+
+      if (!item.positions.length) return 0;
+
+      item.positions.forEach((p) => {
+        totalEntryPrice += p.entry_price;
+      });
+
+      return totalEntryPrice / item.positions.length;
+    },
   },
   {
-    label: 'Liquidation Price',
-    value: 'liquidation_price',
+    label: 'Non Leverage + Leverage Value',
+    value: 'min_liquidation_price',
     tableHeadCellClassName: 'min-w-[12em]',
-    // render: () => 'N/A',
-  },
-  {
-    label: '%SL',
-    value: 'fundingRecieved',
-    tableHeadCellClassName: 'min-w-[10em]',
-    render: () => 'N/A',
-  },
-  {
-    label: '%TP',
-    value: 'fundingPaidRate',
-    tableHeadCellClassName: 'min-w-[10em]',
-    render: () => 'N/A',
+    render: (item) => {
+      return item.non_leveraged_value + item.leveraged_value;
+    },
   },
 ];
 
@@ -100,9 +114,13 @@ export const subPositionsTableColumn: TableColumn<Position>[] = [
     tableHeadCellClassName: 'min-w-[8em]',
   },
   {
-    label: 'Funding Rate',
-    value: 'fundingRate',
-    render: () => `Unknown`,
+    label: 'Exchange',
+    value: 'exchange',
+    tableHeadCellClassName: 'min-w-[7em]',
+  },
+  {
+    label: 'Entry Price',
+    value: 'entry_price',
   },
   {
     label: 'Direction',
@@ -123,42 +141,50 @@ export const subPositionsTableColumn: TableColumn<Position>[] = [
     },
   },
   {
-    label: 'Exchange',
-    value: 'exchange',
-    tableHeadCellClassName: 'min-w-[7em]',
+    label: 'Leverage',
+    value: 'leverage',
+  },
+  {
+    label: 'Non-Leverage Value',
+    value: 'non_leverage',
+    render() {
+      return 'Unknown';
+    },
+  },
+  {
+    label: 'Current Funding Rate',
+    value: 'live_funding_rate_hourly',
+    render(item) {
+      return item.live_funding_rate_hourly ? item.live_funding_rate_hourly : 0;
+    },
+  },
+  {
+    label: 'Total Funding Received',
+    value: 'total_funding_received_usd',
   },
   {
     label: 'Mark Price',
-    value: 'markPrice',
-    tableHeadCellClassName: 'min-w-[8em]',
-    render: () => `Unknown`,
-  },
-  {
-    label: 'Daily Funding',
-    value: 'daily_funding',
-    render: () => `Unknown`,
-  },
-  {
-    label: 'Entry Price',
-    value: 'entry_price',
+    value: 'mark_price_usd',
   },
   {
     label: 'Liquidation',
     value: 'liquidation_price',
   },
   {
-    label: 'Exchange Balance',
-    value: 'exchangeBalance',
-    render: () => `Unknown`,
+    label: 'SL',
+    value: 'stop_loss',
   },
   {
-    label: '% Daily Funding',
-    value: 'daily_funding',
-    render: () => `Unknown`,
+    label: 'TP',
+    value: 'take_profit',
   },
   {
-    label: 'Unrealized PNL',
-    value: 'unrealized_pnl',
+    label: '%SL',
+    value: 'percent_stop_loss',
+  },
+  {
+    label: '%TP',
+    value: 'percent_take_profit',
   },
 ];
 
@@ -193,34 +219,33 @@ export const exchangesBalanceTableColumn: TableColumn<ExchangeBalance>[] = [
 ];
 
 export const walletsTableColumn: TableColumn<Wallet>[] = [
-  
   {
-    label: "Wallet Address",
-    value: "address",
+    label: 'Wallet Address',
+    value: 'address',
     render(item: Wallet) {
       return shortenString(item.address, 10);
     },
-    tableHeadCellClassName: "",
-    tableBodyCellClassName: "",
+    tableHeadCellClassName: '',
+    tableBodyCellClassName: '',
   },
   {
-    label: "Start Time",
-    value: "startTime",
+    label: 'Start Time',
+    value: 'startTime',
     render(item: Wallet) {
       return new Date(item.start_time_manual).toLocaleString();
     },
   },
   {
-    label: "Total Investment",
-    value: "total_investment",
+    label: 'Total Investment',
+    value: 'total_investment',
   },
   {
-    label: "Current Value",
-    value: "current_value",
+    label: 'Current Value',
+    value: 'current_value',
   },
   {
-    label: "",
-    value: "",
+    label: '',
+    value: '',
     render(wallet) {
       return <WalletRowActionButtons wallet={wallet} />;
     },
@@ -274,7 +299,7 @@ export const investorTableColumn: TableColumn<Investor>[] = [
     label: '',
     value: '',
     render(investor) {
-      return <InvestorRowActionButtons investor={investor} />;
+      return <InvestorRowActions investor={investor} />;
     },
   },
 ];

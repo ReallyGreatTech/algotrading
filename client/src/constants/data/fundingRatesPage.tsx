@@ -1,3 +1,6 @@
+import { BsBookmarkStarFill } from "react-icons/bs";
+import { FaEyeSlash, FaFilter } from "react-icons/fa";
+
 export const fundingRatesTableColumn = [
   {
     label: "Exchange",
@@ -36,6 +39,25 @@ export const fundingRatesTableColumn = [
   {
     label: "Open Interest",
     value: "open_interest",
+  },
+  {
+    label: "Actions",
+    value:"",
+    render: () => {
+      return (
+        <div className="flex gap-3 items-center justify-center ">
+          <span className=" hover:cursor-pointer hover:text-red-400 w-[2rem] h-[2rem] rounded-full flex items-center justify-center">
+            <FaEyeSlash size={"1.2rem"} />
+          </span>
+          <span className=" hover:cursor-pointer hover:text-yellow-400 w-[2rem] h-[2rem] rounded-full flex items-center justify-center">
+            <FaFilter />
+          </span>
+          <span className=" hover:cursor-pointer hover:text-green-400 w-[2rem] h-[2rem] rounded-full flex items-center justify-center">
+            <BsBookmarkStarFill />
+          </span>
+        </div>
+      );
+    },
   },
 ];
 

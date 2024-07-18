@@ -32,11 +32,36 @@ export interface Position {
   updated_at: string;
   trading_pair: string;
   wallet: number;
+  percent_take_profit: number;
+  percent_stop_loss: number;
+  mark_price_usd: number;
+  live_funding_rate_hourly: number | null;
+  total_funding_received_usd: null;
+}
+
+export interface PositionsGroup {
+  token: string;
+  positions: Position[];
+  min_opened_at: string;
+  max_closed_at: string;
+  non_leveraged_value: number;
+  leveraged_value: number;
+  total_funding_received_usd: number;
+  avg_mark_price_usd: number;
+  avg_daily_funding_usd: number;
+  delta_pnl: number;
+  min_stop_loss: number;
+  max_stop_loss: number;
+  min_take_profit: number;
+  max_take_profit: number;
+  min_liquidation_price: number;
+  max_liquidation_price: number;
 }
 
 export interface Wallet {
   name: string;
   address: string;
+  balance: number;
   id: number;
   investors: Investor[];
   exchange_balances: ExchangeBalance[];
@@ -45,6 +70,15 @@ export interface Wallet {
   current_value: number;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface UpdateWalletData {
+  id: number;
+  data: {
+    name?: string;
+    address?: string;
+    balance?: string;
+  };
 }
 
 export interface Investor {
@@ -222,10 +256,8 @@ export interface Stat {
   exchanges: StatExchange[];
 }
 
-
 export interface WalletItem {
-  name: string
-  address: string
-  balance: string
-  
+  name: string;
+  address: string;
+  balance: string;
 }
