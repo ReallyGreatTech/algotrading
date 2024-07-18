@@ -8,6 +8,7 @@ import {
   PriceChartDataItem,
 } from '../types';
 import {
+  fundingHistoryTabs,
   fundingRatesTableColumn,
   orderBookData,
   orderBookTableColumnPostive,
@@ -33,8 +34,12 @@ import {
 import { fetchTokens } from '../redux/api/tokens';
 import { fetchMarket } from '../redux/api/markets';
 import { subDays, subYears, isAfter } from 'date-fns';
+import Tabs from '../components/Tabs';
 
 const FundingRates = () => {
+  const [fundingHistoryTab, setFundingHistoryTab] = useState(
+    fundingHistoryTabs[0]
+  );
   const chartContainer = useRef<HTMLDivElement | null>(null);
   const [chartContainerHeight, setChartContainerHeight] = useState(5000);
   const [selecetedRow, setSelectedRow] = useState<Market | undefined>(
@@ -110,102 +115,6 @@ const FundingRates = () => {
   const handleGoClick = () => {
     dispatch(fetchMarket(getMarketParams()));
   };
-
-  // const getFundingData = () => {
-  //   const now = new Date();
-  //   const today = now.toISOString().split('T')[0];
-  //   const yesterday = new Date(now.setDate(now.getDate() - 1))
-  //     .toISOString()
-  //     .split('T')[0];
-  //   const twoDaysAgo = new Date(now.setDate(now.getDate() - 1))
-  //     .toISOString()
-  //     .split('T')[0];
-
-  //   const filteredData = fundingData.filter((item) => {
-  //     const itemDate = new Date(item.timestamp).toISOString().split('T')[0];
-  //     return (
-  //       itemDate === today || itemDate === yesterday || itemDate === twoDaysAgo
-  //     );
-  //   });
-
-  //   const transformedData = filteredData.map((item) => {
-  //     const formattedTimestamp = formatTimestamp(item.timestamp);
-  //     const itemDate = new Date(item.timestamp).toISOString().split('T')[0]; // Simplified date string for chart display
-  //     let funding;
-
-  //     switch (selectedTimeFilter) {
-  //       case '1H':
-  //         funding = item.hourly_funding;
-  //         break;
-  //       case '1D':
-  //         funding = item.daily_funding;
-  //         break;
-  //       case '1Y':
-  //         funding = item.annual_funding;
-  //         break;
-  //       default:
-  //         funding = item.annual_funding;
-  //     }
-
-  //     return {
-  //       timestamp: formattedTimestamp, // This is for display purposes elsewhere
-  //       chartDate: itemDate, // This is for chart display
-  //       funding,
-  //     };
-  //   });
-
-  //   return transformedData.reverse();
-  // };
-
-  // const getFundingData = () => {
-  //   const now = new Date();
-  //   let startDate;
-
-  //   switch (timeRange) {
-  //     case '1D':
-  //       startDate = subDays(now, 1);
-  //       break;
-  //     case '1W':
-  //       startDate = subDays(now, 7);
-  //       break;
-  //     case '1Y':
-  //       startDate = subYears(now, 1);
-  //       break;
-  //     default:
-  //       startDate = subDays(now, 1);
-  //   }
-
-  //   const filteredData = fundingData.filter((item) => {
-  //     const itemDate = new Date(item.timestamp);
-  //     return isAfter(itemDate, startDate);
-  //   });
-
-  //   const transformedData = filteredData.map((item) => {
-  //     const formattedTimestamp = formatTimestamp(item.timestamp);
-  //     let funding;
-
-  //     switch (selectedTimeFilter) {
-  //       case '1H':
-  //         funding = item.hourly_funding;
-  //         break;
-  //       case '1D':
-  //         funding = item.daily_funding;
-  //         break;
-  //       case '1Y':
-  //         funding = item.annual_funding;
-  //         break;
-  //       default:
-  //         funding = item.annual_funding;
-  //     }
-
-  //     return {
-  //       timestamp: formattedTimestamp,
-  //       funding,
-  //     };
-  //   });
-
-  //   return transformedData.reverse();
-  // };
 
   const getFundingData = () => {
     const now = new Date();
@@ -357,9 +266,17 @@ const FundingRates = () => {
         <div className="grid grid-cols-10 gap-4">
           <div className="border col-span-full lg:col-span-3 rounded-[16px] bg-gray-800 border-white/20 h-fit overflow-hidden">
             <div className="py-5 px-4">
-              <h3 className="text-white/90 font-bold text-base">
+              <h3 className="text-white/90 font-bold text-base mb-2">
                 Table results
               </h3>
+
+              <Tabs
+                tabs={fundingHistoryTabs}
+                activeTab={fundingHistoryTab}
+                onChange={(tab) => {
+                  setFundingHistoryTab(tab);
+                }}
+              />
             </div>
             <div
               className="overflow-x-auto text-black  min-h-[520px] h-auto max-h-[1000px]"

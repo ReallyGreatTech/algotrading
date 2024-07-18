@@ -261,3 +261,7 @@ export interface WalletItem {
   address: string;
   balance: string;
 }
+
+export interface Tab {
+  label: string;
+}
