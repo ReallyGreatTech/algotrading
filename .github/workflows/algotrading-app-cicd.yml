@@ -1,4 +1,4 @@
-name: Algotrading-app-UI
+name: Algotrading-app-UI-PROD 
 
 on:
     push:
