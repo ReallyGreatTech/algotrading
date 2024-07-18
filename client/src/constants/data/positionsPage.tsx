@@ -14,7 +14,7 @@ import { get24HourDateTime } from '../../utils/dateUtils';
 import moment from 'moment';
 import WalletRowActionButtons from '../../components/WalletRowActionButtons';
 
-export const positionsTableColumn: TableColumn<PositionsGroup>[] = [
+export const positionGroupsTableColumn: TableColumn<PositionsGroup>[] = [
   {
     label: 'Date',
     value: 'min_opened_at',
@@ -33,13 +33,18 @@ export const positionsTableColumn: TableColumn<PositionsGroup>[] = [
     tableHeadCellClassName: 'min-w-[5em]',
   },
   {
+    label: 'Non-Leverage Amount',
+    value: 'non_leveraged_value',
+    tableHeadCellClassName: 'min-w-[12em]',
+  },
+  {
     label: 'Leverage Amount',
     value: 'leveraged_value',
     tableHeadCellClassName: 'min-w-[12em]',
   },
   {
-    label: 'Non-Leverage Amount',
-    value: 'non_leveraged_value',
+    label: 'Total Funding Paid',
+    value: 'total_funding_received_usd',
     tableHeadCellClassName: 'min-w-[12em]',
   },
   {
@@ -54,6 +59,11 @@ export const positionsTableColumn: TableColumn<PositionsGroup>[] = [
     render: (item) => {
       return item.avg_daily_funding_usd ? item.avg_daily_funding_usd : 0;
     },
+  },
+  {
+    label: 'Delta PNL',
+    value: 'delta_pnl',
+    tableHeadCellClassName: 'min-w-[12em]',
   },
   {
     label: 'SL',
@@ -88,43 +98,11 @@ export const positionsTableColumn: TableColumn<PositionsGroup>[] = [
     },
   },
   {
-    label: 'Liquidation Price',
+    label: 'Non Leverage + Leverage Value',
     value: 'min_liquidation_price',
     tableHeadCellClassName: 'min-w-[12em]',
     render: (item) => {
-      return (item.min_liquidation_price + item.max_liquidation_price) / 2;
-    },
-  },
-  {
-    label: '%SL',
-    value: 'fundingRecieved',
-    tableHeadCellClassName: 'min-w-[10em]',
-    render: (item) => {
-      let total_percent = 0;
-
-      if (!item.positions.length) return 0;
-
-      item.positions.forEach((p) => {
-        total_percent += p.percent_stop_loss;
-      });
-
-      return total_percent / item.positions.length;
-    },
-  },
-  {
-    label: '%TP',
-    value: 'fundingPaidRate',
-    tableHeadCellClassName: 'min-w-[10em]',
-    render: (item) => {
-      let total_percent = 0;
-
-      if (!item.positions.length) return 0;
-
-      item.positions.forEach((p) => {
-        total_percent += p.percent_take_profit;
-      });
-
-      return total_percent / item.positions.length;
+      return item.non_leveraged_value + item.leveraged_value;
     },
   },
 ];
@@ -136,9 +114,13 @@ export const subPositionsTableColumn: TableColumn<Position>[] = [
     tableHeadCellClassName: 'min-w-[8em]',
   },
   {
-    label: 'Funding Rate',
-    value: 'fundingRate',
-    render: () => `Unknown`,
+    label: 'Exchange',
+    value: 'exchange',
+    tableHeadCellClassName: 'min-w-[7em]',
+  },
+  {
+    label: 'Entry Price',
+    value: 'entry_price',
   },
   {
     label: 'Direction',
@@ -159,42 +141,50 @@ export const subPositionsTableColumn: TableColumn<Position>[] = [
     },
   },
   {
-    label: 'Exchange',
-    value: 'exchange',
-    tableHeadCellClassName: 'min-w-[7em]',
+    label: 'Leverage',
+    value: 'leverage',
+  },
+  {
+    label: 'Non-Leverage Value',
+    value: 'non_leverage',
+    render() {
+      return 'Unknown';
+    },
+  },
+  {
+    label: 'Current Funding Rate',
+    value: 'live_funding_rate_hourly',
+    render(item) {
+      return item.live_funding_rate_hourly ? item.live_funding_rate_hourly : 0;
+    },
+  },
+  {
+    label: 'Total Funding Received',
+    value: 'total_funding_received_usd',
   },
   {
     label: 'Mark Price',
     value: 'mark_price_usd',
-    tableHeadCellClassName: 'min-w-[8em]',
-    // render: () => `Unknown`,
-  },
-  {
-    label: 'Daily Funding',
-    value: 'daily_funding',
-    render: () => `Unknown`,
-  },
-  {
-    label: 'Entry Price',
-    value: 'entry_price',
   },
   {
     label: 'Liquidation',
     value: 'liquidation_price',
   },
   {
-    label: 'Exchange Balance',
-    value: 'exchangeBalance',
-    render: () => `Unknown`,
+    label: 'SL',
+    value: 'stop_loss',
   },
   {
-    label: '% Daily Funding',
-    value: 'daily_funding',
-    render: () => `Unknown`,
+    label: 'TP',
+    value: 'take_profit',
   },
   {
-    label: 'Unrealized PNL',
-    value: 'unrealized_pnl',
+    label: '%SL',
+    value: 'percent_stop_loss',
+  },
+  {
+    label: '%TP',
+    value: 'percent_take_profit',
   },
 ];
 

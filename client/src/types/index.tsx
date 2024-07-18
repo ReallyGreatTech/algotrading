@@ -35,18 +35,20 @@ export interface Position {
   percent_take_profit: number;
   percent_stop_loss: number;
   mark_price_usd: number;
+  live_funding_rate_hourly: number | null;
+  total_funding_received_usd: null;
 }
 
 export interface PositionsGroup {
   token: string;
   positions: Position[];
   min_opened_at: string;
-  max_closed_at: string | null;
+  max_closed_at: string;
   non_leveraged_value: number;
   leveraged_value: number;
   total_funding_received_usd: number;
   avg_mark_price_usd: number;
-  avg_daily_funding_usd: number | null;
+  avg_daily_funding_usd: number;
   delta_pnl: number;
   min_stop_loss: number;
   max_stop_loss: number;
