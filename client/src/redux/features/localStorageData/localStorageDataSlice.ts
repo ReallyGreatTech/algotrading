@@ -5,6 +5,7 @@ import { AppDispatch } from '../../store';
 interface LocalStorageMarketDataState {
   isPending: boolean;
   loading: boolean;
+  filterToken: string;
   data: LocalStorageMarketData;
   error: string;
 }
@@ -20,7 +21,9 @@ const data = storageData
 const initialState: LocalStorageMarketDataState = {
   loading: false,
   isPending: false,
+  filterToken: '',
   data,
+
   error: '',
 };
 
@@ -48,11 +51,14 @@ const localStorageMarketData = createSlice({
 
       localStorage.setItem('marketsData', JSON.stringify(state.data));
     },
+    filterTokenSet: (state, action) => {
+      state.filterToken = action.payload;
+    },
   },
 });
 
 export default localStorageMarketData.reducer;
-const { favouriteMarketToggled, hiddenMarketToggled } =
+const { favouriteMarketToggled, hiddenMarketToggled, filterTokenSet } =
   localStorageMarketData.actions;
 
 export const toggleFavouriteMarket =
@@ -62,4 +68,8 @@ export const toggleFavouriteMarket =
 
 export const toggleHideMarket = (market: Market) => (dispatch: AppDispatch) => {
   dispatch(hiddenMarketToggled(market));
+};
+
+export const setFitlerToken = (token: string) => (dispatch: AppDispatch) => {
+  dispatch(filterTokenSet(token));
 };
