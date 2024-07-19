@@ -261,3 +261,12 @@ export interface WalletItem {
   address: string;
   balance: string;
 }
+
+export interface Tab {
+  label: string;
+}
+
+export interface LocalStorageMarketData {
+  hidden: Market[];
+  favourites: Market[];
+}

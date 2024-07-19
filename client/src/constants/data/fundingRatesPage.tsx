@@ -1,22 +1,22 @@
-import { BsBookmarkStarFill } from "react-icons/bs";
-import { FaEyeSlash, FaFilter } from "react-icons/fa";
+import { Tab, Market } from '../../types';
+import FundingRateMarketActions from '../../components/FundingRateMarketActions';
 
 export const fundingRatesTableColumn = [
   {
-    label: "Exchange",
-    value: "exchange",
+    label: 'Exchange',
+    value: 'exchange',
     render: (row: any) => {
       return (
         <div className="flex gap-2 items-center">
-          {" "}
+          {' '}
           <span className="w-[24px] h-[24px] ">
-            {" "}
+            {' '}
             <img
               src="/images/tokenImage.jpeg"
               className="w-full h-full rounded-full"
               alt=""
             />
-          </span>{" "}
+          </span>{' '}
           <span> {row.exchange}</span>
         </div>
       );
@@ -24,39 +24,27 @@ export const fundingRatesTableColumn = [
   },
 
   {
-    label: "Token",
-    value: "token",
+    label: 'Token',
+    value: 'token',
   },
   {
-    label: "Price",
-    value: "mark_price",
+    label: 'Price',
+    value: 'mark_price',
   },
   {
-    label: "Annual Funding Latest",
-    value: "funding_rate_latest_annual",
-    tableHeadCellClassName: "min-w-[12em]",
+    label: 'Annual Funding Latest',
+    value: 'funding_rate_latest_annual',
+    tableHeadCellClassName: 'min-w-[12em]',
   },
   {
-    label: "Open Interest",
-    value: "open_interest",
+    label: 'Open Interest',
+    value: 'open_interest',
   },
   {
-    label: "Actions",
-    value:"",
-    render: () => {
-      return (
-        <div className="flex gap-3 items-center justify-center ">
-          <span className=" hover:cursor-pointer hover:text-red-400 w-[2rem] h-[2rem] rounded-full flex items-center justify-center">
-            <FaEyeSlash size={"1.2rem"} />
-          </span>
-          <span className=" hover:cursor-pointer hover:text-yellow-400 w-[2rem] h-[2rem] rounded-full flex items-center justify-center">
-            <FaFilter />
-          </span>
-          <span className=" hover:cursor-pointer hover:text-green-400 w-[2rem] h-[2rem] rounded-full flex items-center justify-center">
-            <BsBookmarkStarFill />
-          </span>
-        </div>
-      );
+    label: 'Actions',
+    value: '',
+    render: (item: Market) => {
+      return <FundingRateMarketActions market={item} />;
     },
   },
 ];
@@ -75,11 +63,11 @@ export const fundingRatesTableSampleData = [
     mark_price_usd: 0.000478,
     oracle_price_usd: null,
     average_funding: null,
-    origin_symbol: "ZERO-PERP",
-    token: "ZERO",
-    exchange: "aevo",
-    created_at: "2024-06-08T13:58:28.688675",
-    updated_at: "2024-06-13T08:01:55.053650",
+    origin_symbol: 'ZERO-PERP',
+    token: 'ZERO',
+    exchange: 'aevo',
+    created_at: '2024-06-08T13:58:28.688675',
+    updated_at: '2024-06-13T08:01:55.053650',
   },
   {
     id: 359,
@@ -94,11 +82,11 @@ export const fundingRatesTableSampleData = [
     mark_price_usd: 0.35021,
     oracle_price_usd: null,
     average_funding: null,
-    origin_symbol: "SLERF-USD",
-    token: "SLERF",
-    exchange: "rabbitx",
-    created_at: "2024-06-09T13:51:34.647320",
-    updated_at: "2024-06-13T08:01:05.176525",
+    origin_symbol: 'SLERF-USD',
+    token: 'SLERF',
+    exchange: 'rabbitx',
+    created_at: '2024-06-09T13:51:34.647320',
+    updated_at: '2024-06-13T08:01:05.176525',
   },
   {
     id: 364,
@@ -113,11 +101,11 @@ export const fundingRatesTableSampleData = [
     mark_price_usd: 13.7665,
     oracle_price_usd: null,
     average_funding: null,
-    origin_symbol: "TRUMP-USD",
-    token: "TRUMP",
-    exchange: "rabbitx",
-    created_at: "2024-06-09T13:51:40.299981",
-    updated_at: "2024-06-13T08:01:11.158939",
+    origin_symbol: 'TRUMP-USD',
+    token: 'TRUMP',
+    exchange: 'rabbitx',
+    created_at: '2024-06-09T13:51:40.299981',
+    updated_at: '2024-06-13T08:01:11.158939',
   },
   {
     id: 362,
@@ -132,11 +120,11 @@ export const fundingRatesTableSampleData = [
     mark_price_usd: 0.14034,
     oracle_price_usd: null,
     average_funding: null,
-    origin_symbol: "PAC-USD",
-    token: "PAC",
-    exchange: "rabbitx",
-    created_at: "2024-06-09T13:51:38.356109",
-    updated_at: "2024-06-13T08:01:08.786509",
+    origin_symbol: 'PAC-USD',
+    token: 'PAC',
+    exchange: 'rabbitx',
+    created_at: '2024-06-09T13:51:38.356109',
+    updated_at: '2024-06-13T08:01:08.786509',
   },
   {
     id: 354,
@@ -151,11 +139,11 @@ export const fundingRatesTableSampleData = [
     mark_price_usd: 4.4115,
     oracle_price_usd: null,
     average_funding: null,
-    origin_symbol: "YES-USD",
-    token: "YES",
-    exchange: "rabbitx",
-    created_at: "2024-06-09T13:51:28.941807",
-    updated_at: "2024-06-13T08:00:58.010391",
+    origin_symbol: 'YES-USD',
+    token: 'YES',
+    exchange: 'rabbitx',
+    created_at: '2024-06-09T13:51:28.941807',
+    updated_at: '2024-06-13T08:00:58.010391',
   },
   {
     id: 345,
@@ -170,11 +158,11 @@ export const fundingRatesTableSampleData = [
     mark_price_usd: 0.0578,
     oracle_price_usd: null,
     average_funding: null,
-    origin_symbol: "RLB-USD",
-    token: "RLB",
-    exchange: "rabbitx",
-    created_at: "2024-06-09T13:51:19.065093",
-    updated_at: "2024-06-13T08:00:46.893718",
+    origin_symbol: 'RLB-USD',
+    token: 'RLB',
+    exchange: 'rabbitx',
+    created_at: '2024-06-09T13:51:19.065093',
+    updated_at: '2024-06-13T08:00:46.893718',
   },
   {
     id: 7,
@@ -189,11 +177,11 @@ export const fundingRatesTableSampleData = [
     mark_price_usd: 0.009377,
     oracle_price_usd: null,
     average_funding: null,
-    origin_symbol: "OX-PERP",
-    token: "OX",
-    exchange: "aevo",
-    created_at: "2024-06-08T13:44:05.128510",
-    updated_at: "2024-06-13T08:03:42.378898",
+    origin_symbol: 'OX-PERP',
+    token: 'OX',
+    exchange: 'aevo',
+    created_at: '2024-06-08T13:44:05.128510',
+    updated_at: '2024-06-13T08:03:42.378898',
   },
   {
     id: 106,
@@ -208,11 +196,11 @@ export const fundingRatesTableSampleData = [
     mark_price_usd: 2.201004,
     oracle_price_usd: null,
     average_funding: null,
-    origin_symbol: "TKO-PERP",
-    token: "TKO",
-    exchange: "aevo",
-    created_at: "2024-06-08T13:59:25.383683",
-    updated_at: "2024-06-13T08:02:33.000024",
+    origin_symbol: 'TKO-PERP',
+    token: 'TKO',
+    exchange: 'aevo',
+    created_at: '2024-06-08T13:59:25.383683',
+    updated_at: '2024-06-13T08:02:33.000024',
   },
   {
     id: 102,
@@ -227,11 +215,11 @@ export const fundingRatesTableSampleData = [
     mark_price_usd: 0.12704,
     oracle_price_usd: 0.12662,
     average_funding: null,
-    origin_symbol: "CANTO",
-    token: "CANTO",
-    exchange: "hyperliquid",
-    created_at: "2024-06-08T13:59:20.415444",
-    updated_at: "2024-06-13T08:01:45.435963",
+    origin_symbol: 'CANTO',
+    token: 'CANTO',
+    exchange: 'hyperliquid',
+    created_at: '2024-06-08T13:59:20.415444',
+    updated_at: '2024-06-13T08:01:45.435963',
   },
   {
     id: 367,
@@ -246,11 +234,11 @@ export const fundingRatesTableSampleData = [
     mark_price_usd: 0.1547,
     oracle_price_usd: null,
     average_funding: null,
-    origin_symbol: "MOTHER-USD",
-    token: "MOTHER",
-    exchange: "rabbitx",
-    created_at: "2024-06-11T11:01:06.641510",
-    updated_at: "2024-06-13T08:01:14.652422",
+    origin_symbol: 'MOTHER-USD',
+    token: 'MOTHER',
+    exchange: 'rabbitx',
+    created_at: '2024-06-11T11:01:06.641510',
+    updated_at: '2024-06-13T08:01:14.652422',
   },
   {
     id: 145,
@@ -265,11 +253,11 @@ export const fundingRatesTableSampleData = [
     mark_price_usd: 0.621142,
     oracle_price_usd: null,
     average_funding: null,
-    origin_symbol: "SYN-PERP",
-    token: "SYN",
-    exchange: "aevo",
-    created_at: "2024-06-08T14:05:57.199283",
-    updated_at: "2024-06-13T08:03:09.918504",
+    origin_symbol: 'SYN-PERP',
+    token: 'SYN',
+    exchange: 'aevo',
+    created_at: '2024-06-08T14:05:57.199283',
+    updated_at: '2024-06-13T08:03:09.918504',
   },
   {
     id: 150,
@@ -284,11 +272,11 @@ export const fundingRatesTableSampleData = [
     mark_price_usd: 0.224015,
     oracle_price_usd: null,
     average_funding: null,
-    origin_symbol: "SHFL-PERP",
-    token: "SHFL",
-    exchange: "aevo",
-    created_at: "2024-06-08T14:07:32.348969",
-    updated_at: "2024-06-13T08:00:35.514996",
+    origin_symbol: 'SHFL-PERP',
+    token: 'SHFL',
+    exchange: 'aevo',
+    created_at: '2024-06-08T14:07:32.348969',
+    updated_at: '2024-06-13T08:00:35.514996',
   },
   {
     id: 275,
@@ -303,11 +291,11 @@ export const fundingRatesTableSampleData = [
     mark_price_usd: 1.02,
     oracle_price_usd: null,
     average_funding: null,
-    origin_symbol: "STRKUSD",
-    token: "STRK",
-    exchange: "hmx-arbitrum",
-    created_at: "2024-06-08T14:11:14.896825",
-    updated_at: "2024-06-13T08:02:48.221697",
+    origin_symbol: 'STRKUSD',
+    token: 'STRK',
+    exchange: 'hmx-arbitrum',
+    created_at: '2024-06-08T14:11:14.896825',
+    updated_at: '2024-06-13T08:02:48.221697',
   },
   {
     id: 29,
@@ -322,11 +310,11 @@ export const fundingRatesTableSampleData = [
     mark_price_usd: 0.27702,
     oracle_price_usd: 0.275,
     average_funding: null,
-    origin_symbol: "CRV",
-    token: "CRV",
-    exchange: "hyperliquid",
-    created_at: "2024-06-08T13:57:40.113963",
-    updated_at: "2024-06-13T08:00:45.865556",
+    origin_symbol: 'CRV',
+    token: 'CRV',
+    exchange: 'hyperliquid',
+    created_at: '2024-06-08T13:57:40.113963',
+    updated_at: '2024-06-13T08:00:45.865556',
   },
   {
     id: 48,
@@ -341,69 +329,75 @@ export const fundingRatesTableSampleData = [
     mark_price_usd: 7.639773,
     oracle_price_usd: null,
     average_funding: null,
-    origin_symbol: "TON-PERP",
-    token: "TON",
-    exchange: "aevo",
-    created_at: "2024-06-08T13:58:08.174176",
-    updated_at: "2024-06-13T08:01:30.100143",
+    origin_symbol: 'TON-PERP',
+    token: 'TON',
+    exchange: 'aevo',
+    created_at: '2024-06-08T13:58:08.174176',
+    updated_at: '2024-06-13T08:01:30.100143',
   },
 ];
 
 export const orderBookTableColumnnNegative = [
   {
-    label: "Price",
-    value: "price",
-    tableBodyCellClassName: "text-[#EF4444]",
+    label: 'Price',
+    value: 'price',
+    tableBodyCellClassName: 'text-[#EF4444]',
   },
   {
-    label: "Amount",
-    value: "amount",
+    label: 'Amount',
+    value: 'amount',
   },
   {
-    label: "Total",
-    value: "total",
+    label: 'Total',
+    value: 'total',
   },
 ];
 export const orderBookTableColumnPostive = [
   {
-    label: "",
-    value: "price",
-    tableBodyCellClassName: "text-[#419E6A]",
+    label: '',
+    value: 'price',
+    tableBodyCellClassName: 'text-[#419E6A]',
   },
   {
-    label: "",
-    value: "amount",
+    label: '',
+    value: 'amount',
   },
   {
-    label: "",
-    value: "total",
+    label: '',
+    value: 'total',
   },
 ];
 
 export const orderBookData = [
   {
-    price: "63254.65",
-    amount: "0.004459",
-    total: "2,820.524",
+    price: '63254.65',
+    amount: '0.004459',
+    total: '2,820.524',
   },
   {
-    price: "63254.65",
-    amount: "0.004459",
-    total: "2,820.524",
+    price: '63254.65',
+    amount: '0.004459',
+    total: '2,820.524',
   },
   {
-    price: "63254.65",
-    amount: "0.004459",
-    total: "2,820.524",
+    price: '63254.65',
+    amount: '0.004459',
+    total: '2,820.524',
   },
   {
-    price: "63254.65",
-    amount: "0.004459",
-    total: "2,820.524",
+    price: '63254.65',
+    amount: '0.004459',
+    total: '2,820.524',
   },
   {
-    price: "63254.65",
-    amount: "0.004459",
-    total: "2,820.524",
+    price: '63254.65',
+    amount: '0.004459',
+    total: '2,820.524',
   },
+];
+
+export const fundingHistoryTabs: Tab[] = [
+  { label: 'All Results' },
+  { label: 'Favorite' },
+  { label: 'Hidden' },
 ];
