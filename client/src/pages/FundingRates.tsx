@@ -322,8 +322,8 @@ const FundingRates = () => {
               style={{ height: chartContainerHeight + 100 }}
             >
               {marketDataLoading ? (
-                <div className="text-center text-white flex h-full w-full pt-16 justify-center">
-                  <Bars height={32} color="#FFF" />
+                <div className="text-center text-white flex h-full w-full pt-16 justify-center opacity-70">
+                  <Bars height={20} color="#FFF" />
                 </div>
               ) : (
                 <AppTable<Market>
