@@ -147,8 +147,9 @@ export const subPositionsTableColumn: TableColumn<Position>[] = [
   {
     label: 'Non-Leverage Value',
     value: 'non_leverage',
-    render() {
-      return 'Unknown';
+    render(item) {
+      // return 'Unknown'/;
+      return item.position_size;
     },
   },
   {
