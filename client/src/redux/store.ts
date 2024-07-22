@@ -11,6 +11,7 @@ import investorsReducer from './features/investors/investorsSlice';
 import positionsReducer from './features/positions/positionsSlice';
 import subPositionsReducer from './features/sub_positions/sub-positions';
 import statsReducer from './features/stats/statsSlice';
+import localStorageDataSlice from './features/localStorageData/localStorageDataSlice';
 
 const store = configureStore({
   reducer: {
@@ -25,6 +26,7 @@ const store = configureStore({
     positions: positionsReducer,
     subPositions: subPositionsReducer,
     stats: statsReducer,
+    localStorageMarketData: localStorageDataSlice,
   },
 });
 

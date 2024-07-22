@@ -1,15 +1,15 @@
-name: Algotrading-app-UI-PROD 
+name: Algotrading-app-UI-DEV
 
 on:
     push:
-        branches: [development]
+        branches: [develop]
         paths:
             - "client/**"
 
 env:
     APP_DIR: "${{ github.workspace }}/client"
     DEPLOY_DIR: "${{ github.workspace }}/client/deploy-package"
-    SECRET_NAME: "/ripley-ui-secrets"
+    SECRET_NAME: "/ripley-dev-ui-secrets"
     BUILD_ENV_FILE_SCRIPT: "${{ github.workspace }}/build-env.py"
 
 permissions:
@@ -26,10 +26,10 @@ jobs:
               id: env_check
               run: |
                   echo "Running on branch ${{ github.ref }}"
-                  if [ "${{ github.ref }}" = "refs/heads/development" ]; then
+                  if [ "${{ github.ref }}" = "refs/heads/develop" ]; then
                       echo "::set-output name=ENV_NAME_TAG::dev"
-                      echo "::set-output name=EB_S3_BUCKET::algotrading-client-app-production"
-                      echo "::set-output name=CLOUD_FRONT_DISTRIBUTION_ID::${{ secrets.PROD_ALGOTRADING_CLIENT_APP_CLOUD_FRONT_DISTRIBUTION_ID }}"
+                      echo "::set-output name=EB_S3_BUCKET::algotrading-client-app-dev"
+                      echo "::set-output name=CLOUD_FRONT_DISTRIBUTION_ID::${{ secrets.DEV_ALGOTRADING_CLIENT_APP_CLOUD_FRONT_DISTRIBUTION_ID }}"
                       echo "::set-output name=AWS_ACCESS_KEY_ID_NAME::DEV_AWS_ACCESS_KEY_ID"
                       echo "::set-output name=AWS_SECRET_ACCESS_KEY_NAME::DEV_AWS_SECRET_ACCESS_KEY"
                   fi
