@@ -196,23 +196,23 @@ export interface TokenInitialState {
 }
 
 export interface Market {
-  id: 246;
-  funding_rate_latest: 0.0112817623;
-  funding_rate_latest_annual: 98.8282373976;
-  funding_interval_hours: 1;
-  open_interest: 23.0788502447;
-  open_interest_usd: 1113.02371075;
-  volume_24h: null;
-  volume_24h_usd: null;
-  mark_price: null;
+  id: number;
+  funding_rate_latest: number;
+  funding_rate_latest_annual: number;
+  funding_interval_hours: number;
+  open_interest: number;
+  open_interest_usd: number;
+  volume_24h: null | number;
+  volume_24h_usd: null | number;
+  mark_price: null | number;
   mark_price_usd: 48.227;
-  oracle_price_usd: null;
-  average_funding: null;
-  origin_symbol: 'ORDIUSD';
-  token: 'ORDI';
-  exchange: 'hmx-arbitrum';
-  created_at: '2024-06-08T14:10:28.732290';
-  updated_at: '2024-06-14T10:02:11.347750';
+  oracle_price_usd: null | number;
+  average_funding: null | number;
+  origin_symbol: string;
+  token: string;
+  exchange: string;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface FetchMarketParams {

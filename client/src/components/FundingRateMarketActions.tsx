@@ -34,8 +34,8 @@ const FundingRateMarketActions = ({
   return (
     <div className="flex gap-3 items-center justify-center ">
       <span
-        className={`hover:cursor-pointer hover:text-red-400 w-[2rem] h-[2rem] rounded-full flex items-center justify-center ${
-          isHidden() ? 'text-red-400' : ''
+        className={`hover:cursor-pointer hover:text-red-400 w-[2rem] h-[2rem] rounded-full flex p-2 hover:bg-primary-dark items-center justify-center ${
+          isHidden() ? 'text-red-400 hover:text-red-400/80' : ''
         }`}
         onClick={(e) => {
           e.stopPropagation();
@@ -46,7 +46,7 @@ const FundingRateMarketActions = ({
         <FaEyeSlash size={'1.2rem'} />
       </span>
       <span
-        className=" hover:cursor-pointer hover:text-yellow-400 w-[2rem] h-[2rem] rounded-full flex items-center justify-center"
+        className=" hover:cursor-pointer hover:text-yellow-400 w-[2rem] h-[2rem] rounded-full flex items-center justify-center p-2 hover:bg-primary-dark"
         onClick={(e) => {
           e.stopPropagation();
 
@@ -57,7 +57,7 @@ const FundingRateMarketActions = ({
         <FaFilter />
       </span>
       <span
-        className={` hover:cursor-pointer hover:text-green-400 w-[2rem] h-[2rem] rounded-full flex items-center justify-center ${
+        className={` hover:cursor-pointer hover:text-green-400 w-[2rem] h-[2rem] rounded-full flex items-center justify-center p-2 hover:bg-primary-dark ${
           isFavourite() ? 'text-green-400' : ''
         }`}
         onClick={(e) => {

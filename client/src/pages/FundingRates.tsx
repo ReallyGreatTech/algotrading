@@ -35,7 +35,7 @@ import { fetchTokens } from '../redux/api/tokens';
 import { fetchMarket } from '../redux/api/markets';
 import { subDays, subYears, isAfter } from 'date-fns';
 import Tabs from '../components/Tabs';
-import { setFitlerToken } from '../redux/features/localStorageData/localStorageDataSlice';
+import MarketFilterBox from '../components/MarketFilterBox';
 
 const FundingRates = () => {
   const [fundingHistoryTab, setFundingHistoryTab] = useState(
@@ -297,25 +297,7 @@ const FundingRates = () => {
                   setFundingHistoryTab(tab);
                 }}
               />
-              {localStorageMarketsData.filterToken && (
-                <div className="flex items-center justify-between py-2">
-                  <div>
-                    <p className="text-xs">Filtering by token:</p>
-                    <p className="font-semibold text-sm">
-                      {localStorageMarketsData.filterToken}
-                    </p>
-                  </div>
-                  <button
-                    className="py-2 px-3 rounded-xl text-xs bg-primary-dark"
-                    onClick={() => {
-                      dispatch(setFitlerToken(''));
-                      dispatch(fetchMarket({}));
-                    }}
-                  >
-                    Clear
-                  </button>
-                </div>
-              )}
+              {localStorageMarketsData.filterToken && <MarketFilterBox />}
             </div>
             <div
               className="overflow-x-auto text-black  min-h-[520px] h-auto max-h-[1000px]"
