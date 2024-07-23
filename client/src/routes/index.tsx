@@ -4,6 +4,7 @@ import Positions from '../pages/Positions';
 import Charts from '../pages/Charts';
 import Layout from '../pages/Layout';
 import EditPositionPage from '../pages/EditPositionPage';
+import CreatePositionPage from '../pages/CreatePositionPage';
 
 const AppRoutes = () => {
   return (
@@ -12,6 +13,7 @@ const AppRoutes = () => {
         <Route path="/" element={<Layout />}>
           <Route index element={<FundingRates />}></Route>
           <Route path="/positions" element={<Positions />}></Route>
+          <Route path="/positions/new" element={<CreatePositionPage />}></Route>
           <Route
             path="/positions/edit/:id"
             element={<EditPositionPage />}
