@@ -147,6 +147,9 @@ export const subPositionsTableColumn: TableColumn<Position>[] = [
   {
     label: 'Non-Leverage Value',
     value: 'position_size',
+    render(item) {
+      return item.position_size;
+    },
   },
   {
     label: 'Current Funding Rate',
