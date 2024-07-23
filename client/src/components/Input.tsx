@@ -1,7 +1,7 @@
 import { InputHTMLAttributes } from 'react';
 import InputLabel from './InputLabel';
 
-interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   helperText?: string;
 }

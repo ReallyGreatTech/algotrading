@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react';
-import Input from '../components/Input';
 import { apiClient } from '../redux/api/apiClient';
 import { EditPositionsFormData, Position } from '../types';
 import { Formik } from 'formik';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import FormInput from '../components/Form/FormInput';
+import FormSubmitButton from '../components/Form/FormSubmitButton';
 
 const EditPositionPage = () => {
   const { id: positionsId } = useParams();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [isPending, setIsPending] = useState(false);
   const [errorOccured, setErrorOccured] = useState(false);
@@ -75,8 +77,9 @@ const EditPositionPage = () => {
       await apiClient.patch<Position>(`/positions/${id}/`, data);
 
       toast.success('Position was updated successfully.');
+      navigate('/positions');
     } catch (err) {
-      console.log('Someting went wrong');
+      toast.error('Could not update the give position.');
     } finally {
       setIsPending(false);
     }
@@ -95,7 +98,7 @@ const EditPositionPage = () => {
 
         <>
           {loading ? (
-            <div className="text-xs opacity-75 text-white text-center">
+            <div className="text-xs opacity-75 text-white text-center animate-pulse">
               Loading...
             </div>
           ) : errorOccured ? (
@@ -110,162 +113,142 @@ const EditPositionPage = () => {
               }
               enableReinitialize
             >
-              {({ handleSubmit, values, handleChange }) => (
+              {({}) => (
                 <>
                   <div className="grid grid-cols-2 gap-5 text-white mb-10">
                     <div className="col-span-2">
-                      <Input
+                      <FormInput
                         disabled
                         label="Wallet"
                         name="wallet"
                         placeholder="Enter value here..."
-                        value={values.wallet}
                       />
                     </div>
 
                     <div className="col-span-1 ">
-                      <Input
+                      <FormInput
                         disabled
                         label="Opened At"
                         name="opened_at"
                         placeholder="Enter value here..."
-                        value={values.opened_at}
                       />
                     </div>
                     <div className="col-span-1 ">
-                      <Input
+                      <FormInput
                         label="Closed At"
                         name="opened_at"
                         placeholder="Enter value here..."
-                        value={values.closed_at}
                       />
                     </div>
                     <div className="col-span-1 ">
-                      <Input
+                      <FormInput
                         label="Status"
                         name="status"
                         placeholder="Enter value here..."
-                        value={values.status}
                       />
                     </div>
                     <div className="col-span-1 ">
-                      <Input
+                      <FormInput
                         label="Direction"
                         name="direction"
                         placeholder="Enter value here..."
-                        value={values.direction}
                       />
                     </div>
                     <div className="col-span-1 ">
-                      <Input
+                      <FormInput
                         label="Leverage"
                         name="leverage"
                         placeholder="Enter value here..."
-                        value={values.leverage}
-                        onChange={handleChange('leverage')}
                       />
                     </div>
                     <div className="col-span-1 ">
-                      <Input
+                      <FormInput
                         label="Leverage Amount"
                         name="leverage_amount"
                         placeholder="Enter value here..."
-                        onChange={handleChange('leverage_amount')}
-                        value={values.leveraged_amount}
                       />
                     </div>
                     <div className="col-span-1 ">
-                      <Input
+                      <FormInput
                         label="Position Size"
                         name="position_size"
                         placeholder="Enter value here..."
-                        value={values.position_size}
                       />
                     </div>
                     <div className="col-span-1 ">
-                      <Input
+                      <FormInput
                         label="Entry Price"
                         name="entry_price"
                         placeholder="Enter value here..."
-                        value={values.entry_price}
                       />
                     </div>
                     <div className="col-span-1 ">
-                      <Input
+                      <FormInput
                         label="Liquidation Price"
                         name="liquidation_price"
                         placeholder="Enter value here..."
-                        value={values.liquidation_price}
                       />
                     </div>
                     <div className="col-span-1 ">
-                      <Input
+                      <FormInput
                         label="Stop Loss"
                         name="stop_loss"
                         placeholder="Enter value here..."
-                        value={values.stop_loss}
                       />
                     </div>
                     <div className="col-span-1 ">
-                      <Input
+                      <FormInput
                         label="Take Profit"
                         name="take_profit"
                         placeholder="Enter value here..."
-                        value={values.take_profit}
                       />
                     </div>
                     <div className="col-span-1 ">
-                      <Input
+                      <FormInput
                         label="Roi Percent"
                         name="roi_percent"
                         placeholder="Enter value here..."
-                        value={values.roi_percent}
                       />
                     </div>
                     <div className="col-span-1 ">
-                      <Input
+                      <FormInput
                         label="Unrealized PNL"
                         name="unrealized_pnl"
                         placeholder="Enter value here..."
-                        value={values.unrealized_pnl}
                       />
                     </div>
                     <div className="col-span-1 ">
-                      <Input
+                      <FormInput
                         label="Wallet Asset"
                         name="unrealized_pnl"
                         placeholder="Enter value here..."
-                        value={values.unrealized_pnl}
                       />
                     </div>
                     <div className="col-span-1 ">
-                      <Input
+                      <FormInput
                         label="Account Balance"
                         name="account_balance"
                         placeholder="Enter value here..."
-                        value={values.account_balance}
                       />
                     </div>
                     <div className="col-span-1 ">
-                      <Input
+                      <FormInput
                         label="Equity"
                         name="equity"
                         placeholder="Enter value here..."
-                        value={values.equity}
                       />
                     </div>
                   </div>
 
                   <div className="flex justify-end w-full md:w-1/2">
-                    <button
+                    <FormSubmitButton
+                      loading={isPending}
                       className={`w-full py-3 px-5 bg-primary rounded-lg text-white shadow-primary ml-auto ${
                         isPending ? 'animate-pulse' : ''
                       }`}
-                      type="submit"
-                      onClick={() => handleSubmit()}
                     >
-                      {isPending ? 'Updating...' : 'Update'}
-                    </button>
+                      Update
+                    </FormSubmitButton>
                   </div>
                 </>
               )}
