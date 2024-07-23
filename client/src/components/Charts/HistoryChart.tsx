@@ -158,5 +158,4 @@ const HistoryChart = ({ data, timeRange }: HistoryChartProps) => {
     />
   );
 };
-
 export default HistoryChart;
