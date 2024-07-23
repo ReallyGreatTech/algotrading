@@ -32,7 +32,6 @@ import {
 } from 'react-icons/md';
 import { fetchInvestorActions } from '../redux/api/investorActions';
 import { fetchStatsRecurrently } from '../redux/features/stats/statsSlice';
-import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 
 const Positions = () => {
