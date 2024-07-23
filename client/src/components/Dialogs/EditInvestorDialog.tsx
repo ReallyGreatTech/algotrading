@@ -20,7 +20,7 @@ const EditInvestorDialog = ({
   const investors = useAppSelector((state) => state.investors);
   const [name, setName] = useState(investor.name);
 
-  const handleUpdateInvestor = async () => {
+  const  handleUpdateInvestor = async () => {
     if (name)
       await dispatch(
         updateInvestor({
