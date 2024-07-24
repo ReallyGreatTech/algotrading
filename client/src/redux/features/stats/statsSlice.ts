@@ -3,7 +3,6 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { Stat } from '../../../types';
 import { fetchStats } from '../../api/stats';
-import { toast } from 'react-toastify';
 
 interface StatsState {
   loading: boolean;
