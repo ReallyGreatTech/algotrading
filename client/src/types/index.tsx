@@ -13,7 +13,7 @@ export interface Position {
   token: string;
   exchange: string;
   opened_at: string;
-  closed_at: unknown;
+  closed_at: string;
   status: string;
   direction: string;
   leverage: number;
@@ -56,6 +56,26 @@ export interface PositionsGroup {
   max_take_profit: number;
   min_liquidation_price: number;
   max_liquidation_price: number;
+}
+
+export interface EditPositionsFormData {
+  opened_at: string;
+  closed_at?: string;
+  status?: string;
+  direction?: string;
+  leverage: string;
+  leveraged_amount: string;
+  position_size: string;
+  entry_price: string;
+  liquidation_price?: string;
+  stop_loss?: string;
+  take_profit?: string;
+  roi_percent?: string;
+  unrealized_pnl?: string;
+  wallet_asset?: string;
+  account_balance?: string;
+  equity?: string;
+  wallet: number;
 }
 
 export interface Wallet {

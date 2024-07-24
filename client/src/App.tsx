@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import store from './redux/store';
 import { useEffect } from 'react';
 import { martketsData } from './constants/localStorage';
-import { toast, ToastContainer } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {

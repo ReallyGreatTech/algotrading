@@ -32,7 +32,7 @@ import {
 } from 'react-icons/md';
 import { fetchInvestorActions } from '../redux/api/investorActions';
 import { fetchStatsRecurrently } from '../redux/features/stats/statsSlice';
-import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
 
 const Positions = () => {
   const [investorDialogOpen, setInvestorDialogOpen] = useState(false);
@@ -180,12 +180,20 @@ const Positions = () => {
         <div className="border-2 border-white/10 overflow-hidden rounded-2xl bg-gray-800 mb-5">
           <div className="flex p-5 justify-between items-center">
             <h3 className="text-white/90 font-semibold">Positions Table</h3>
-            <button
-              className="text-white p-2 hover:bg-primary-dark rounded-full"
-              onClick={() => setAddPositionsTableDialogOpen(true)}
-            >
-              <AiOutlineExpandAlt />
-            </button>
+            <div className="flex gap-5">
+              <Link to="/positions/new">
+                <button className="text-white bg-primary hover:bg-primary/90 px-5 py-2 rounded-md">
+                  New Position
+                </button>
+              </Link>
+
+              <button
+                className="text-white p-2 hover:bg-primary-dark rounded-full"
+                onClick={() => setAddPositionsTableDialogOpen(true)}
+              >
+                <AiOutlineExpandAlt />
+              </button>
+            </div>
           </div>
 
           <div className="overflow-x-auto max-h-[80vh]">
