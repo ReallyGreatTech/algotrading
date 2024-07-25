@@ -84,6 +84,14 @@ const Positions = () => {
     dispatch(fetchPositions());
   }, []);
 
+  const handleEditDialogClose = () => {
+    setEditPositionDialogOpen(false);
+    setPositionsId(undefined);
+    if (expandedPosition) {
+      dispatch(fetchSubPositions({ token: expandedPosition }));
+    }
+  };
+
   return (
     <section className="min-h-screen pb-10">
       <div className="w-full">
@@ -181,19 +189,15 @@ const Positions = () => {
           <div className="flex p-5 justify-between items-center">
             <h3 className="text-white/90 font-semibold">Positions Table</h3>
             <div className="flex gap-5">
-              {/* <Link to="/positions/new"> */}
               <button
                 className="text-white bg-primary hover:bg-primary/90 px-5 py-2 rounded-md"
                 onClick={(e) => {
                   e.stopPropagation();
-
                   setPositionDialogOpen(true);
                 }}
               >
                 New Position
               </button>
-              {/* </Link> */}
-
               <button
                 className="text-white p-2 hover:bg-primary-dark rounded-full"
                 onClick={() => setAddPositionsTableDialogOpen(true)}
@@ -256,9 +260,8 @@ const Positions = () => {
                                     <button
                                       className="p-2 hover:bg-primary-dark rounded-full"
                                       onClick={() => {
-                                        setPositionsId(item.id)
+                                        setPositionsId(item.id);
                                         setEditPositionDialogOpen(true);
-                                      
                                       }}
                                     >
                                       <FiEdit2 />
@@ -310,10 +313,7 @@ const Positions = () => {
       <EditPositionsDialog
         positionId={positonId as number}
         open={editPositionDialogOpen}
-        onClose={() => {
-          setEditPositionDialogOpen(false);
-          setPositionsId(undefined)
-        }}
+        onClose={handleEditDialogClose}
       />
     </section>
   );

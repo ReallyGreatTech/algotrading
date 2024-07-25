@@ -87,6 +87,7 @@ const EditPositionsDialog = ({
 
       toast.success("Position was updated successfully.");
       onClose();
+      
     } catch (err) {
       toast.error("Could not update the give position.");
     } finally {
