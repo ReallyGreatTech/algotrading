@@ -3,7 +3,6 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { Stat } from '../../../types';
 import { fetchStats } from '../../api/stats';
-// import { toast } from 'react-toastify';
 
 interface StatsState {
   loading: boolean;
@@ -43,11 +42,4 @@ export const fetchStatsRecurrently = () => async (dispatch: AppDispatch) => {
     await new Promise((resolve) => setTimeout(resolve, 100));
     dispatch(fetchStatsRecurrently());
   }
-
-  // const exchangesWithWarnings = data.exchanges.filter(
-  //   (ex) => ex.warning
-  // ).length;
-
-  // if (exchangesWithWarnings > 0)
-    // toast.warning(`${exchangesWithWarnings} exchanges are not looking good.`);
 };
