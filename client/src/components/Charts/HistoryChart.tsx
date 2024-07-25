@@ -71,19 +71,15 @@ const HistoryChart = ({ data, timeRange }: HistoryChartProps) => {
         yAxis: yAxis,
         valueYField: "funding",
         valueXField: "timestamp",
+        tooltip: am5.Tooltip.new(root, {
+          getFillFromSprite: false,
+          getStrokeFromSprite: false,
+          autoTextColor: false,
+          pointerOrientation: "horizontal",
+          labelText: "{valueX.formatDate()}: ${valueY}",
+        }),
       })
     );
-
-    series.setAll({
-      tooltipText: "{valueX.formatDate('MMM dd, yyyy HH:mm')}: ${valueY}",
-      tooltip: am5.Tooltip.new(root, {
-        getFillFromSprite: false,
-        getStrokeFromSprite: false,
-        autoTextColor: false,
-        pointerOrientation: "horizontal",
-        labelText: "{tooltipText}",
-      }),
-    });
 
     const tooltip = series.get("tooltip");
     if (tooltip) {
@@ -145,6 +141,17 @@ const HistoryChart = ({ data, timeRange }: HistoryChartProps) => {
       });
     });
 
+    chart.set(
+      "cursor",
+      am5xy.XYCursor.new(root, {
+        xAxis: xAxis,
+        behavior: "zoomX",
+        snapToSeries: [series],
+      })
+    );
+
+    chart.appear(1000, 100);
+
     return () => {
       root.dispose();
     };
@@ -158,4 +165,5 @@ const HistoryChart = ({ data, timeRange }: HistoryChartProps) => {
     />
   );
 };
+
 export default HistoryChart;
