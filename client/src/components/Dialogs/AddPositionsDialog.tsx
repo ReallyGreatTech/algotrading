@@ -222,6 +222,12 @@ const AddPositionsDialog = ({
                 </div>
               </div>
               <div className="pt-2 flex justify-end w-full md:w-1/2 md:ps-4 pe-4 md:pe:0 gap-2 md:gap-4 md:ms-auto ">
+                <button
+                  className="py-3 px-5 border-2 border-primary rounded-lg text-white/90 shadow-primary"
+                  onClick={onClose}
+                >
+                  Cancel
+                </button>
                 <FormSubmitButton
                   loading={isPending}
                   className={`w-full py-3 px-5 bg-primary rounded-lg text-white shadow-primary ml-auto ${
@@ -230,12 +236,6 @@ const AddPositionsDialog = ({
                 >
                   Add Position
                 </FormSubmitButton>
-                <button
-                  className="py-3 px-5 border-2 border-primary rounded-lg text-white/90 shadow-primary"
-                  onClick={onClose}
-                >
-                  Cancel
-                </button>
               </div>
             </div>
             ;
