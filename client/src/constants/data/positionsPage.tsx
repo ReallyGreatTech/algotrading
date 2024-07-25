@@ -13,8 +13,9 @@ import InvestorRowActions from '../../components/InvestorRowActions';
 import { get24HourDateTime } from '../../utils/dateUtils';
 import moment from 'moment';
 import WalletRowActionButtons from '../../components/WalletRowActionButtons';
-import { Link } from 'react-router-dom';
-import { FiEdit2 } from 'react-icons/fi';
+// import { Link } from 'react-router-dom';
+// import { FiEdit2 } from 'react-icons/fi';
+
 
 export const positionGroupsTableColumn: TableColumn<PositionsGroup>[] = [
   {
@@ -185,21 +186,7 @@ export const subPositionsTableColumn: TableColumn<Position>[] = [
     label: '%TP',
     value: 'percent_take_profit',
   },
-  {
-    label: '',
-    value: '',
-    render(item) {
-      return (
-        <div>
-          <Link to={`/positions/edit/${item.id}`}>
-            <button className="p-2 hover:bg-primary-dark rounded-full">
-              <FiEdit2 />
-            </button>
-          </Link>
-        </div>
-      );
-    },
-  },
+
 ];
 
 export const exchangesBalanceTableColumn: TableColumn<ExchangeBalance>[] = [

@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import FormInput from '../components/Form/FormInput';
 import FormSubmitButton from '../components/Form/FormSubmitButton';
+// import SelectInput from '../components/SelectInput';
+import FormSelectInput from '../components/Form/FormSelectInput';
 
 const CreatePositionPage = () => {
   const navigate = useNavigate();
@@ -79,15 +81,23 @@ const CreatePositionPage = () => {
                   <div className="col-span-1 ">
                     <FormInput
                       label="Closed At"
-                      name="opened_at"
+                      name="closed_at"
+                      type="date"
                       placeholder="Enter value here..."
                     />
                   </div>
                   <div className="col-span-1 ">
-                    <FormInput
+                    {/* <FormInput
                       label="Status"
                       name="status"
                       placeholder="Enter value here..."
+                    /> */}
+                    <FormSelectInput name='status'
+                      label="Status"
+                      options={[
+                        { label: "Active", value: "ACTIVE" },
+                        { label: "Closed", value: "CLOSED" },
+                      ]}
                     />
                   </div>
                   <div className="col-span-1 ">
@@ -187,7 +197,7 @@ const CreatePositionPage = () => {
                   <FormSubmitButton
                     loading={isPending}
                     className={`w-full py-3 px-5 bg-primary rounded-lg text-white shadow-primary ml-auto ${
-                      isPending ? 'animate-pulse' : ''
+                      isPending ? "animate-pulse" : ""
                     }`}
                   >
                     Add Position
