@@ -45,6 +45,7 @@ const Positions = () => {
   );
   const [addPositionsTableDialogOpen, setAddPositionsTableDialogOpen] =
     useState(false);
+  const [activeRowId, setActiveRowId] = useState<undefined | number>(undefined); // New state for active row
 
   const wallets = useAppSelector((state) => state.wallets);
   const investors = useAppSelector((state) => state.investors);
@@ -87,9 +88,16 @@ const Positions = () => {
   const handleEditDialogClose = () => {
     setEditPositionDialogOpen(false);
     setPositionsId(undefined);
+    setActiveRowId(undefined); // Reset active row on close
     if (expandedPosition) {
       dispatch(fetchSubPositions({ token: expandedPosition }));
     }
+  };
+
+  const handleRowClick = (item: Position) => {
+    setPositionsId(item.id);
+    setEditPositionDialogOpen(true);
+    setActiveRowId(item.id); // Set active row
   };
 
   return (
@@ -247,8 +255,9 @@ const Positions = () => {
                         </p>
                       ) : (
                         <AppTable<Position>
+                          onRowClick={handleRowClick}
                           tableHeadRowClassName="bg-gray-900"
-                          tableBodyRowClassName="bg-[#334154] border-3 border-white/50"
+                            tableBodyRowClassName={`bg-[#334154] border-3 border-white/50 hover:cursor-pointer ${activeRowId}`}
                           columns={[
                             ...subPositionsTableColumn,
                             {
