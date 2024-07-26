@@ -32,9 +32,20 @@ export const fundingRatesTableColumn = [
     value: 'mark_price',
   },
   {
-    label: 'Annual Funding Latest',
+    label: 'Funding',
     value: 'funding_rate_latest_annual',
     tableHeadCellClassName: 'min-w-[12em]',
+    render: (item: Market) => {
+      const isLive = item.funding_rate_live_annual !== undefined && item.funding_rate_live_annual !== null;
+      const fundingRate = isLive ? item.funding_rate_live_annual : item.funding_rate_latest_annual;
+      const divClassName = isLive ? 'bg-green-500 w-3 h-3 rounded-full mr-8' : '';
+  
+      return (
+        <div className='flex items-center justify-between gap-2'>
+          {fundingRate} <div className={divClassName}></div>
+        </div>
+      );
+    },
   },
   {
     label: 'Open Interest',

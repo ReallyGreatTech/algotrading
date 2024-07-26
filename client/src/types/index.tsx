@@ -219,6 +219,7 @@ export interface Market {
   id: number;
   funding_rate_latest: number;
   funding_rate_latest_annual: number;
+  funding_rate_live_annual: number;
   funding_interval_hours: number;
   open_interest: number;
   open_interest_usd: number;
