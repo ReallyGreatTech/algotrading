@@ -7,14 +7,12 @@ import {
   Investor,
   Position,
   PositionsGroup,
-  StatExchange,
   Wallet,
 } from '../types';
 import {
   exchangesBalanceTableColumn,
   investorTableColumn,
   positionGroupsTableColumn,
-  statusExchangesColumns,
   subPositionsTableColumn,
   walletsTableColumn,
 } from '../constants/data/positionsPage';
@@ -31,7 +29,6 @@ import {
   MdOutlineKeyboardArrowRight,
 } from 'react-icons/md';
 import { fetchInvestorActions } from '../redux/api/investorActions';
-import { fetchStatsRecurrently } from '../redux/features/stats/statsSlice';
 import { Link } from 'react-router-dom';
 
 const Positions = () => {
@@ -48,7 +45,6 @@ const Positions = () => {
   const investors = useAppSelector((state) => state.investors);
   const positionGroups = useAppSelector((state) => state.positions);
   const subPositions = useAppSelector((state) => state.subPositions);
-  const stats = useAppSelector((state) => state.stats);
 
   const dispatch = useAppDispatch();
 
@@ -81,7 +77,6 @@ const Positions = () => {
     dispatch(fetchWallets());
     dispatch(fetchInvestors());
     dispatch(fetchPositions());
-    dispatch(fetchStatsRecurrently());
   }, []);
 
   return (
@@ -245,26 +240,6 @@ const Positions = () => {
                     </div>
                   </div>
                 }
-              />
-            )}
-          </div>
-          <PaginationControls />
-        </div>
-
-        <div className="border-2 border-white/10 overflow-hidden rounded-2xl bg-gray-800 mb-5">
-          <div className="flex p-5 justify-between items-center">
-            <h3 className="text-white/90 font-semibold">Stats</h3>
-          </div>
-
-          <div className="overflow-x-auto max-h-[80vh]">
-            {stats.loading ? (
-              <div className="text-sm text-white/90 w-full h-full flex justify-center items-center">
-                Loading Stats...
-              </div>
-            ) : (
-              <AppTable<StatExchange>
-                columns={statusExchangesColumns}
-                data={stats.data.exchanges}
               />
             )}
           </div>
