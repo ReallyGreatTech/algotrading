@@ -269,7 +269,20 @@ export interface StatExchange {
   history_count: number;
   latest_update: string;
   latest_update_ts: number;
-  warning: false;
+  latest_update_realtime: string;
+  latest_update_realtime_ts: number;
+  markets_and_history_failure_rate: {
+    failure_rate_percent: number;
+    failed_tasks_count: number;
+    total_tasks_count: number;
+  };
+  realtime_data_failure_rate: {
+    failure_rate_percent: number;
+    failed_tasks_count: number;
+    total_tasks_count: number;
+  };
+  realtime_status: string;
+  warning: boolean;
 }
 
 export interface Stat {
