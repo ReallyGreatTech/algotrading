@@ -1,9 +1,8 @@
-import { AppDispatch } from './../../store';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { AppDispatch } from "./../../store";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { Stat } from '../../../types';
-import { fetchStats } from '../../api/stats';
-import { toast } from 'react-toastify';
+import { Stat } from "../../../types";
+import { fetchStats } from "../../api/stats";
 
 interface StatsState {
   loading: boolean;
@@ -14,11 +13,11 @@ interface StatsState {
 const initialState: StatsState = {
   loading: true,
   data: { exchanges_count: 0, exchanges: [] },
-  error: '',
+  error: "",
 };
 
 const walletsSlice = createSlice({
-  name: 'stats',
+  name: "stats",
   initialState,
   reducers: {
     statsFetched: (stats, action: PayloadAction<{ data: Stat }>) => {
@@ -43,11 +42,4 @@ export const fetchStatsRecurrently = () => async (dispatch: AppDispatch) => {
     await new Promise((resolve) => setTimeout(resolve, 100));
     dispatch(fetchStatsRecurrently());
   }
-
-  const exchangesWithWarnings = data.exchanges.filter(
-    (ex) => ex.warning
-  ).length;
-
-  if (exchangesWithWarnings > 0)
-    toast.warning(`${exchangesWithWarnings} exchanges are not looking good.`);
 };

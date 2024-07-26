@@ -77,6 +77,26 @@ export interface EditPositionsFormData {
   equity?: string;
   wallet: number;
 }
+export interface NewPositionsFormData {
+  opened_at: string;
+  closed_at?: string;
+  status?: string;
+  direction?: string;
+  leverage: string;
+  leveraged_amount: string;
+  position_size: string;
+  entry_price: string;
+  liquidation_price?: string;
+  stop_loss?: string;
+  take_profit?: string;
+  roi_percent?: string;
+  unrealized_pnl?: string;
+  wallet_asset?: string;
+  account_balance?: string;
+  equity?: string;
+  wallet: string;
+  market_id: string;
+}
 
 export interface Wallet {
   name: string;
@@ -219,6 +239,7 @@ export interface Market {
   id: number;
   funding_rate_latest: number;
   funding_rate_latest_annual: number;
+  funding_rate_live_annual: number;
   funding_interval_hours: number;
   open_interest: number;
   open_interest_usd: number;
@@ -233,6 +254,14 @@ export interface Market {
   exchange: string;
   created_at: string;
   updated_at: string;
+  warnings?: { level: string; message: string; code: string }[];
+}
+
+export interface MarketOption {
+  id: number;
+  token: string;
+  exchange: string;
+  display_name: string;
 }
 
 export interface FetchMarketParams {
@@ -268,7 +297,20 @@ export interface StatExchange {
   history_count: number;
   latest_update: string;
   latest_update_ts: number;
-  warning: false;
+  latest_update_realtime: string;
+  latest_update_realtime_ts: number;
+  markets_and_history_failure_rate: {
+    failure_rate_percent: number;
+    failed_tasks_count: number;
+    total_tasks_count: number;
+  };
+  realtime_data_failure_rate: {
+    failure_rate_percent: number;
+    failed_tasks_count: number;
+    total_tasks_count: number;
+  };
+  realtime_status: string;
+  warning: boolean;
 }
 
 export interface Stat {

@@ -1,15 +1,14 @@
 export const navigation = [
   {
-    label: "Funding rates",
-    href: "/",
+    label: 'Funding rates',
+    href: '/',
   },
   {
-    label: "Positions",
-    href: "positions",
+    label: 'Positions',
+    href: 'positions',
   },
   {
-    label: "Charts",
-    href: "/charts",
+    label: 'System',
+    href: '/system',
   },
 ];
-

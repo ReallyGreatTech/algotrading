@@ -1,11 +1,11 @@
 import { Route, Routes, useLocation } from 'react-router-dom';
 import FundingRates from '../pages/FundingRates';
 import Positions from '../pages/Positions';
-import Charts from '../pages/Charts';
 import Layout from '../pages/Layout';
 import EditPositionPage from '../pages/EditPositionPage';
 import CreatePositionPage from '../pages/CreatePositionPage';
 import { useEffect } from 'react';
+import System from '../pages/System';
 
 const AppRoutes = () => {
   const location = useLocation();
@@ -25,7 +25,7 @@ const AppRoutes = () => {
             path="/positions/edit/:id"
             element={<EditPositionPage />}
           ></Route>
-          <Route path="/charts" element={<Charts />}></Route>
+          <Route path="/system" element={<System />}></Route>
         </Route>
       </Routes>
     </main>

@@ -38,7 +38,7 @@ const AddWalletDialog = ({ open, onClose, ...rest }: AddWalletDialogProps) => {
         </div>
 
         <div>
-          <div className="mb-5 p-5 flex flex-col gap-5">
+          <div className="mb-5 p-5 flex flex-col gap-5 ">
             <div>
               <div className="col-span-2">
                 <Input

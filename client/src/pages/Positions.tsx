@@ -7,14 +7,12 @@ import {
   Investor,
   Position,
   PositionsGroup,
-  StatExchange,
   Wallet,
 } from '../types';
 import {
   exchangesBalanceTableColumn,
   investorTableColumn,
   positionGroupsTableColumn,
-  statusExchangesColumns,
   subPositionsTableColumn,
   walletsTableColumn,
 } from '../constants/data/positionsPage';
@@ -31,13 +29,17 @@ import {
   MdOutlineKeyboardArrowRight,
 } from 'react-icons/md';
 import { fetchInvestorActions } from '../redux/api/investorActions';
-import { fetchStatsRecurrently } from '../redux/features/stats/statsSlice';
-import { Link } from 'react-router-dom';
+import AddPositionsDialog from '../components/Dialogs/AddPositionsDialog';
+import EditPositionsDialog from '../components/Dialogs/EditPostionsDialog';
+import { FiEdit2 } from 'react-icons/fi';
+import { selectPosition } from '../redux/features/sub_positions/sub-positions';
 
 const Positions = () => {
   const [investorDialogOpen, setInvestorDialogOpen] = useState(false);
   const [addWalletDialogOpen, setAddWalletDialogOpen] = useState(false);
   const [addInvestorDialogOpen, setAddInvestorDialogOpen] = useState(false);
+  const [addPositionDialogOpen, setPositionDialogOpen] = useState(false);
+  const [editPositionDialogOpen, setEditPositionDialogOpen] = useState(false);
   const [expandedPosition, setExpandedPosition] = useState<string | undefined>(
     undefined
   );
@@ -48,7 +50,6 @@ const Positions = () => {
   const investors = useAppSelector((state) => state.investors);
   const positionGroups = useAppSelector((state) => state.positions);
   const subPositions = useAppSelector((state) => state.subPositions);
-  const stats = useAppSelector((state) => state.stats);
 
   const dispatch = useAppDispatch();
 
@@ -81,8 +82,16 @@ const Positions = () => {
     dispatch(fetchWallets());
     dispatch(fetchInvestors());
     dispatch(fetchPositions());
-    dispatch(fetchStatsRecurrently());
   }, []);
+
+  const handleEditDialogClose = () => {
+    setEditPositionDialogOpen(false);
+  };
+
+  const handleRowClick = (item: Position) => {
+    dispatch(selectPosition(item));
+    setEditPositionDialogOpen(true);
+  };
 
   return (
     <section className="min-h-screen pb-10">
@@ -181,12 +190,15 @@ const Positions = () => {
           <div className="flex p-5 justify-between items-center">
             <h3 className="text-white/90 font-semibold">Positions Table</h3>
             <div className="flex gap-5">
-              <Link to="/positions/new">
-                <button className="text-white bg-primary hover:bg-primary/90 px-5 py-2 rounded-md">
-                  New Position
-                </button>
-              </Link>
-
+              <button
+                className="text-white bg-primary hover:bg-primary/90 px-5 py-2 rounded-md"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setPositionDialogOpen(true);
+                }}
+              >
+                New Position
+              </button>
               <button
                 className="text-white p-2 hover:bg-primary-dark rounded-full"
                 onClick={() => setAddPositionsTableDialogOpen(true)}
@@ -236,35 +248,38 @@ const Positions = () => {
                         </p>
                       ) : (
                         <AppTable<Position>
+                          selectedRow={subPositions.selectedPosition}
+                          onRowClick={handleRowClick}
                           tableHeadRowClassName="bg-gray-900"
-                          tableBodyRowClassName="bg-[#334154] border-3 border-white/50"
-                          columns={subPositionsTableColumn}
+                          tableBodyRowClassName={`bg-[#334154] border-3 border-white/50 hover:cursor-pointer`}
+                          columns={[
+                            ...subPositionsTableColumn,
+                            {
+                              label: '',
+                              value: '',
+                              render(item) {
+                                return (
+                                  <div>
+                                    <button
+                                      className="p-2 hover:bg-primary-dark rounded-full "
+                                      onClick={() => {
+                                        dispatch(selectPosition(item));
+                                        setEditPositionDialogOpen(true);
+                                      }}
+                                    >
+                                      <FiEdit2 />
+                                    </button>
+                                  </div>
+                                );
+                              },
+                            },
+                          ]}
                           data={subPositions.data}
                         />
                       )}
                     </div>
                   </div>
                 }
-              />
-            )}
-          </div>
-          <PaginationControls />
-        </div>
-
-        <div className="border-2 border-white/10 overflow-hidden rounded-2xl bg-gray-800 mb-5">
-          <div className="flex p-5 justify-between items-center">
-            <h3 className="text-white/90 font-semibold">Stats</h3>
-          </div>
-
-          <div className="overflow-x-auto max-h-[80vh]">
-            {stats.loading ? (
-              <div className="text-sm text-white/90 w-full h-full flex justify-center items-center">
-                Loading Stats...
-              </div>
-            ) : (
-              <AppTable<StatExchange>
-                columns={statusExchangesColumns}
-                data={stats.data.exchanges}
               />
             )}
           </div>
@@ -293,6 +308,15 @@ const Positions = () => {
       <PositionsTableDialog
         open={addPositionsTableDialogOpen}
         onClose={() => setAddPositionsTableDialogOpen(false)}
+      />
+      <AddPositionsDialog
+        open={addPositionDialogOpen}
+        onClose={() => setPositionDialogOpen(false)}
+      />
+      <EditPositionsDialog
+        positionId={subPositions.selectedPosition?.id}
+        open={editPositionDialogOpen}
+        onClose={handleEditDialogClose}
       />
     </section>
   );

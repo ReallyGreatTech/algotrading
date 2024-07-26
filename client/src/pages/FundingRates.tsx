@@ -4,15 +4,15 @@ import { GrNext } from 'react-icons/gr';
 import {
   FetchMarketParams,
   Market,
-  OrderbookItem,
+  // OrderbookItem,
   PriceChartDataItem,
 } from '../types';
 import {
   fundingHistoryTabs,
   fundingRatesTableColumn,
-  orderBookData,
-  orderBookTableColumnPostive,
-  orderBookTableColumnnNegative,
+  // orderBookData,
+  // orderBookTableColumnPostive,
+  // orderBookTableColumnnNegative,
 } from '../constants/data/fundingRatesPage';
 import SearchInput from '../components/SearchInput';
 import { useAppSelector, useAppDispatch } from '../hooks';
@@ -77,9 +77,8 @@ const FundingRates = () => {
   const [timeRange, setTimeRange] = useState('1D');
 
   useEffect(() => {
-    const marketsData = localStorage.getItem('marketsData');
-    if (marketsData) {
-    }
+   
+
     dispatch(fetchTokens());
 
     dispatch(fetchMarket({}));
@@ -315,9 +314,9 @@ const FundingRates = () => {
                   selectedRow={selecetedRow}
                   columns={fundingRatesTableColumn}
                   data={
-                    fundingHistoryTab.label === 'Favorite'
+                    fundingHistoryTab.label === "Favorite"
                       ? localStorageMarketsData.data.favourites
-                      : fundingHistoryTab.label === 'Hidden'
+                      : fundingHistoryTab.label === "Hidden"
                       ? localStorageMarketsData.data.hidden
                       : getUnhiddenMarket()
                   }
@@ -392,9 +391,14 @@ const FundingRates = () => {
 
           <div className="border col-span-full lg:col-span-2 rounded-[16px] bg-gray-800 border-white/20 h-fit overflow-hidden">
             <div className="py-5 px-4">
-              <h3 className="text-white/90 font-bold text-base">Orderbook</h3>
+              <h3 className="text-white/90 font-bold text-base">Filtered Results</h3>
             </div>
-            <div className="overflow-x-auto text-black">
+
+            <div
+              className="overflow-x-auto text-black  min-h-[520px] h-auto max-h-[1000px]"
+              style={{ height: chartContainerHeight + 100 }}
+            >
+              {/* <div className="overflow-x-auto text-black">
               <AppTable<OrderbookItem>
                 columns={orderBookTableColumnnNegative}
                 data={orderBookData}
@@ -407,6 +411,33 @@ const FundingRates = () => {
                 tableHeadRowClassName="hidden"
                 data={orderBookData}
               />
+            </div>  */}
+               <AppTable<Market>
+              selectedRow={selecetedRow}
+              columns={fundingRatesTableColumn}
+              data={
+                fundingHistoryTab.label === "Favorite"
+                  ? localStorageMarketsData.data.favourites
+                  : fundingHistoryTab.label === "Hidden"
+                  ? localStorageMarketsData.data.hidden
+                  : getUnhiddenMarket()
+              }
+              onRowClick={(item) => {
+                setSelectedRow(item);
+
+                dispatch(
+                  fetchSelectedFundingHistory({
+                    token: item.token,
+                    exchange: item.exchange,
+                  })
+                );
+
+                setPriceChartData([]);
+                fetchCryptoComparePrices(item.token, 30).then((prices) => {
+                  setPriceChartData(prices);
+                });
+              }}
+            />
             </div>
           </div>
         </div>

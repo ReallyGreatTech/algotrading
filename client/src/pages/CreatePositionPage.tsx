@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import FormInput from '../components/Form/FormInput';
 import FormSubmitButton from '../components/Form/FormSubmitButton';
+// import SelectInput from '../components/SelectInput';
+import FormSelectInput from '../components/Form/FormSelectInput';
 
 const CreatePositionPage = () => {
   const navigate = useNavigate();
@@ -58,7 +60,7 @@ const CreatePositionPage = () => {
             initialValues={positionsData}
             onSubmit={(data) => handleAddPosition(data)}
           >
-            {({}) => (
+            {() => (
               <>
                 <div className="grid grid-cols-2 gap-5 text-white mb-10">
                   <div className="col-span-2">
@@ -79,15 +81,24 @@ const CreatePositionPage = () => {
                   <div className="col-span-1 ">
                     <FormInput
                       label="Closed At"
-                      name="opened_at"
+                      name="closed_at"
+                      type="date"
                       placeholder="Enter value here..."
                     />
                   </div>
                   <div className="col-span-1 ">
-                    <FormInput
+                    {/* <FormInput
                       label="Status"
                       name="status"
                       placeholder="Enter value here..."
+                    /> */}
+                    <FormSelectInput
+                      name="status"
+                      label="Status"
+                      options={[
+                        { label: 'Active', value: 'ACTIVE' },
+                        { label: 'Closed', value: 'CLOSED' },
+                      ]}
                     />
                   </div>
                   <div className="col-span-1 ">
