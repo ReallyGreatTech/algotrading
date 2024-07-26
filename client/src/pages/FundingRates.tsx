@@ -36,6 +36,7 @@ import { fetchMarket } from '../redux/api/markets';
 import { subDays, subYears, isAfter } from 'date-fns';
 import Tabs from '../components/Tabs';
 import MarketFilterBox from '../components/MarketFilterBox';
+import { getFromDateTime } from '../utils/dateUtils';
 
 const FundingRates = () => {
   const [fundingHistoryTab, setFundingHistoryTab] = useState(
@@ -86,9 +87,11 @@ const FundingRates = () => {
 
   useEffect(() => {
     if (selectedToken) {
-      dispatch(fetchFundingHistory(selectedToken));
+      const range= getFromDateTime(timeRange)
+      dispatch(fetchFundingHistory({ token: selectedToken, dateRange: range }));
+      console.log(timeRange)
     }
-  }, [dispatch, selectedToken]);
+  }, [dispatch, selectedToken, timeRange]);
 
   useEffect(() => {
     if (fundingHistoryData.length) {
