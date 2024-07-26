@@ -40,7 +40,8 @@ export const fundingRatesTableColumn = [
     label: 'Open Interest',
     value: 'open_interest_usd',
     render: (item: Market) => {
-      return `$${item.mark_price_usd}`;
+      // return `$${item.mark_price_usd}`;
+      return `$${item.open_interest_usd}`;
     },
   },
   {
