@@ -1,13 +1,15 @@
-import { useEffect, useState } from "react";
-import { apiClient } from "../../redux/api/apiClient";
-import { DialogProps, EditPositionsFormData, Position } from "../../types";
-import { Formik } from "formik";
-import { toast } from "react-toastify";
-import FormInput from "../Form/FormInput";
-import FormSubmitButton from "../Form/FormSubmitButton";
-import FormSelectInput from "../Form/FormSelectInput";
-import Dialog from "./AppDialog";
-import { IoMdClose } from "react-icons/io";
+import { useEffect, useState } from 'react';
+import { apiClient } from '../../redux/api/apiClient';
+import { DialogProps, EditPositionsFormData, Position } from '../../types';
+import { Formik } from 'formik';
+import { toast } from 'react-toastify';
+import FormInput from '../Form/FormInput';
+import FormSubmitButton from '../Form/FormSubmitButton';
+import FormSelectInput from '../Form/FormSelectInput';
+import Dialog from './AppDialog';
+import { IoMdClose } from 'react-icons/io';
+import { useAppDispatch } from '../../hooks';
+import { updatePosition } from '../../redux/api/positions';
 
 interface EditPositionsDialogProps extends DialogProps {
   positionId: number | undefined;
@@ -22,23 +24,24 @@ const EditPositionsDialog = ({
   const [loading, setLoading] = useState(true);
   const [isPending, setIsPending] = useState(false);
   const [errorOccured, setErrorOccured] = useState(false);
+  const dispatch = useAppDispatch();
   const [positionsData, setPositionsData] = useState<EditPositionsFormData>({
-    opened_at: "",
-    closed_at: "",
-    status: "",
-    direction: "",
-    leverage: "",
-    leveraged_amount: "",
-    position_size: "",
-    entry_price: "",
-    liquidation_price: "",
-    stop_loss: "",
-    take_profit: "",
-    roi_percent: "",
-    unrealized_pnl: "",
-    wallet_asset: "",
-    account_balance: "",
-    equity: "",
+    opened_at: '',
+    closed_at: '',
+    status: '',
+    direction: '',
+    leverage: '',
+    leveraged_amount: '',
+    position_size: '',
+    entry_price: '',
+    liquidation_price: '',
+    stop_loss: '',
+    take_profit: '',
+    roi_percent: '',
+    unrealized_pnl: '',
+    wallet_asset: '',
+    account_balance: '',
+    equity: '',
     wallet: 0,
   });
 
@@ -83,13 +86,12 @@ const EditPositionsDialog = ({
   ) => {
     setIsPending(true);
     try {
-      await apiClient.patch<Position>(`/positions/${id}/`, data);
+      await dispatch(updatePosition({ id, data }));
 
-      toast.success("Position was updated successfully.");
+      toast.success('Position was updated successfully.');
       onClose();
-      
     } catch (err) {
-      toast.error("Could not update the give position.");
+      toast.error('Could not update the give position.');
     } finally {
       setIsPending(false);
     }
@@ -132,18 +134,10 @@ const EditPositionsDialog = ({
                 ) : (
                   <section className="h-[75%] p-2 md:p-4 overflow-y-scroll">
                     <div className="grid grid-cols-2 gap-5 text-white mb-10  ">
-                      <div className="col-span-2">
-                        <FormInput
-                          disabled
-                          label="Wallet"
-                          name="wallet"
-                          placeholder="Enter value here..."
-                        />
-                      </div>
-
                       <div className="col-span-1 ">
                         <FormInput
                           disabled
+                          type="datetime-local"
                           label="Opened At"
                           name="opened_at"
                           placeholder="Enter value here..."
@@ -152,6 +146,7 @@ const EditPositionsDialog = ({
                       <div className="col-span-1 ">
                         <FormInput
                           label="Closed At"
+                          type="datetime-local"
                           name="closed_at"
                           placeholder="Enter value here..."
                         />
@@ -162,8 +157,8 @@ const EditPositionsDialog = ({
                           label="Status"
                           defaultValue="ACTIVE"
                           options={[
-                            { label: "Active", value: "ACTIVE" },
-                            { label: "Closed", value: "CLOSED" },
+                            { label: 'Active', value: 'ACTIVE' },
+                            { label: 'Closed', value: 'CLOSED' },
                           ]}
                         />
                       </div>
@@ -173,8 +168,8 @@ const EditPositionsDialog = ({
                           label="Direction"
                           defaultValue="LONG"
                           options={[
-                            { label: "Long", value: "LONG" },
-                            { label: "Short", value: "SHORT" },
+                            { label: 'Long', value: 'LONG' },
+                            { label: 'Short', value: 'SHORT' },
                           ]}
                         />
                       </div>
@@ -276,7 +271,7 @@ const EditPositionsDialog = ({
                 <FormSubmitButton
                   loading={isPending}
                   className={`w-full py-3 px-5 bg-primary rounded-lg text-white shadow-primary ml-auto ${
-                    isPending ? "animate-pulse" : ""
+                    isPending ? 'animate-pulse' : ''
                   }`}
                 >
                   Update Position

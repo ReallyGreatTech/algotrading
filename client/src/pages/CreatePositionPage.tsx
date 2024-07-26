@@ -92,11 +92,12 @@ const CreatePositionPage = () => {
                       name="status"
                       placeholder="Enter value here..."
                     /> */}
-                    <FormSelectInput name='status'
+                    <FormSelectInput
+                      name="status"
                       label="Status"
                       options={[
-                        { label: "Active", value: "ACTIVE" },
-                        { label: "Closed", value: "CLOSED" },
+                        { label: 'Active', value: 'ACTIVE' },
+                        { label: 'Closed', value: 'CLOSED' },
                       ]}
                     />
                   </div>
@@ -197,7 +198,7 @@ const CreatePositionPage = () => {
                   <FormSubmitButton
                     loading={isPending}
                     className={`w-full py-3 px-5 bg-primary rounded-lg text-white shadow-primary ml-auto ${
-                      isPending ? "animate-pulse" : ""
+                      isPending ? 'animate-pulse' : ''
                     }`}
                   >
                     Add Position

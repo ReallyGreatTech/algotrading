@@ -1,19 +1,22 @@
-import { DialogProps } from "../../types";
-import { IoMdClose } from "react-icons/io";
-import Dialog from "./AppDialog";
-import { useState } from "react";
-import { apiClient } from "../../redux/api/apiClient";
-import { EditPositionsFormData, Position } from "../../types";
-import { Formik } from "formik";
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import FormInput from "../Form/FormInput";
-import FormSubmitButton from "../Form/FormSubmitButton";
-import FormSelectInput from "../Form/FormSelectInput";
-
-// import Input from "../Input";
-// // import { useAppDispatch } from "../../hooks";
-// import { useState } from "react";
+import {
+  DialogProps,
+  MarketOption,
+  NewPositionsFormData,
+  Wallet,
+} from '../../types';
+import { IoMdClose } from 'react-icons/io';
+import Dialog from './AppDialog';
+import { useEffect, useMemo, useState } from 'react';
+import { apiClient } from '../../redux/api/apiClient';
+import { Position } from '../../types';
+import { Formik } from 'formik';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import FormInput from '../Form/FormInput';
+import FormSubmitButton from '../Form/FormSubmitButton';
+import FormSelectInput from '../Form/FormSelectInput';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { fetchMarketOptions } from '../../redux/api/marketsOptions';
 
 interface AddPositionsDialogProps extends DialogProps {}
 
@@ -22,32 +25,56 @@ const AddPositionsDialog = ({
   onClose,
   ...rest
 }: AddPositionsDialogProps) => {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
   const [isPending, setIsPending] = useState(false);
+  const marketOptionsData = useAppSelector((state) => state.marketOptions);
+  const walletsData = useAppSelector((state) => state.wallets);
 
-  const [positionsData] = useState<EditPositionsFormData>({
-    opened_at: "",
-    closed_at: "",
-    status: "",
-    direction: "",
-    leverage: "",
-    leveraged_amount: "",
-    position_size: "",
-    entry_price: "",
-    liquidation_price: "",
-    stop_loss: "",
-    take_profit: "",
-    roi_percent: "",
-    unrealized_pnl: "",
-    wallet_asset: "",
-    account_balance: "",
-    equity: "",
-    wallet: 0,
+  const mapMarketsToOptions = (data: MarketOption[]) => {
+    return data?.map((m) => ({
+      label: m.display_name,
+      value: m.id.toString(),
+    }));
+  };
+
+  const marketOptions = useMemo(() => {
+    return mapMarketsToOptions(marketOptionsData.data);
+  }, [marketOptionsData.data.length]);
+
+  const mapWalletToOptions = (data: Wallet[]) => {
+    return data?.map((w) => ({
+      label: w.name,
+      value: w.id.toString(),
+    }));
+  };
+
+  const walletsOptions = useMemo(() => {
+    return mapWalletToOptions(walletsData.data);
+  }, [walletsData.data.length]);
+
+  const [positionsData] = useState<NewPositionsFormData>({
+    opened_at: '',
+    closed_at: '',
+    status: '',
+    direction: '',
+    leverage: '',
+    leveraged_amount: '',
+    position_size: '',
+    entry_price: '',
+    liquidation_price: '',
+    stop_loss: '',
+    take_profit: '',
+    roi_percent: '',
+    unrealized_pnl: '',
+    wallet_asset: '',
+    account_balance: '',
+    equity: '',
+    market_id: '',
+    wallet: '',
   });
 
-    const handleAddPosition = async (data: EditPositionsFormData) => {
-      console.log("Data",data)
+  const handleAddPosition = async (data: NewPositionsFormData) => {
     setIsPending(true);
     try {
       data.opened_at = new Date(data.opened_at).toISOString();
@@ -56,20 +83,20 @@ const AddPositionsDialog = ({
         data.closed_at = new Date(data.closed_at).toISOString();
       }
 
-      console.log(data);
       await apiClient.post<Position>(`/positions/`, data);
 
-      // data.closed_at = new Date(data?.closed_at).toISOString();
-
-      toast.success("Position was updated successfully.");
-      navigate("/positions");
+      toast.success('New position successfully created.');
+      navigate('/positions');
     } catch (err) {
-      toast.error("An error occured while creating the given position.");
-      console.log("Error", err);
+      toast.error('An error occured while creating the position.');
     } finally {
       setIsPending(false);
     }
   };
+
+  useEffect(() => {
+    dispatch(fetchMarketOptions());
+  }, []);
 
   return (
     <Dialog {...rest} open={open} onClose={onClose} maxWidth="xl">
@@ -96,6 +123,22 @@ const AddPositionsDialog = ({
               <div className="h-[75%] p-2 md:p-4 overflow-y-scroll">
                 <div className=" container max-w-3xl mx-auto text-white/90 ">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5 text-white mb-10">
+                    <div className="col-span-1">
+                      <FormSelectInput
+                        label="Market"
+                        name="market_id"
+                        placeholder="Enter value here..."
+                        options={marketOptions}
+                      />
+                    </div>
+                    <div className="col-span-1">
+                      <FormSelectInput
+                        label="Wallet"
+                        name="wallet"
+                        placeholder="Enter value here..."
+                        options={walletsOptions}
+                      />
+                    </div>
                     <div className="col-span-1 ">
                       <FormInput
                         type="datetime-local"
@@ -118,8 +161,8 @@ const AddPositionsDialog = ({
                         label="Status"
                         defaultValue="ACTIVE"
                         options={[
-                          { label: "Active", value: "ACTIVE" },
-                          { label: "Closed", value: "CLOSED" },
+                          { label: 'Active', value: 'ACTIVE' },
+                          { label: 'Closed', value: 'CLOSED' },
                         ]}
                       />
                     </div>
@@ -129,8 +172,8 @@ const AddPositionsDialog = ({
                         label="Direction"
                         defaultValue="LONG"
                         options={[
-                          { label: "Long", value: "LONG" },
-                          { label: "Short", value: "SHORT" },
+                          { label: 'Long', value: 'LONG' },
+                          { label: 'Short', value: 'SHORT' },
                         ]}
                       />
                     </div>
@@ -231,7 +274,7 @@ const AddPositionsDialog = ({
                 <FormSubmitButton
                   loading={isPending}
                   className={`w-full py-3 px-5 bg-primary rounded-lg text-white shadow-primary ml-auto ${
-                    isPending ? "animate-pulse" : ""
+                    isPending ? 'animate-pulse' : ''
                   }`}
                 >
                   Add Position

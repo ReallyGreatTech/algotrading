@@ -12,12 +12,14 @@ import positionsReducer from './features/positions/positionsSlice';
 import subPositionsReducer from './features/sub_positions/sub-positions';
 import statsReducer from './features/stats/statsSlice';
 import localStorageDataSlice from './features/localStorageData/localStorageDataSlice';
+import marketOptionsReducer from './features/marketOptions/marketOptionsSlice';
 
 const store = configureStore({
   reducer: {
     token: tokenReducer,
     fundingHistory: fundingHistoryReducer,
     market: marketReducer,
+    marketOptions: marketOptionsReducer,
     timefilter: timeFilterReducer,
     selecetedFundingHistory: selectedfundingHistoryReducer,
     investorActions: investorActionsReducer,

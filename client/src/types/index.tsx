@@ -77,6 +77,26 @@ export interface EditPositionsFormData {
   equity?: string;
   wallet: number;
 }
+export interface NewPositionsFormData {
+  opened_at: string;
+  closed_at?: string;
+  status?: string;
+  direction?: string;
+  leverage: string;
+  leveraged_amount: string;
+  position_size: string;
+  entry_price: string;
+  liquidation_price?: string;
+  stop_loss?: string;
+  take_profit?: string;
+  roi_percent?: string;
+  unrealized_pnl?: string;
+  wallet_asset?: string;
+  account_balance?: string;
+  equity?: string;
+  wallet: string;
+  market_id: string;
+}
 
 export interface Wallet {
   name: string;
@@ -234,6 +254,14 @@ export interface Market {
   exchange: string;
   created_at: string;
   updated_at: string;
+  warnings?: { level: string; message: string; code: string }[];
+}
+
+export interface MarketOption {
+  id: number;
+  token: string;
+  exchange: string;
+  display_name: string;
 }
 
 export interface FetchMarketParams {

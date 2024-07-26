@@ -1,23 +1,33 @@
-import { Tab, Market } from '../../types';
+import { Tab, Market, TableColumn } from '../../types';
 import FundingRateMarketActions from '../../components/FundingRateMarketActions';
+import Tooltip from '../../components/Tooltip';
 
-export const fundingRatesTableColumn = [
+export const fundingRatesTableColumn: TableColumn<Market>[] = [
   {
     label: 'Exchange',
     value: 'exchange',
-    render: (row: any) => {
+    render: (row) => {
+      const message = row.warnings?.map((w) => w.message).join('\n') || '';
+
       return (
-        <div className="flex gap-2 items-center">
-          {' '}
-          <span className="w-[24px] h-[24px] ">
+        <div className="flex justify-between items-center">
+          <div className="flex gap-2 items-center justify-between">
             {' '}
-            <img
-              src="/images/tokenImage.jpeg"
-              className="w-full h-full rounded-full"
-              alt=""
-            />
-          </span>{' '}
-          <span> {row.exchange}</span>
+            <span className="w-[24px] h-[24px] ">
+              {' '}
+              <img
+                src="/images/tokenImage.jpeg"
+                className="w-full h-full rounded-full"
+                alt=""
+              />
+            </span>{' '}
+            <span> {row.exchange}</span>
+          </div>
+          {row.warnings?.length ? (
+            <Tooltip text={<p>{message}</p>}>
+              <div className="w-3 h-3 bg-red-500 rounded-full" />
+            </Tooltip>
+          ) : null}
         </div>
       );
     },
@@ -36,12 +46,18 @@ export const fundingRatesTableColumn = [
     value: 'funding_rate_latest_annual',
     tableHeadCellClassName: 'min-w-[12em]',
     render: (item: Market) => {
-      const isLive = item.funding_rate_live_annual !== undefined && item.funding_rate_live_annual !== null;
-      const fundingRate = isLive ? item.funding_rate_live_annual : item.funding_rate_latest_annual;
-      const divClassName = isLive ? 'bg-green-500 w-3 h-3 rounded-full mr-8' : '';
-  
+      const isLive =
+        item.funding_rate_live_annual !== undefined &&
+        item.funding_rate_live_annual !== null;
+      const fundingRate = isLive
+        ? item.funding_rate_live_annual
+        : item.funding_rate_latest_annual;
+      const divClassName = isLive
+        ? 'bg-green-500 w-3 h-3 rounded-full mr-8'
+        : '';
+
       return (
-        <div className='flex items-center justify-between gap-2'>
+        <div className="flex items-center justify-between gap-2">
           {fundingRate} <div className={divClassName}></div>
         </div>
       );
@@ -51,7 +67,6 @@ export const fundingRatesTableColumn = [
     label: 'Open Interest',
     value: 'open_interest_usd',
     render: (item: Market) => {
-      // return `$${item.mark_price_usd}`;
       return `$${item.open_interest_usd}`;
     },
   },
