@@ -5,7 +5,7 @@ interface SelectOption {
   value: string;
 }
 
-interface SelectInputProps extends InputHTMLAttributes<HTMLSelectElement> {
+export interface SelectInputProps extends InputHTMLAttributes<HTMLSelectElement> {
   options: SelectOption[];
   value?: string;
   defaultValue?: string;

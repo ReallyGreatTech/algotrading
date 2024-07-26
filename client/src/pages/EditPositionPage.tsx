@@ -113,7 +113,7 @@ const EditPositionPage = () => {
               }
               enableReinitialize
             >
-              {({}) => (
+              {() => (
                 <>
                   <div className="grid grid-cols-2 gap-5 text-white mb-10">
                     <div className="col-span-2">
