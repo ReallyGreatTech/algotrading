@@ -32,6 +32,7 @@ import { fetchInvestorActions } from '../redux/api/investorActions';
 import AddPositionsDialog from '../components/Dialogs/AddPositionsDialog';
 import EditPositionsDialog from '../components/Dialogs/EditPostionsDialog';
 import { FiEdit2 } from 'react-icons/fi';
+import { selectPosition } from '../redux/features/sub_positions/sub-positions';
 
 const Positions = () => {
   const [investorDialogOpen, setInvestorDialogOpen] = useState(false);
@@ -39,15 +40,11 @@ const Positions = () => {
   const [addInvestorDialogOpen, setAddInvestorDialogOpen] = useState(false);
   const [addPositionDialogOpen, setPositionDialogOpen] = useState(false);
   const [editPositionDialogOpen, setEditPositionDialogOpen] = useState(false);
-  const [positonId, setPositionsId] = useState<undefined | number>(undefined);
   const [expandedPosition, setExpandedPosition] = useState<string | undefined>(
     undefined
   );
   const [addPositionsTableDialogOpen, setAddPositionsTableDialogOpen] =
     useState(false);
-  const [selectedRow, setSelectedPosition] = useState<Position | undefined>(
-    undefined
-  ); // New state for active row
 
   const wallets = useAppSelector((state) => state.wallets);
   const investors = useAppSelector((state) => state.investors);
@@ -89,16 +86,10 @@ const Positions = () => {
 
   const handleEditDialogClose = () => {
     setEditPositionDialogOpen(false);
-    setPositionsId(undefined);
-    // Reset active row on close
-    // if (expandedPosition) {
-    //   dispatch(fetchSubPositions({ token: expandedPosition }));
-    // }
   };
 
   const handleRowClick = (item: Position) => {
-    setSelectedPosition(item);
-    setPositionsId(item.id);
+    dispatch(selectPosition(item));
     setEditPositionDialogOpen(true);
   };
 
@@ -257,10 +248,10 @@ const Positions = () => {
                         </p>
                       ) : (
                         <AppTable<Position>
-                          selectedRow={selectedRow}
+                          selectedRow={subPositions.selectedPosition}
                           onRowClick={handleRowClick}
                           tableHeadRowClassName="bg-gray-900"
-                          tableBodyRowClassName={`bg-[#334154] hover:bg-green-600 border-3 border-white/50 hover:cursor-pointer`}
+                          tableBodyRowClassName={`bg-[#334154] border-3 border-white/50 hover:cursor-pointer`}
                           columns={[
                             ...subPositionsTableColumn,
                             {
@@ -272,7 +263,7 @@ const Positions = () => {
                                     <button
                                       className="p-2 hover:bg-primary-dark rounded-full "
                                       onClick={() => {
-                                        setPositionsId(item.id);
+                                        dispatch(selectPosition(item));
                                         setEditPositionDialogOpen(true);
                                       }}
                                     >
@@ -323,7 +314,7 @@ const Positions = () => {
         onClose={() => setPositionDialogOpen(false)}
       />
       <EditPositionsDialog
-        positionId={positonId as number}
+        positionId={subPositions.selectedPosition?.id}
         open={editPositionDialogOpen}
         onClose={handleEditDialogClose}
       />

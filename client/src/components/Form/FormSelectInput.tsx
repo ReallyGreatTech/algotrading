@@ -1,6 +1,5 @@
-
-import { FormikProps, useFormikContext } from "formik";
-import SelectInput, { SelectInputProps } from "../SelectInput";
+import { FormikProps, useFormikContext } from 'formik';
+import SelectInput, { SelectInputProps } from '../SelectInput';
 
 interface FormSelectInputProps extends SelectInputProps {
   name: string;
@@ -16,7 +15,7 @@ const FormSelectInput = <T extends Record<string, unknown>>({
     <SelectInput
       {...rest}
       name={name}
-      value={values[name] as string }
+      value={values[name] as string}
       onChange={handleChange(name)}
     />
   );
