@@ -234,6 +234,7 @@ export interface Market {
   exchange: string;
   created_at: string;
   updated_at: string;
+  warnings?: { level: string; message: string; code: string }[];
 }
 
 export interface FetchMarketParams {
