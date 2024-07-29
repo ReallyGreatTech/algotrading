@@ -17,7 +17,7 @@ const System = () => {
           <h3 className="text-white/90 font-semibold">Stats</h3>
         </div>
 
-        <div className="overflow-x-auto max-h-[80vh]">
+        <div className="overflow-x-auto">
           {stats.loading ? (
             <div className="text-sm text-white/90 w-full h-full flex justify-center items-center">
               Loading Stats...
