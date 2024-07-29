@@ -396,7 +396,8 @@ const FundingRates = () => {
           <div className="border col-span-full lg:col-span-2 rounded-[16px] bg-gray-800 border-white/20 h-fit overflow-hidden">
             <div className="py-5 px-4">
               <h3 className="text-white/90 font-bold text-base">
-                Filtered Results
+                Filtered Results{' '}
+                {selectedMarketRow ? `- ${selectedMarketRow?.token}` : ''}
               </h3>
             </div>
 
