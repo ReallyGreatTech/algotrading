@@ -1,6 +1,6 @@
 import AppTable from '../components/AppTable';
 import PaginationControls from '../components/PaginationControls';
-import { statusExchangesColumns } from '../constants/data/positionsPage';
+import { statusExchangesColumns } from '../constants/data/system';
 import { useAppSelector } from '../hooks';
 import { StatExchange } from '../types';
 
