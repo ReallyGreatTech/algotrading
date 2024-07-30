@@ -1,4 +1,4 @@
-import { EditPositionsFormData } from './../../types/index';
+import { EditPositionsFormData, NewPositionsFormData } from './../../types/index';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { apiClient } from './apiClient';
 import { Position, PositionsGroup } from '../../types';
@@ -56,6 +56,23 @@ export const updatePosition = createAsyncThunk(
         return rejectWithValue(err.response.data);
       } else {
         // Return a generic error message
+        return rejectWithValue('An unknown error occurred');
+      }
+    }
+  }
+);
+
+
+export const createPosition = createAsyncThunk(
+  'positions/createPosition',
+  async (data: NewPositionsFormData, { rejectWithValue }) => {
+    try {
+      const response = await apiClient.post<Position>('/positions/', data);
+      return response.data;
+    } catch (error: any) {
+      if (error.response && error.response.data) {
+        return rejectWithValue(error.response.data);
+      } else {
         return rejectWithValue('An unknown error occurred');
       }
     }

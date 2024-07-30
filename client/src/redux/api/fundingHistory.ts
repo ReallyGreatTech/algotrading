@@ -6,16 +6,30 @@ import {
 } from '../../types';
 import { apiClient } from './apiClient';
 
+function formatDateTime(date: Date) {
+  return date.toISOString();
+}
+
+function getFromDateTime(dateRange: number) {
+  const fromDateTime = new Date();
+  fromDateTime.setDate(fromDateTime.getDate() - dateRange);
+  return formatDateTime(fromDateTime);
+}
 export const fetchFundingHistory = createAsyncThunk<
   FundingHistory[],
-  string,
+  { token: string, dateRange: number },
   { rejectValue: string }
->('fundingHistory/fetchFundingHistory', async (token, { rejectWithValue }) => {
+>('fundingHistory/fetchFundingHistory', async ({token, dateRange}, { rejectWithValue }) => {
   try {
+    
+    const fromDateTime = getFromDateTime(dateRange);
     const response = await apiClient.get<FetchFundingHistoryResponse>(
       '/funding-history',
       {
-        params: { token },
+        params: {
+          token,
+          from_datetime: fromDateTime
+        },
       }
     );
     return response.data.results;
