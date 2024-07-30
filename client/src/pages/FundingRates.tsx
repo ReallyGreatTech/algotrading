@@ -87,6 +87,7 @@ const FundingRates = () => {
   useEffect(() => {
     if (selectedToken) {
       const range= getFromDateTime(timeRange)
+      console.log(range)
       dispatch(fetchFundingHistory({ token: selectedToken, dateRange: range }));
       console.log(timeRange)
     }

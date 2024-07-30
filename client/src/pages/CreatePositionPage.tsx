@@ -35,9 +35,17 @@ const CreatePositionPage = () => {
   });
 
   const handleAddPosition = async (data: EditPositionsFormData) => {
+    console.log('new position data:',data)
     setIsPending(true);
+    
+    const formattedData = {
+      ...data,
+      opened_at: data.opened_at ? new Date(data.opened_at).toISOString() : '',
+      closed_at: data.closed_at ? new Date(data.closed_at).toISOString() : '',
+    };
+
     try {
-      await apiClient.post<Position>(`/positions/`, data);
+      await apiClient.post<Position>(`/positions/`, formattedData);
 
       toast.success('Position was updated successfully.');
       navigate('/positions');
@@ -75,6 +83,7 @@ const CreatePositionPage = () => {
                     <FormInput
                       label="Opened At"
                       name="opened_at"
+                      type="datetime-local"
                       placeholder="Enter value here..."
                     />
                   </div>
@@ -82,7 +91,7 @@ const CreatePositionPage = () => {
                     <FormInput
                       label="Closed At"
                       name="closed_at"
-                      type="date"
+                      type="datetime-local"
                       placeholder="Enter value here..."
                     />
                   </div>

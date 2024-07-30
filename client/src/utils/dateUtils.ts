@@ -38,6 +38,6 @@ export const getFromDateTime = (range: string): string => {
       fromDateTime = new Date(now);
       fromDateTime.setMonth(now.getMonth() - 1);
   }
- 
+  console.log(fromDateTime)
   return fromDateTime.toISOString();
 }

@@ -26,10 +26,12 @@ const AddPositionsDialog = ({
   ...rest
 }: AddPositionsDialogProps) => {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [isPending, setIsPending] = useState(false);
   const marketOptionsData = useAppSelector((state) => state.marketOptions);
   const walletsData = useAppSelector((state) => state.wallets);
+  const [walletInput, setWalletInput] = useState('');
+  
 
   const mapMarketsToOptions = (data: MarketOption[]) => {
     return data?.map((m) => ({
@@ -37,6 +39,10 @@ const AddPositionsDialog = ({
       value: m.id.toString(),
     }));
   };
+
+  useEffect(() => {
+    dispatch(fetchMarketOptions());
+  }, [dispatch]);
 
   const marketOptions = useMemo(() => {
     return mapMarketsToOptions(marketOptionsData.data);
@@ -76,27 +82,67 @@ const AddPositionsDialog = ({
 
   const handleAddPosition = async (data: NewPositionsFormData) => {
     setIsPending(true);
+
+  // Validate input data
+  const isValid = Object.values(data).every(value => value !== undefined && value !== null && value !== '');
+
+    // Validate wallet data
+    if (!data.wallet) {
+      toast.error('Wallet is required.');
+      setIsPending(false);
+      return;
+    }
+
+  // Check if required fields are defined and have valid values
+  const validStatus = ['ACTIVE', 'CLOSED'].includes(data.status || '');
+  const validDirection = ['LONG', 'SHORT'].includes(data.direction || '');
+
+  if (!isValid || !validStatus || !validDirection || !data.wallet) {
+    toast.error('Please fill in all required fields and provide valid choices.');
+    setIsPending(false);
+    return;
+  }
+    
+    //  // Handle custom wallet input if provided
+    //  const finalWallet = walletsOptions.some((option) => option.value === data.wallet)
+    //  ? data.wallet
+    //  : walletInput;
+
+   const formattedData = {
+     ...data,
+    //  wallet: finalWallet,
+     opened_at: data.opened_at ? new Date(data.opened_at).toISOString() : '',
+     closed_at: data.closed_at ? new Date(data.closed_at).toISOString() : '',
+   };
+
+    console.log('formatted data:',formattedData)
+    console.log('status:',formattedData)
+    console.log('wallet:',formattedData.wallet)
+
     try {
-      data.opened_at = new Date(data.opened_at).toISOString();
+      // data.opened_at = new Date(data.opened_at).toISOString();
 
-      if (data.closed_at) {
-        data.closed_at = new Date(data.closed_at).toISOString();
-      }
+      // if (data.closed_at) {
+      //   data.closed_at = new Date(data.closed_at).toISOString();
+      // }
 
-      await apiClient.post<Position>(`/positions/`, data);
+      // await apiClient.post<Position>(`/positions/`, data);
+      await apiClient.post<Position>(`/positions/`, formattedData);
 
       toast.success('New position successfully created.');
-      navigate('/positions');
+      // navigate('/positions');
+      onClose();
     } catch (err) {
+      console.error('Error while creating position:', err);
       toast.error('An error occured while creating the position.');
     } finally {
       setIsPending(false);
     }
   };
 
-  useEffect(() => {
-    dispatch(fetchMarketOptions());
-  }, []);
+  // useEffect(() => {
+  //   dispatch(fetchMarketOptions());
+  // }, []);
 
   return (
     <Dialog {...rest} open={open} onClose={onClose} maxWidth="xl">
@@ -139,6 +185,17 @@ const AddPositionsDialog = ({
                         options={walletsOptions}
                       />
                     </div>
+
+                      {/* Custom wallet input */}
+                        {/* <div className="col-span-1">
+                      <FormInput
+                        label="Wallet"
+                        name="wallet"
+                        placeholder="Enter your wallet data..."
+                      />
+                    </div> */}
+
+
                     <div className="col-span-1 ">
                       <FormInput
                         type="datetime-local"
@@ -272,6 +329,7 @@ const AddPositionsDialog = ({
                   Cancel
                 </button>
                 <FormSubmitButton
+                  type='submit'
                   loading={isPending}
                   className={`w-full py-3 px-5 bg-primary rounded-lg text-white shadow-primary ml-auto ${
                     isPending ? 'animate-pulse' : ''
