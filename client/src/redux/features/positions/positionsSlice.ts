@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { PositionsGroup } from '../../../types';
-import { fetchPositions, updatePosition } from '../../api/positions';
+import { fetchPositions } from '../../api/positions';
 
 interface PositionsState {
   loading: boolean;

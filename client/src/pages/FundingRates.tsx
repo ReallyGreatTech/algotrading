@@ -8,6 +8,7 @@ import {
   PriceChartDataItem,
 } from '../types';
 import {
+  filteredFundingRateColumns,
   fundingHistoryTabs,
   fundingRatesTableColumn,
   // orderBookData,
@@ -16,7 +17,7 @@ import {
 } from '../constants/data/fundingRatesPage';
 import SearchInput from '../components/SearchInput';
 import { useAppSelector, useAppDispatch } from '../hooks';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { updateSelectedToken } from '../redux/features/tokens/tokenSlice';
 import { getUniqueExchanges } from '../utils/getUniqueExchanges';
 import ExchangeSearchInput from '../components/ExchangeSearchInput';
@@ -44,13 +45,14 @@ const FundingRates = () => {
   );
   const chartContainer = useRef<HTMLDivElement | null>(null);
   const [chartContainerHeight, setChartContainerHeight] = useState(5000);
-  const [selecetedRow, setSelectedRow] = useState<Market | undefined>(
+  const [selectedMarketRow, setSelectedRow] = useState<Market | undefined>(
     undefined
   );
   const tokensData = useAppSelector((state) => state.token.tokens);
   const marketData = useAppSelector((state) => state.market.data);
   const marketDataLoading = useAppSelector((state) => state.market.loading);
-  const [filteredMarketData, setFilteredMarketData] = useState(marketData);
+  const [filteredMarketData, setFilteredMarketData] =
+    useState<Market[]>(marketData);
   const [minimumFundingRate, setMinimumFundingRate] = useState<
     string | undefined
   >(undefined);
@@ -79,8 +81,6 @@ const FundingRates = () => {
   const range= getDateTime(timeRange)
 
   useEffect(() => {
-   
-
     dispatch(fetchTokens());
 
     dispatch(fetchMarket({}));
@@ -197,7 +197,7 @@ const FundingRates = () => {
     return state.selecetedFundingHistory.data;
   });
 
-  const getUnhiddenMarket = () => {
+  const unhiddenMarket = useMemo(() => {
     const hidden = localStorageMarketsData.data.hidden;
     let data: Market[] = filteredMarketData;
 
@@ -207,7 +207,15 @@ const FundingRates = () => {
     });
 
     return data;
-  };
+  }, [localStorageMarketsData.data.hidden]);
+
+  const marketsFilterByToken = useMemo((): Market[] => {
+    if (!selectedMarketRow) return [];
+
+    return filteredMarketData.filter(
+      (m) => m.token === selectedMarketRow.token
+    );
+  }, [selectedMarketRow]);
 
   return (
     <section className="text-white pb-10 ">
@@ -312,14 +320,14 @@ const FundingRates = () => {
                 </div>
               ) : (
                 <AppTable<Market>
-                  selectedRow={selecetedRow}
+                  selectedRow={selectedMarketRow}
                   columns={fundingRatesTableColumn}
                   data={
-                    fundingHistoryTab.label === "Favorite"
+                    fundingHistoryTab.label === 'Favorite'
                       ? localStorageMarketsData.data.favourites
-                      : fundingHistoryTab.label === "Hidden"
+                      : fundingHistoryTab.label === 'Hidden'
                       ? localStorageMarketsData.data.hidden
-                      : getUnhiddenMarket()
+                      : unhiddenMarket
                   }
                   onRowClick={(item) => {
                     setSelectedRow(item);
@@ -373,7 +381,6 @@ const FundingRates = () => {
                 </div>
               </div>
               <div>
-                {/* <HistoryChart data={getFundingData()} /> */}
                 <HistoryChart data={getFundingData()} timeRange={timeRange} />
               </div>
             </div>
@@ -393,39 +400,22 @@ const FundingRates = () => {
 
           <div className="border col-span-full lg:col-span-2 rounded-[16px] bg-gray-800 border-white/20 h-fit overflow-hidden">
             <div className="py-5 px-4">
-              <h3 className="text-white/90 font-bold text-base">Filtered Results</h3>
+              <h3 className="text-white/90 font-bold text-base">
+                Filtered Results{' '}
+                {selectedMarketRow ? `- ${selectedMarketRow?.token}` : ''}
+              </h3>
             </div>
 
             <div
               className="overflow-x-auto text-black  min-h-[520px] h-auto max-h-[1000px]"
               style={{ height: chartContainerHeight + 100 }}
             >
-              {/* <div className="overflow-x-auto text-black">
-              <AppTable<OrderbookItem>
-                columns={orderBookTableColumnnNegative}
-                data={orderBookData}
-              />
-              <div className="my-3 text-center text-[#419E6A] font-bold text-base">
-                <span>62,238.00 USDT</span>
-              </div>
-              <AppTable<OrderbookItem>
-                columns={orderBookTableColumnPostive}
-                tableHeadRowClassName="hidden"
-                data={orderBookData}
-              />
-            </div>  */}
-               <AppTable<Market>
-              selectedRow={selecetedRow}
-              columns={fundingRatesTableColumn}
-              data={
-                fundingHistoryTab.label === "Favorite"
-                  ? localStorageMarketsData.data.favourites
-                  : fundingHistoryTab.label === "Hidden"
-                  ? localStorageMarketsData.data.hidden
-                  : getUnhiddenMarket()
-              }
-              onRowClick={(item) => {
-                setSelectedRow(item);
+              <AppTable<Market>
+                selectedRow={selectedMarketRow}
+                columns={filteredFundingRateColumns}
+                data={marketsFilterByToken}
+                onRowClick={(item) => {
+                  setSelectedRow(item);
 
                 dispatch(
                   fetchSelectedFundingHistory({
@@ -435,12 +425,12 @@ const FundingRates = () => {
                   })
                 );
 
-                setPriceChartData([]);
-                fetchCryptoComparePrices(item.token, 30).then((prices) => {
-                  setPriceChartData(prices);
-                });
-              }}
-            />
+                  setPriceChartData([]);
+                  fetchCryptoComparePrices(item.token, 30).then((prices) => {
+                    setPriceChartData(prices);
+                  });
+                }}
+              />
             </div>
           </div>
         </div>

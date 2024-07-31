@@ -30,8 +30,9 @@ const StatsWarning = () => {
               </div>
               <div>
                 {warningCount}{' '}
-                {warningCount === 1 ? 'exchange is ' : 'exchanges are '}
-                not looking good.
+                {warningCount === 1
+                  ? 'exchange is showing a warning '
+                  : 'exchanges are showing warnings.'}
               </div>
             </div>
 

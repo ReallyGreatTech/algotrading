@@ -4,18 +4,14 @@ import {
   InvestorAction,
   Position,
   PositionsGroup,
-  StatExchange,
   TableColumn,
   Wallet,
 } from '../../types';
 import { shortenString } from '../../utils/stringTool';
 import InvestorRowActions from '../../components/InvestorRowActions';
 import { get24HourDateTime } from '../../utils/dateUtils';
-import moment from 'moment';
-import WalletRowActionButtons from '../../components/WalletRowActionButtons';
-// import { Link } from 'react-router-dom';
-// import { FiEdit2 } from 'react-icons/fi';
 
+import WalletRowActionButtons from '../../components/WalletRowActionButtons';
 
 export const positionGroupsTableColumn: TableColumn<PositionsGroup>[] = [
   {
@@ -186,7 +182,6 @@ export const subPositionsTableColumn: TableColumn<Position>[] = [
     label: '%TP',
     value: 'percent_take_profit',
   },
-
 ];
 
 export const exchangesBalanceTableColumn: TableColumn<ExchangeBalance>[] = [
@@ -332,61 +327,5 @@ export const investorActionTableColumn: TableColumn<InvestorAction>[] = [
     label: 'Amount',
     value: 'amount',
     render: (item: InvestorAction) => item.amount.toFixed(4),
-  },
-];
-
-export const statusExchangesColumns: TableColumn<StatExchange>[] = [
-  { label: "Exchange", value: "exchange" },
-  { label: "History Count", value: "history_count" },
-  { label: "Market Count", value: "markets_count" },
-  {
-    label: "Failure Tasks Count",
-    value: "failed_tasks_count",
-    render: (item) => {
-      const failed_tasks_count =
-        item.realtime_data_failure_rate.failed_tasks_count;
-      return failed_tasks_count;
-    },
-  },
-  {
-    label: "Total Tasks Count",
-    value: "total_tasks_count",
-    render: (item) => {
-      const total_tasks_count =
-        item.realtime_data_failure_rate.total_tasks_count;
-      return total_tasks_count;
-    },
-  },
-  {
-    label: "Failure Rate Percentage (%)",
-    value: "failure_rate_percent",
-    render: (item) => {
-      const failure_rate_percent =
-        item.realtime_data_failure_rate.failure_rate_percent;
-      return failure_rate_percent.toFixed(3);
-    },
-  },
-  {
-    label: "Latest Update",
-    value: "latest_update",
-    render: (item) => {
-      const timeUpdated = moment(item.latest_update).fromNow();
-      return timeUpdated[0].toUpperCase() + timeUpdated.slice(1);
-    },
-  },
-  {
-    label: "Warning",
-    value: "warning",
-    render: (item) => {
-      return item.warning ? (
-        <div className="text-white/90 px-4 py-2 rounded-full bg-yellow-600 inline opacity-80">
-          Warning
-        </div>
-      ) : (
-        <div className="text-white/90 px-4 py-2 rounded-full bg-green-600 inline opacity-80">
-          All good
-        </div>
-      );
-    },
   },
 ];
