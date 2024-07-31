@@ -1,4 +1,7 @@
-import { EditPositionsFormData, NewPositionsFormData } from './../../types/index';
+import {
+  EditPositionsFormData,
+  NewPositionsFormData,
+} from './../../types/index';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { apiClient } from './apiClient';
 import { Position, PositionsGroup } from '../../types';
@@ -51,6 +54,7 @@ export const updatePosition = createAsyncThunk(
       );
       return response.data;
     } catch (err: any) {
+      console.log(err);
       if (err.response && err.response.data) {
         // Return the error response data
         return rejectWithValue(err.response.data);
@@ -61,7 +65,6 @@ export const updatePosition = createAsyncThunk(
     }
   }
 );
-
 
 export const createPosition = createAsyncThunk(
   'positions/createPosition',
