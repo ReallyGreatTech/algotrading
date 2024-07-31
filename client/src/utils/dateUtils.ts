@@ -15,7 +15,6 @@ export const get24HourDateTime = (date: Date): string => {
   return `${dateString} ${time}`;
 };
 
-
 export const getDateTime = (range: string): string => {
   const now = new Date();
   let fromDateTime;
@@ -34,11 +33,9 @@ export const getDateTime = (range: string): string => {
       fromDateTime.setFullYear(now.getFullYear() - 1);
       break;
     default:
-      // throw new Error('Invalid time range');
       fromDateTime = new Date(now);
       fromDateTime.setDate(now.getDate() - 7);
   }
-  console.log(fromDateTime)
+
   return fromDateTime.toISOString();
-  
-}
+};
