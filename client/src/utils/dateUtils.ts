@@ -16,7 +16,7 @@ export const get24HourDateTime = (date: Date): string => {
 };
 
 
-export const getFromDateTime = (range: string): string => {
+export const getDateTime = (range: string): string => {
   const now = new Date();
   let fromDateTime;
 
@@ -25,9 +25,9 @@ export const getFromDateTime = (range: string): string => {
       fromDateTime = new Date(now);
       fromDateTime.setDate(now.getDate() - 1);
       break;
-    case '1M':
+    case '1W':
       fromDateTime = new Date(now);
-      fromDateTime.setMonth(now.getMonth() - 1);
+      fromDateTime.setDate(now.getDate() - 7);
       break;
     case '1Y':
       fromDateTime = new Date(now);
@@ -36,8 +36,9 @@ export const getFromDateTime = (range: string): string => {
     default:
       // throw new Error('Invalid time range');
       fromDateTime = new Date(now);
-      fromDateTime.setMonth(now.getMonth() - 1);
+      fromDateTime.setDate(now.getDate() - 7);
   }
   console.log(fromDateTime)
   return fromDateTime.toISOString();
+  
 }

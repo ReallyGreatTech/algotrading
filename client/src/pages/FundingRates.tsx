@@ -37,7 +37,7 @@ import { fetchMarket } from '../redux/api/markets';
 import { subDays, subYears, isAfter } from 'date-fns';
 import Tabs from '../components/Tabs';
 import MarketFilterBox from '../components/MarketFilterBox';
-import { getFromDateTime } from '../utils/dateUtils';
+import { getDateTime } from '../utils/dateUtils';
 
 const FundingRates = () => {
   const [fundingHistoryTab, setFundingHistoryTab] = useState(
@@ -78,6 +78,8 @@ const FundingRates = () => {
   const [availableExchanges, setAvailableExchanges] = useState<string[]>([]);
   const [timeRange, setTimeRange] = useState('1D');
 
+  const range= getDateTime(timeRange)
+
   useEffect(() => {
     dispatch(fetchTokens());
 
@@ -86,10 +88,7 @@ const FundingRates = () => {
 
   useEffect(() => {
     if (selectedToken) {
-      const range= getFromDateTime(timeRange)
-      console.log(range)
-      dispatch(fetchFundingHistory({ token: selectedToken, dateRange: range }));
-      console.log(timeRange)
+      dispatch(fetchFundingHistory({ token: selectedToken }));
     }
   }, [dispatch, selectedToken, timeRange]);
 
@@ -189,6 +188,7 @@ const FundingRates = () => {
       fetchSelectedFundingHistory({
         token: 'TRUMP',
         exchange: 'rabbitx',
+        from_datetime: range
       })
     );
   };
@@ -336,6 +336,7 @@ const FundingRates = () => {
                       fetchSelectedFundingHistory({
                         token: item.token,
                         exchange: item.exchange,
+                        from_datetime: range
                       })
                     );
 
@@ -416,12 +417,13 @@ const FundingRates = () => {
                 onRowClick={(item) => {
                   setSelectedRow(item);
 
-                  dispatch(
-                    fetchSelectedFundingHistory({
-                      token: item.token,
-                      exchange: item.exchange,
-                    })
-                  );
+                dispatch(
+                  fetchSelectedFundingHistory({
+                    token: item.token,
+                    exchange: item.exchange,
+                    from_datetime: range
+                  })
+                );
 
                   setPriceChartData([]);
                   fetchCryptoComparePrices(item.token, 30).then((prices) => {
