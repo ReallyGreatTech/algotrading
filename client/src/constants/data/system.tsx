@@ -6,33 +6,6 @@ export const statusExchangesColumns: TableColumn<StatExchange>[] = [
   { label: 'History Count', value: 'history_count' },
   { label: 'Market Count', value: 'markets_count' },
   {
-    label: 'Failure Tasks Count',
-    value: 'failed_tasks_count',
-    render: (item) => {
-      const failed_tasks_count =
-        item.realtime_data_failure_rate.failed_tasks_count;
-      return failed_tasks_count;
-    },
-  },
-  {
-    label: 'Total Tasks Count',
-    value: 'total_tasks_count',
-    render: (item) => {
-      const total_tasks_count =
-        item.realtime_data_failure_rate.total_tasks_count;
-      return total_tasks_count;
-    },
-  },
-  {
-    label: 'Failure Rate Percentage (%)',
-    value: 'failure_rate_percent',
-    render: (item) => {
-      const failure_rate_percent =
-        item.realtime_data_failure_rate.failure_rate_percent;
-      return failure_rate_percent.toFixed(3);
-    },
-  },
-  {
     label: 'Latest Update',
     value: 'latest_update',
     render: (item) => {
