@@ -59,8 +59,8 @@ const AddPositionsDialog = ({
   const [positionsData] = useState<NewPositionsFormData>({
     opened_at: '',
     closed_at: '',
-    status: '',
-    direction: '',
+    status: 'ACTIVE', // Default value
+    direction: 'LONG', // Default value
     leverage: '',
     leveraged_amount: '',
     position_size: '',
