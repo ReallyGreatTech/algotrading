@@ -10,25 +10,24 @@ function formatDateTime(date: Date) {
   return date.toISOString();
 }
 
-function getFromDateTime(dateRange: number) {
-  const fromDateTime = new Date();
-  fromDateTime.setDate(fromDateTime.getDate() - dateRange);
-  return formatDateTime(fromDateTime);
-}
+// function getFromDateTime(dateRange: number) {
+//   const fromDateTime = new Date();
+//   fromDateTime.setDate(fromDateTime.getDate() - dateRange);
+//   return formatDateTime(fromDateTime);
+// }
 export const fetchFundingHistory = createAsyncThunk<
   FundingHistory[],
-  { token: string, dateRange: number },
+  { token: string },
   { rejectValue: string }
->('fundingHistory/fetchFundingHistory', async ({token, dateRange}, { rejectWithValue }) => {
+>('fundingHistory/fetchFundingHistory', async ({token}, { rejectWithValue }) => {
   try {
     
-    const fromDateTime = getFromDateTime(dateRange);
+    // const fromDateTime = getFromDateTime(dateRange);
     const response = await apiClient.get<FetchFundingHistoryResponse>(
       '/funding-history',
       {
         params: {
-          token,
-          from_datetime: fromDateTime
+          token
         },
       }
     );
@@ -40,12 +39,13 @@ export const fetchFundingHistory = createAsyncThunk<
 
 export const fetchSelectedFundingHistory = createAsyncThunk(
   'selectedFundingHistory/fetchselectedFundingHistory',
-  async ({ token, exchange }: RowParams, { rejectWithValue }) => {
+  async ({ token, exchange, from_datetime }: RowParams, { rejectWithValue }) => {
     try {
       const response = await apiClient.get('/funding-history', {
         params: {
           token,
           exchange,
+          from_datetime
         },
       });
 
