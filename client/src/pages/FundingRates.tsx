@@ -76,7 +76,7 @@ const FundingRates = () => {
   const dispatch = useAppDispatch();
 
   const [availableExchanges, setAvailableExchanges] = useState<string[]>([]);
-  const [timeRange, setTimeRange] = useState('1D');
+  const [timeRange, setTimeRange] = useState('');
 
   const range= getDateTime(timeRange)
 
@@ -188,7 +188,7 @@ const FundingRates = () => {
       fetchSelectedFundingHistory({
         token: 'TRUMP',
         exchange: 'rabbitx',
-        from_datetime: range
+        // from_datetime: range
       })
     );
   };
