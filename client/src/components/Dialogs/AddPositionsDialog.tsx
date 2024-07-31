@@ -10,7 +10,6 @@ import { useEffect, useMemo, useState } from 'react';
 import { apiClient } from '../../redux/api/apiClient';
 import { Position } from '../../types';
 import { Formik } from 'formik';
-import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import FormInput from '../Form/FormInput';
 import FormSubmitButton from '../Form/FormSubmitButton';
@@ -26,11 +25,9 @@ const AddPositionsDialog = ({
   ...rest
 }: AddPositionsDialogProps) => {
   const dispatch = useAppDispatch();
-  // const navigate = useNavigate();
   const [isPending, setIsPending] = useState(false);
   const marketOptionsData = useAppSelector((state) => state.marketOptions);
   const walletsData = useAppSelector((state) => state.wallets);
-  const [walletInput, setWalletInput] = useState('');
   
 
   const mapMarketsToOptions = (data: MarketOption[]) => {

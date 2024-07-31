@@ -6,10 +6,6 @@ import {
 } from '../../types';
 import { apiClient } from './apiClient';
 
-function formatDateTime(date: Date) {
-  return date.toISOString();
-}
-
 // function getFromDateTime(dateRange: number) {
 //   const fromDateTime = new Date();
 //   fromDateTime.setDate(fromDateTime.getDate() - dateRange);
