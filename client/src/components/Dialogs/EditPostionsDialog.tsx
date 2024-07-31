@@ -85,6 +85,10 @@ const EditPositionsDialog = ({
     data: EditPositionsFormData
   ) => {
     setIsPending(true);
+
+    if (data.opened_at) data.opened_at = new Date(data.opened_at).toISOString();
+    if (data.closed_at) data.closed_at = new Date(data.closed_at).toISOString();
+
     try {
       await dispatch(updatePosition({ id, data }));
 
@@ -136,11 +140,9 @@ const EditPositionsDialog = ({
                     <div className="grid grid-cols-2 gap-5 text-white mb-10  ">
                       <div className="col-span-1 ">
                         <FormInput
-                          disabled
                           type="datetime-local"
                           label="Opened At"
                           name="opened_at"
-                          placeholder="Enter value here..."
                         />
                       </div>
                       <div className="col-span-1 ">
@@ -148,7 +150,6 @@ const EditPositionsDialog = ({
                           label="Closed At"
                           type="datetime-local"
                           name="closed_at"
-                          placeholder="Enter value here..."
                         />
                       </div>
                       <div className="col-span-1 ">
