@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { apiClient } from './apiClient';
+import { MarketOption } from '../../types';
 
 export const fetchMarketOptions = createAsyncThunk(
   'market/fetchMarketOptions',
@@ -12,3 +13,9 @@ export const fetchMarketOptions = createAsyncThunk(
     }
   }
 );
+
+export const _fetchMarketOptions = async () => {
+  const { data } = await apiClient.get<MarketOption[]>('/markets/options');
+
+  return data;
+};

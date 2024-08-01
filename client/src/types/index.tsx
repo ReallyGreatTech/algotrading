@@ -270,6 +270,7 @@ export interface MarketOption {
 
 export interface FetchMarketParams {
   token?: string;
+  exchange?: string;
   annual_min_funding_rate?: number;
   funding_normalization?: number;
   min_open_interest_usd?: number;
