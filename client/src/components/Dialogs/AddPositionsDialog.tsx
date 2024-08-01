@@ -168,7 +168,7 @@ const AddPositionsDialog = ({
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5 text-white mb-10">
                     <div className="col-span-1">
                       <FormSelectInput
-                        label="Market"
+                        label="[Exhange] - Token"
                         name="market_id"
                         placeholder="Enter value here..."
                         options={marketOptions}
