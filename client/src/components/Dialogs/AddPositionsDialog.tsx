@@ -91,30 +91,33 @@ const AddPositionsDialog = ({
     }
 
   // Check if required fields are defined and have valid values
-  const validStatus = ['ACTIVE', 'CLOSED'].includes(data.status || '');
-  const validDirection = ['LONG', 'SHORT'].includes(data.direction || '');
+  // const validStatus = ['ACTIVE', 'CLOSED'].includes(data.status || '');
+  // const validDirection = ['LONG', 'SHORT'].includes(data.direction || '');
 
-  if (!isValid || !validStatus || !validDirection || !data.wallet) {
-    toast.error('Please fill in all required fields and provide valid choices.');
-    setIsPending(false);
-    return;
-  }
+  // if (!isValid || !validStatus || !validDirection || !data.wallet) {
+  //   toast.error('Please fill in all required fields and provide valid choices.');
+  //   setIsPending(false);
+  //   return;
+  // }
     
     //  // Handle custom wallet input if provided
     //  const finalWallet = walletsOptions.some((option) => option.value === data.wallet)
     //  ? data.wallet
     //  : walletInput;
+   
 
    const formattedData = {
      ...data,
-    //  wallet: finalWallet,
+  //   //  wallet: finalWallet,
      opened_at: data.opened_at ? new Date(data.opened_at).toISOString() : '',
-     closed_at: data.closed_at ? new Date(data.closed_at).toISOString() : '',
+     closed_at: data.closed_at ? new Date(data.closed_at).toISOString() : undefined,
    };
 
-    console.log('formatted data:',formattedData)
-    console.log('status:',formattedData)
-    console.log('wallet:',formattedData.wallet)
+  //  if (formattedData.opened_at) formattedData.opened_at = new Date(formattedData.opened_at).toISOString();
+  //  if (formattedData.closed_at) formattedData.closed_at = new Date(formattedData.closed_at).toISOString();
+    // console.log('formatted data:',formattedData)
+    // console.log('status:',formattedData)
+    // console.log('wallet:',formattedData.wallet)
 
     try {
       // data.opened_at = new Date(data.opened_at).toISOString();
@@ -124,6 +127,7 @@ const AddPositionsDialog = ({
       // }
 
       // await apiClient.post<Position>(`/positions/`, data);
+      console.log('formated data:', formattedData)
       await apiClient.post<Position>(`/positions/`, formattedData);
 
       toast.success('New position successfully created.');
