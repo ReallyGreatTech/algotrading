@@ -80,6 +80,19 @@ const FundingRates = () => {
 
   const range= getDateTime(timeRange)
 
+  const getUnhiddenMarket = () => {
+    const hidden = localStorageMarketsData.data.hidden;
+    let data: Market[] = filteredMarketData;
+
+    data = data.filter((m) => {
+      const index = hidden.findIndex((hm) => hm.id === m.id);
+      if (index == -1) return m;
+    });
+
+    return data;
+  };
+
+
   useEffect(() => {
     dispatch(fetchTokens());
 
@@ -327,7 +340,8 @@ const FundingRates = () => {
                       ? localStorageMarketsData.data.favourites
                       : fundingHistoryTab.label === 'Hidden'
                       ? localStorageMarketsData.data.hidden
-                      : unhiddenMarket
+                      // : unhiddenMarket
+                      : getUnhiddenMarket()
                   }
                   onRowClick={(item) => {
                     setSelectedRow(item);
