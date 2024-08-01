@@ -210,17 +210,17 @@ const FundingRates = () => {
     return state.selecetedFundingHistory.data;
   });
 
-  const unhiddenMarket = useMemo(() => {
-    const hidden = localStorageMarketsData.data.hidden;
-    let data: Market[] = filteredMarketData;
+  // const unhiddenMarket = useMemo(() => {
+  //   const hidden = localStorageMarketsData.data.hidden;
+  //   let data: Market[] = filteredMarketData;
 
-    data = data.filter((m) => {
-      const index = hidden.findIndex((hm) => hm.id === m.id);
-      if (index == -1) return m;
-    });
+  //   data = data.filter((m) => {
+  //     const index = hidden.findIndex((hm) => hm.id === m.id);
+  //     if (index == -1) return m;
+  //   });
 
-    return data;
-  }, [localStorageMarketsData.data.hidden]);
+  //   return data;
+  // }, [localStorageMarketsData.data.hidden]);
 
   const marketsFilterByToken = useMemo((): Market[] => {
     if (!selectedMarketRow) return [];
