@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { loadTokens } from '../redux/api/tokens';
 import { _fetchMarketOptions } from '../redux/api/marketsOptions';
 
