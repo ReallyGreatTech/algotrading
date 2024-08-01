@@ -12,3 +12,9 @@ export const fetchTokens = createAsyncThunk(
     }
   }
 );
+
+export const loadTokens = async () => {
+  const { data } = await apiClient.get<string[]>('/tokens');
+
+  return data;
+};

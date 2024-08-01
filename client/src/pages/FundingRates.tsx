@@ -1,26 +1,16 @@
 import AppTable from '../components/AppTable';
 import PrimaryButton from '../components/PrimaryButton';
 import { GrNext } from 'react-icons/gr';
-import {
-  FetchMarketParams,
-  Market,
-  // OrderbookItem,
-  PriceChartDataItem,
-} from '../types';
+import { FetchMarketParams, Market, PriceChartDataItem } from '../types';
 import {
   filteredFundingRateColumns,
   fundingHistoryTabs,
   fundingRatesTableColumn,
-  // orderBookData,
-  // orderBookTableColumnPostive,
-  // orderBookTableColumnnNegative,
 } from '../constants/data/fundingRatesPage';
 import SearchInput from '../components/SearchInput';
 import { useAppSelector, useAppDispatch } from '../hooks';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { updateSelectedToken } from '../redux/features/tokens/tokenSlice';
-import { getUniqueExchanges } from '../utils/getUniqueExchanges';
-import ExchangeSearchInput from '../components/ExchangeSearchInput';
 import TimeFilter from '../components/TimeFilter';
 import { AiOutlineExpandAlt } from 'react-icons/ai';
 import { Bars } from 'react-loader-spinner';
@@ -28,16 +18,13 @@ import HistoryChart from '../components/Charts/HistoryChart';
 import { formatTimestamp } from '../utils/formatTime';
 import { fetchCryptoComparePrices } from '../utils/fetchCryptoPrices';
 import TradingViewChart from '../components/TradingViewChart';
-import {
-  fetchFundingHistory,
-  fetchSelectedFundingHistory,
-} from '../redux/api/fundingHistory';
-import { fetchTokens } from '../redux/api/tokens';
+import { fetchSelectedFundingHistory } from '../redux/api/fundingHistory';
 import { fetchMarket } from '../redux/api/markets';
 import { subDays, subYears, isAfter } from 'date-fns';
 import Tabs from '../components/Tabs';
 import MarketFilterBox from '../components/MarketFilterBox';
 import { getDateTime } from '../utils/dateUtils';
+import usePreLoadData from '../hooks/usePreLoadData';
 
 const FundingRates = () => {
   const [fundingHistoryTab, setFundingHistoryTab] = useState(
@@ -48,7 +35,7 @@ const FundingRates = () => {
   const [selectedMarketRow, setSelectedRow] = useState<Market | undefined>(
     undefined
   );
-  const tokensData = useAppSelector((state) => state.token.tokens);
+
   const marketData = useAppSelector((state) => state.market.data);
   const marketDataLoading = useAppSelector((state) => state.market.loading);
   const [filteredMarketData, setFilteredMarketData] =
@@ -59,13 +46,13 @@ const FundingRates = () => {
   const [fundingNormalization, setFundingNormalization] = useState<
     string | undefined
   >(undefined);
+  const [selectedExchange, setSelectedExchange] = useState<string | undefined>(
+    undefined
+  );
   const [minOpenInterestUsd, setMinOpenInterestUsd] = useState<
     string | undefined
   >(undefined);
-
-  const fundingHistoryData = useAppSelector(
-    (state) => state.fundingHistory.data
-  );
+  const [showPageContent, setShowPageContent] = useState(false);
   const [_, setPriceChartData] = useState<PriceChartDataItem[]>([]);
   const selectedToken = useAppSelector((state) => state.token.selectedToken);
   const selectedTimeFilter = useAppSelector((state) => state.timefilter.time);
@@ -75,10 +62,10 @@ const FundingRates = () => {
 
   const dispatch = useAppDispatch();
 
-  const [availableExchanges, setAvailableExchanges] = useState<string[]>([]);
   const [timeRange, setTimeRange] = useState('');
+  const { tokens, exchanges } = usePreLoadData();
 
-  const range= getDateTime(timeRange)
+  const range = getDateTime(timeRange);
 
   const getUnhiddenMarket = () => {
     const hidden = localStorageMarketsData.data.hidden;
@@ -91,26 +78,6 @@ const FundingRates = () => {
 
     return data;
   };
-
-
-  useEffect(() => {
-    dispatch(fetchTokens());
-
-    dispatch(fetchMarket({}));
-  }, []);
-
-  useEffect(() => {
-    if (selectedToken) {
-      dispatch(fetchFundingHistory({ token: selectedToken }));
-    }
-  }, [dispatch, selectedToken, timeRange]);
-
-  useEffect(() => {
-    if (fundingHistoryData.length) {
-      const exchanges = getUniqueExchanges(fundingHistoryData);
-      setAvailableExchanges(exchanges);
-    }
-  }, [fundingHistoryData]);
 
   useEffect(() => {
     setFilteredMarketData(marketData);
@@ -125,6 +92,7 @@ const FundingRates = () => {
     const filterParams: FetchMarketParams = {};
 
     if (selectedToken) filterParams.token = selectedToken;
+    if (selectedExchange) filterParams.exchange = selectedExchange;
     if (fundingNormalization)
       filterParams.funding_normalization = Number(fundingNormalization);
     if (minimumFundingRate)
@@ -137,6 +105,7 @@ const FundingRates = () => {
 
   const handleGoClick = () => {
     dispatch(fetchMarket(getMarketParams()));
+    setShowPageContent(true);
   };
 
   const getFundingData = () => {
@@ -196,16 +165,6 @@ const FundingRates = () => {
     setTimeRange(range);
   };
 
-  const handleTestDispatch = () => {
-    dispatch(
-      fetchSelectedFundingHistory({
-        token: 'TRUMP',
-        exchange: 'rabbitx',
-        // from_datetime: range
-      })
-    );
-  };
-
   const fundingData = useAppSelector((state) => {
     return state.selecetedFundingHistory.data;
   });
@@ -234,115 +193,210 @@ const FundingRates = () => {
     <section className="text-white pb-10 ">
       <div className="w-full">
         <div className="py-5">
-          <h1
-            className="text-3xl font-bold text-white"
-            onClick={handleTestDispatch}
-          >
-            Funding Rates
-          </h1>
+          <h1 className="text-3xl font-bold text-white">Funding Rates</h1>
         </div>
 
         {/* Filters */}
-        <div className="flex flex-col lg:flex-row w-full border border-white/20 py-4 rounded-[16px] mb-4 bg-gray-800 gap-4 px-4">
-          <div className="grid grid-cols-12 w-full lg:gap-8 gap-4">
-            <div className="col-span-full lg:col-span-4">
-              <SearchInput
-                label="Token"
-                placeholder="Search/Enter Token: "
-                options={tokensData}
-                onOptionClick={(value) => dispatch(updateSelectedToken(value))}
+        <div>
+          <div className="flex flex-col lg:flex-row w-full border border-white/20 py-4 rounded-[16px] mb-4 bg-gray-800 gap-4 px-4">
+            <div className="grid grid-cols-12 w-full lg:gap-8 gap-4">
+              <div className="col-span-full lg:col-span-4">
+                <SearchInput
+                  label="Token"
+                  placeholder="Search/Enter Token: "
+                  options={tokens.data}
+                  disabled={tokens.loading}
+                  onOptionClick={(value) =>
+                    dispatch(updateSelectedToken(value))
+                  }
+                />
+                {exchanges.loading && (
+                  <p className="text-[10px]">loading tokens...</p>
+                )}
+              </div>
+              <div className="col-span-full lg:col-span-4 flex flex-col">
+                <label htmlFor="" className="mb-1">
+                  Minimum Funding Rate
+                </label>
+                <input
+                  type="text"
+                  value={minimumFundingRate}
+                  onChange={(e) => setMinimumFundingRate(e.target.value)}
+                  placeholder="Mininum funding rate. Eg: 10"
+                  className="bg-gray-900 py-[0.9em] rounded-lg p-2.5  border border-white/20  text-gray-400 font-bold"
+                />
+              </div>
+              <div className="col-span-full lg:col-span-4 flex flex-col ">
+                <label htmlFor="" className="mb-1">
+                  Funding Normalization
+                </label>
+                <input
+                  type="text"
+                  value={fundingNormalization}
+                  onChange={(e) => setFundingNormalization(e.target.value)}
+                  placeholder="Funding Normalization. Eg: 5"
+                  className="bg-gray-900 py-[0.9em] rounded-lg p-2.5  border border-white/20  text-gray-400 font-bold"
+                />
+              </div>
+              <div className="col-span-full lg:col-span-4 flex flex-col ">
+                <label htmlFor="" className="mb-1">
+                  Minimum Open Interest USD
+                </label>
+                <input
+                  type="text"
+                  value={minOpenInterestUsd}
+                  onChange={(e) => setMinOpenInterestUsd(e.target.value)}
+                  placeholder="Minimum Open Interest USD. Eg: 5"
+                  className="bg-gray-900 py-[0.9em] rounded-lg p-2.5  border border-white/20  text-gray-400 font-bold"
+                />
+              </div>
+              <div className="col-span-full lg:col-span-4 flex flex-col">
+                <SearchInput
+                  label="Exchange"
+                  placeholder="Search Exchange"
+                  options={exchanges.data}
+                  disabled={exchanges.loading}
+                  onOptionClick={(value) => setSelectedExchange(value)}
+                />
+                {exchanges.loading && (
+                  <p className="text-[10px]">loading exchanges...</p>
+                )}
+              </div>
+            </div>
+            <div className="mt-auto mb-1 mx-auto">
+              <PrimaryButton
+                buttonText="GO"
+                buttonIcon={<GrNext />}
+                onClick={handleGoClick}
               />
             </div>
-            <div className="col-span-full lg:col-span-4 flex flex-col">
-              <label htmlFor="" className="mb-1">
-                Minimum Funding Rate
-              </label>
-              <input
-                type="text"
-                value={minimumFundingRate}
-                onChange={(e) => setMinimumFundingRate(e.target.value)}
-                placeholder="Mininum funding rate. Eg: 10"
-                className="bg-gray-900 py-[0.9em] rounded-lg p-2.5  border border-white/20  text-gray-400 font-bold"
-              />
-            </div>
-            <div className="col-span-full lg:col-span-4 flex flex-col ">
-              <label htmlFor="" className="mb-1">
-                Funding Normalization
-              </label>
-              <input
-                type="text"
-                value={fundingNormalization}
-                onChange={(e) => setFundingNormalization(e.target.value)}
-                placeholder="Funding Normalization. Eg: 5"
-                className="bg-gray-900 py-[0.9em] rounded-lg p-2.5  border border-white/20  text-gray-400 font-bold"
-              />
-            </div>
-            <div className="col-span-full lg:col-span-4 flex flex-col ">
-              <label htmlFor="" className="mb-1">
-                Minimum Open Interest USD
-              </label>
-              <input
-                type="text"
-                value={minOpenInterestUsd}
-                onChange={(e) => setMinOpenInterestUsd(e.target.value)}
-                placeholder="Minimum Open Interest USD. Eg: 5"
-                className="bg-gray-900 py-[0.9em] rounded-lg p-2.5  border border-white/20  text-gray-400 font-bold"
-              />
-            </div>
-            <div className="col-span-full lg:col-span-4 flex flex-col">
-              <ExchangeSearchInput
-                label="Exchange"
-                options={availableExchanges}
-                placeholder="Search/Enter Exchange:"
-                onSelectionChange={() => {}}
-              />
-            </div>
-          </div>
-          <div className="mt-auto mb-1 mx-auto">
-            <PrimaryButton
-              buttonText="GO"
-              buttonIcon={<GrNext />}
-              onClick={handleGoClick}
-            />
           </div>
         </div>
 
-        <div className="grid grid-cols-10 gap-4">
-          <div className="border col-span-full lg:col-span-3 rounded-[16px] bg-gray-800 border-white/20 h-fit overflow-hidden">
-            <div className="py-5 px-4">
-              <h3 className="text-white/90 font-bold text-base mb-2">
-                Table results
-              </h3>
+        {showPageContent && (
+          <div className="grid grid-cols-10 gap-4">
+            <div className="border col-span-full lg:col-span-3 rounded-[16px] bg-gray-800 border-white/20 h-fit overflow-hidden">
+              <div className="py-5 px-4">
+                <h3 className="text-white/90 font-bold text-base mb-2">
+                  Table results
+                </h3>
 
-              <Tabs
-                tabs={fundingHistoryTabs}
-                activeTab={fundingHistoryTab}
-                onChange={(tab) => {
-                  setFundingHistoryTab(tab);
-                }}
-              />
-              {localStorageMarketsData.filterToken && <MarketFilterBox />}
+                <Tabs
+                  tabs={fundingHistoryTabs}
+                  activeTab={fundingHistoryTab}
+                  onChange={(tab) => {
+                    setFundingHistoryTab(tab);
+                  }}
+                />
+                {localStorageMarketsData.filterToken && <MarketFilterBox />}
+              </div>
+              <div
+                className="overflow-x-auto text-black  min-h-[520px] h-auto max-h-[1000px]"
+                style={{ height: chartContainerHeight + 100 }}
+              >
+                {marketDataLoading ? (
+                  <div className="text-center text-white flex h-full w-full pt-16 justify-center opacity-70">
+                    <Bars height={20} color="#FFF" />
+                  </div>
+                ) : (
+                  <AppTable<Market>
+                    selectedRow={selectedMarketRow}
+                    columns={fundingRatesTableColumn}
+                    data={
+                      fundingHistoryTab.label === 'Favorite'
+                        ? localStorageMarketsData.data.favourites
+                        : fundingHistoryTab.label === 'Hidden'
+                        ? localStorageMarketsData.data.hidden
+                        : // : unhiddenMarket
+                          getUnhiddenMarket()
+                    }
+                    onRowClick={(item) => {
+                      setSelectedRow(item);
+
+                      dispatch(
+                        fetchSelectedFundingHistory({
+                          token: item.token,
+                          exchange: item.exchange,
+                          from_datetime: range,
+                        })
+                      );
+
+                      setPriceChartData([]);
+                      fetchCryptoComparePrices(item.token, 30).then(
+                        (prices) => {
+                          setPriceChartData(prices);
+                        }
+                      );
+                    }}
+                  />
+                )}
+              </div>
             </div>
+
             <div
-              className="overflow-x-auto text-black  min-h-[520px] h-auto max-h-[1000px]"
-              style={{ height: chartContainerHeight + 100 }}
+              className=" col-span-full lg:col-span-5 rounded-lg flex flex-col gap-4"
+              ref={chartContainer}
             >
-              {marketDataLoading ? (
-                <div className="text-center text-white flex h-full w-full pt-16 justify-center opacity-70">
-                  <Bars height={20} color="#FFF" />
+              <div className="border border-white/20 bg-gray-800 rounded-xl">
+                <div className="py-5 px-4  flex flex-col md:flex-row gap-2 md:gap-0 justify-between items-center">
+                  <h3 className="text-white/90 font-bold text-base">
+                    Funding history chart
+                  </h3>
+                  <div className="flex  items-center gap-2">
+                    <TimeFilter />
+                    <div className="text-white/40 pl-2 border-l-white/40 border-l-[1px]">
+                      Timelines:
+                    </div>
+                    <select
+                      value={timeRange}
+                      // onChange={(e) => setTimeRange(e.target.value)}
+                      onChange={(e) => handleTimeRangeChange(e.target.value)}
+                      className="bg-gray-800 text-white border border-white/20 rounded-md p-1"
+                    >
+                      <option value="1D">1 Day</option>
+                      <option value="1W">1 Week</option>
+                      <option value="1Y">1 Year</option>
+                    </select>
+
+                    <button className="text-white p-2 hover:bg-primary-dark rounded-full">
+                      <AiOutlineExpandAlt size="1.4rem" />
+                    </button>
+                  </div>
                 </div>
-              ) : (
+                <div>
+                  <HistoryChart data={getFundingData()} timeRange={timeRange} />
+                </div>
+              </div>
+
+              <div className="border border-white/20 bg-gray-800 rounded-xl">
+                <div className="px-3 py-5">
+                  <h2 className="text-white/90 text-xl text-black font-bold">
+                    Price chart
+                  </h2>
+                </div>
+
+                <div className="h-[500px]">
+                  <TradingViewChart />
+                </div>
+              </div>
+            </div>
+
+            <div className="border col-span-full lg:col-span-2 rounded-[16px] bg-gray-800 border-white/20 h-fit overflow-hidden">
+              <div className="py-5 px-4">
+                <h3 className="text-white/90 font-bold text-base">
+                  Filtered Results{' '}
+                  {selectedMarketRow ? `- ${selectedMarketRow?.token}` : ''}
+                </h3>
+              </div>
+
+              <div
+                className="overflow-x-auto text-black  min-h-[520px] h-auto max-h-[1000px]"
+                style={{ height: chartContainerHeight + 100 }}
+              >
                 <AppTable<Market>
                   selectedRow={selectedMarketRow}
-                  columns={fundingRatesTableColumn}
-                  data={
-                    fundingHistoryTab.label === 'Favorite'
-                      ? localStorageMarketsData.data.favourites
-                      : fundingHistoryTab.label === 'Hidden'
-                      ? localStorageMarketsData.data.hidden
-                      // : unhiddenMarket
-                      : getUnhiddenMarket()
-                  }
+                  columns={filteredFundingRateColumns}
+                  data={marketsFilterByToken}
                   onRowClick={(item) => {
                     setSelectedRow(item);
 
@@ -350,7 +404,7 @@ const FundingRates = () => {
                       fetchSelectedFundingHistory({
                         token: item.token,
                         exchange: item.exchange,
-                        from_datetime: range
+                        from_datetime: range,
                       })
                     );
 
@@ -360,94 +414,10 @@ const FundingRates = () => {
                     });
                   }}
                 />
-              )}
-            </div>
-          </div>
-
-          <div
-            className=" col-span-full lg:col-span-5 rounded-lg flex flex-col gap-4"
-            ref={chartContainer}
-          >
-            <div className="border border-white/20 bg-gray-800 rounded-xl">
-              <div className="py-5 px-4  flex flex-col md:flex-row gap-2 md:gap-0 justify-between items-center">
-                <h3 className="text-white/90 font-bold text-base">
-                  Funding history chart
-                </h3>
-                <div className="flex  items-center gap-2">
-                  <TimeFilter />
-                  <div className="text-white/40 pl-2 border-l-white/40 border-l-[1px]">
-                    Timelines:
-                  </div>
-                  <select
-                    value={timeRange}
-                    // onChange={(e) => setTimeRange(e.target.value)}
-                    onChange={(e) => handleTimeRangeChange(e.target.value)}
-                    className="bg-gray-800 text-white border border-white/20 rounded-md p-1"
-                  >
-                    <option value="1D">1 Day</option>
-                    <option value="1W">1 Week</option>
-                    <option value="1Y">1 Year</option>
-                  </select>
-
-                  <button className="text-white p-2 hover:bg-primary-dark rounded-full">
-                    <AiOutlineExpandAlt size="1.4rem" />
-                  </button>
-                </div>
-              </div>
-              <div>
-                <HistoryChart data={getFundingData()} timeRange={timeRange} />
-              </div>
-            </div>
-
-            <div className="border border-white/20 bg-gray-800 rounded-xl">
-              <div className="px-3 py-5">
-                <h2 className="text-white/90 text-xl text-black font-bold">
-                  Price chart
-                </h2>
-              </div>
-
-              <div className="h-[500px]">
-                <TradingViewChart />
               </div>
             </div>
           </div>
-
-          <div className="border col-span-full lg:col-span-2 rounded-[16px] bg-gray-800 border-white/20 h-fit overflow-hidden">
-            <div className="py-5 px-4">
-              <h3 className="text-white/90 font-bold text-base">
-                Filtered Results{' '}
-                {selectedMarketRow ? `- ${selectedMarketRow?.token}` : ''}
-              </h3>
-            </div>
-
-            <div
-              className="overflow-x-auto text-black  min-h-[520px] h-auto max-h-[1000px]"
-              style={{ height: chartContainerHeight + 100 }}
-            >
-              <AppTable<Market>
-                selectedRow={selectedMarketRow}
-                columns={filteredFundingRateColumns}
-                data={marketsFilterByToken}
-                onRowClick={(item) => {
-                  setSelectedRow(item);
-
-                dispatch(
-                  fetchSelectedFundingHistory({
-                    token: item.token,
-                    exchange: item.exchange,
-                    from_datetime: range
-                  })
-                );
-
-                  setPriceChartData([]);
-                  fetchCryptoComparePrices(item.token, 30).then((prices) => {
-                    setPriceChartData(prices);
-                  });
-                }}
-              />
-            </div>
-          </div>
-        </div>
+        )}
       </div>
     </section>
   );
