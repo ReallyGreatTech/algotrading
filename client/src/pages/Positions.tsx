@@ -78,6 +78,7 @@ const Positions = () => {
     return exchangesBalances;
   };
 
+  
   useEffect(() => {
     dispatch(fetchWallets());
     dispatch(fetchInvestors());
