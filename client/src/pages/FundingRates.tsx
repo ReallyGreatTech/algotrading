@@ -76,9 +76,22 @@ const FundingRates = () => {
   const dispatch = useAppDispatch();
 
   const [availableExchanges, setAvailableExchanges] = useState<string[]>([]);
-  const [timeRange, setTimeRange] = useState('1D');
+  const [timeRange, setTimeRange] = useState('');
 
   const range= getDateTime(timeRange)
+
+  const getUnhiddenMarket = () => {
+    const hidden = localStorageMarketsData.data.hidden;
+    let data: Market[] = filteredMarketData;
+
+    data = data.filter((m) => {
+      const index = hidden.findIndex((hm) => hm.id === m.id);
+      if (index == -1) return m;
+    });
+
+    return data;
+  };
+
 
   useEffect(() => {
     dispatch(fetchTokens());
@@ -188,7 +201,7 @@ const FundingRates = () => {
       fetchSelectedFundingHistory({
         token: 'TRUMP',
         exchange: 'rabbitx',
-        from_datetime: range
+        // from_datetime: range
       })
     );
   };
@@ -197,17 +210,17 @@ const FundingRates = () => {
     return state.selecetedFundingHistory.data;
   });
 
-  const unhiddenMarket = useMemo(() => {
-    const hidden = localStorageMarketsData.data.hidden;
-    let data: Market[] = filteredMarketData;
+  // const unhiddenMarket = useMemo(() => {
+  //   const hidden = localStorageMarketsData.data.hidden;
+  //   let data: Market[] = filteredMarketData;
 
-    data = data.filter((m) => {
-      const index = hidden.findIndex((hm) => hm.id === m.id);
-      if (index == -1) return m;
-    });
+  //   data = data.filter((m) => {
+  //     const index = hidden.findIndex((hm) => hm.id === m.id);
+  //     if (index == -1) return m;
+  //   });
 
-    return data;
-  }, [localStorageMarketsData.data.hidden]);
+  //   return data;
+  // }, [localStorageMarketsData.data.hidden]);
 
   const marketsFilterByToken = useMemo((): Market[] => {
     if (!selectedMarketRow) return [];
@@ -327,7 +340,8 @@ const FundingRates = () => {
                       ? localStorageMarketsData.data.favourites
                       : fundingHistoryTab.label === 'Hidden'
                       ? localStorageMarketsData.data.hidden
-                      : unhiddenMarket
+                      // : unhiddenMarket
+                      : getUnhiddenMarket()
                   }
                   onRowClick={(item) => {
                     setSelectedRow(item);

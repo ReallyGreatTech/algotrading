@@ -274,7 +274,7 @@ export interface FetchMarketParams {
 export interface RowParams {
   token: string;
   exchange: string;
-  from_datetime: string
+  from_datetime?: string
 }
 
 export interface SelectedFundingHistoryState {
