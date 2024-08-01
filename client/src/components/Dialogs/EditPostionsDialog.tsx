@@ -62,7 +62,7 @@ const EditPositionsDialog = ({
         leverage: position.leverage?.toString(),
         leveraged_amount: position.leveraged_amount?.toString(),
         position_size: position.position_size?.toString(),
-        entry_price: position.position_size?.toString(),
+        entry_price: position.entry_price?.toString(),
         liquidation_price: position.liquidation_price?.toString(),
         stop_loss: position.stop_loss?.toString(),
         take_profit: position.take_profit?.toString(),
@@ -158,8 +158,8 @@ const EditPositionsDialog = ({
                           label="Status"
                           defaultValue="ACTIVE"
                           options={[
-                            { label: 'Active', value: 'ACTIVE' },
-                            { label: 'Closed', value: 'CLOSED' },
+                            { label: "Active", value: "ACTIVE" },
+                            { label: "Closed", value: "CLOSED" },
                           ]}
                         />
                       </div>
@@ -169,8 +169,8 @@ const EditPositionsDialog = ({
                           label="Direction"
                           defaultValue="LONG"
                           options={[
-                            { label: 'Long', value: 'LONG' },
-                            { label: 'Short', value: 'SHORT' },
+                            { label: "Long", value: "LONG" },
+                            { label: "Short", value: "SHORT" },
                           ]}
                         />
                       </div>
@@ -183,8 +183,8 @@ const EditPositionsDialog = ({
                       </div>
                       <div className="col-span-1 ">
                         <FormInput
-                          label="Leverage Amount"
-                          name="leverage_amount"
+                          label="Leveraged Amount"
+                          name="leveraged_amount"
                           placeholder="Enter value here..."
                         />
                       </div>
@@ -272,7 +272,7 @@ const EditPositionsDialog = ({
                 <FormSubmitButton
                   loading={isPending}
                   className={`w-full py-3 px-5 bg-primary rounded-lg text-white shadow-primary ml-auto ${
-                    isPending ? 'animate-pulse' : ''
+                    isPending ? "animate-pulse" : ""
                   }`}
                 >
                   Update Position
