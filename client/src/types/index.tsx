@@ -8,6 +8,10 @@ export interface TableColumn<T> {
   render?(item: T): ReactNode;
 }
 
+
+
+
+
 export interface Position {
   id: number;
   token: string;
