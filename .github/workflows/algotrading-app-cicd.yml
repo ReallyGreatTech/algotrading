@@ -2,7 +2,7 @@ name: Algotrading-app-UI-PROD
 
 on:
     push:
-        branches: [development]
+        branches: [main]
         paths:
             - "client/**"
 
