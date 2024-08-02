@@ -1,6 +1,7 @@
 import { Tab, Market, TableColumn } from '../../types';
 import FundingRateMarketActions from '../../components/FundingRateMarketActions';
 import Tooltip from '../../components/Tooltip';
+import { IoWarningOutline } from 'react-icons/io5';
 
 export const fundingRatesTableColumn: TableColumn<Market>[] = [
   {
@@ -25,7 +26,7 @@ export const fundingRatesTableColumn: TableColumn<Market>[] = [
           </div>
           {row.warnings?.length ? (
             <Tooltip text={<p>{message}</p>}>
-              <div className="w-3 h-3 bg-red-500 rounded-full" />
+              <IoWarningOutline className="text-red-500 mx-[2px]" />
             </Tooltip>
           ) : null}
         </div>
@@ -101,7 +102,8 @@ export const filteredFundingRateColumns: TableColumn<Market>[] = [
           </div>
           {row.warnings?.length ? (
             <Tooltip text={<p>{message}</p>}>
-              <div className="w-3 h-3 bg-red-500 rounded-full" />
+              {/* <div className="w-3 h-3 bg-red-500 rounded-full" /> */}
+              <IoWarningOutline className="text-red-500" />
             </Tooltip>
           ) : null}
         </div>
