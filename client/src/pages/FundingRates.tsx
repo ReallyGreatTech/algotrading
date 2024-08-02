@@ -280,7 +280,8 @@ const FundingRates = () => {
                 <h3 className="text-white/90 font-bold text-base mb-2">
                   Table results
                 </h3>
-
+              </div>
+              <div className="text-white/90 -z-10">
                 <Tabs
                   tabs={fundingHistoryTabs}
                   activeTab={fundingHistoryTab}
