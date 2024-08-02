@@ -44,7 +44,6 @@ jobs:
                   aws-secret-access-key: ${{ secrets[steps.env_check.outputs.AWS_SECRET_ACCESS_KEY_NAME] }}
                   aws-region: ${{ secrets.AWS_REGION }}
 
-
             - name: Build dist files
               id: build_dist
               run: |
