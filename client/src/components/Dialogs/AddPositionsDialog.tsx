@@ -81,7 +81,7 @@ const AddPositionsDialog = ({
     setIsPending(true);
 
   // Validate input data
-  const isValid = Object.values(data).every(value => value !== undefined && value !== null && value !== '');
+  // const isValid = Object.values(data).every(value => value !== undefined && value !== null && value !== '');
 
     // Validate wallet data
     if (!data.wallet) {
@@ -120,13 +120,7 @@ const AddPositionsDialog = ({
     // console.log('wallet:',formattedData.wallet)
 
     try {
-      // data.opened_at = new Date(data.opened_at).toISOString();
-
-      // if (data.closed_at) {
-      //   data.closed_at = new Date(data.closed_at).toISOString();
-      // }
-
-      // await apiClient.post<Position>(`/positions/`, data);
+ 
       console.log('formated data:', formattedData)
       await apiClient.post<Position>(`/positions/`, formattedData);
 
