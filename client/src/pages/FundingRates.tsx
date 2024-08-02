@@ -273,7 +273,7 @@ const FundingRates = () => {
           </div>
         </div>
 
-        {showPageContent && (
+        {showPageContent ? (
           <div className="grid grid-cols-10 gap-4">
             <div className="border col-span-full lg:col-span-3 rounded-[16px] bg-gray-800 border-white/20 h-fit overflow-hidden">
               <div className="py-5 px-4">
@@ -418,6 +418,8 @@ const FundingRates = () => {
               </div>
             </div>
           </div>
+        ):(
+          <div className='text-2xl w-full py-[10rem] flex items-center justify-center opacity-50'>Please input a search query and click GO to get started</div>
         )}
       </div>
     </section>
