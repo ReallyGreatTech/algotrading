@@ -26,7 +26,7 @@ jobs:
               id: env_check
               run: |
                   echo "Running on branch ${{ github.ref }}"
-                  if [ "${{ github.ref }}" = "refs/heads/development" ]; then
+                  if [ "${{ github.ref }}" = "refs/heads/main" ]; then
                       echo "::set-output name=ENV_NAME_TAG::dev"
                       echo "::set-output name=EB_S3_BUCKET::algotrading-client-app-production"
                       echo "::set-output name=CLOUD_FRONT_DISTRIBUTION_ID::${{ secrets.PROD_ALGOTRADING_CLIENT_APP_CLOUD_FRONT_DISTRIBUTION_ID }}"
@@ -43,7 +43,6 @@ jobs:
                   aws-access-key-id: ${{ secrets[steps.env_check.outputs.AWS_ACCESS_KEY_ID_NAME] }}
                   aws-secret-access-key: ${{ secrets[steps.env_check.outputs.AWS_SECRET_ACCESS_KEY_NAME] }}
                   aws-region: ${{ secrets.AWS_REGION }}
-
 
             - name: Build dist files
               id: build_dist
