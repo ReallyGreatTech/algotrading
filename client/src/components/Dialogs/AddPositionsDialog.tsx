@@ -16,9 +16,6 @@ import FormSubmitButton from "../Form/FormSubmitButton";
 import FormSelectInput from "../Form/FormSelectInput";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { fetchMarketOptions } from "../../redux/api/marketsOptions";
-import usePreLoadData from "../../hooks/usePreLoadData";
-import SearchInput from "../SearchInput";
-import { updateSelectedToken } from "../../redux/features/tokens/tokenSlice";
 import PositionsSearchInput from "../PositionsSearchInput";
 
 interface AddPositionsDialogProps extends DialogProps {}
@@ -32,7 +29,6 @@ const AddPositionsDialog = ({
   const [isPending, setIsPending] = useState(false);
   const marketOptionsData = useAppSelector((state) => state.marketOptions);
   const walletsData = useAppSelector((state) => state.wallets);
-  const { tokens } = usePreLoadData();
 
   const mapMarketsToOptions = (data: MarketOption[]) => {
     return data?.map((m) => ({
