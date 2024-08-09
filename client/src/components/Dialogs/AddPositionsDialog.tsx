@@ -3,19 +3,23 @@ import {
   MarketOption,
   NewPositionsFormData,
   Wallet,
-} from '../../types';
-import { IoMdClose } from 'react-icons/io';
-import Dialog from './AppDialog';
-import { useEffect, useMemo, useState } from 'react';
-import { apiClient } from '../../redux/api/apiClient';
-import { Position } from '../../types';
-import { Formik } from 'formik';
-import { toast } from 'react-toastify';
-import FormInput from '../Form/FormInput';
-import FormSubmitButton from '../Form/FormSubmitButton';
-import FormSelectInput from '../Form/FormSelectInput';
-import { useAppDispatch, useAppSelector } from '../../hooks';
-import { fetchMarketOptions } from '../../redux/api/marketsOptions';
+} from "../../types";
+import { IoMdClose } from "react-icons/io";
+import Dialog from "./AppDialog";
+import { useEffect, useMemo, useState } from "react";
+import { apiClient } from "../../redux/api/apiClient";
+import { Position } from "../../types";
+import { Field, Formik, useFormikContext } from "formik";
+import { toast } from "react-toastify";
+import FormInput from "../Form/FormInput";
+import FormSubmitButton from "../Form/FormSubmitButton";
+import FormSelectInput from "../Form/FormSelectInput";
+import { useAppDispatch, useAppSelector } from "../../hooks";
+import { fetchMarketOptions } from "../../redux/api/marketsOptions";
+import usePreLoadData from "../../hooks/usePreLoadData";
+import SearchInput from "../SearchInput";
+import { updateSelectedToken } from "../../redux/features/tokens/tokenSlice";
+import PositionsSearchInput from "../PositionsSearchInput";
 
 interface AddPositionsDialogProps extends DialogProps {}
 
@@ -28,7 +32,7 @@ const AddPositionsDialog = ({
   const [isPending, setIsPending] = useState(false);
   const marketOptionsData = useAppSelector((state) => state.marketOptions);
   const walletsData = useAppSelector((state) => state.wallets);
-  
+  const { tokens } = usePreLoadData();
 
   const mapMarketsToOptions = (data: MarketOption[]) => {
     return data?.map((m) => ({
@@ -57,79 +61,106 @@ const AddPositionsDialog = ({
   }, [walletsData.data.length]);
 
   const [positionsData] = useState<NewPositionsFormData>({
-    opened_at: '',
-    closed_at: '',
-    status: 'ACTIVE', // Default value
-    direction: 'LONG', // Default value
-    leverage: '',
-    leveraged_amount: '',
-    position_size: '',
-    entry_price: '',
-    liquidation_price: '',
-    stop_loss: '',
-    take_profit: '',
-    roi_percent: '',
-    unrealized_pnl: '',
-    wallet_asset: '',
-    account_balance: '',
-    equity: '',
-    market_id: '',
-    wallet: '',
+    opened_at: "",
+    closed_at: "",
+    status: "ACTIVE", // Default value
+    direction: "LONG", // Default value
+    leverage: "",
+    leveraged_amount: "",
+    position_size: "",
+    entry_price: "",
+    liquidation_price: "",
+    stop_loss: "",
+    take_profit: "",
+    roi_percent: "",
+    unrealized_pnl: "",
+    wallet_asset: "",
+    account_balance: "",
+    equity: "",
+    market_id: "",
+    wallet: "",
   });
+
+
+  
+  const [computedPositionSize, setComputedPositionSize] = useState<number | string>(0);
+  const [computedEquity, setComputedEquity] = useState<number | string>(0);
+
+  // ... other existing code remains the same
+
+  const ComputedFields = () => {
+    const { values, setFieldValue } = useFormikContext<NewPositionsFormData>();
+  
+    useEffect(() => {
+      const leverage = Number(values.leverage) || 0;
+      const leveragedAmount = Number(values.leveraged_amount) || 0;
+      
+      if (leverage !== 0) {
+        const newPositionSize = leveragedAmount / leverage;
+        setComputedPositionSize(newPositionSize);
+        setFieldValue('position_size', newPositionSize);
+      } else {
+        setComputedPositionSize('');
+        setFieldValue('position_size', 0);
+      }
+    }, [values.leverage, values.leveraged_amount, setFieldValue]);
+  
+    useEffect(() => {
+      const unrealizedPnl = Number(values.unrealized_pnl) || 0;
+      const accountBalance = Number(values.account_balance) || 0;
+      
+      const newEquity = unrealizedPnl + accountBalance;
+      setComputedEquity(newEquity);
+      setFieldValue('equity', newEquity);
+    }, [values.unrealized_pnl, values.account_balance, setFieldValue]);
+  
+    return null;
+  };
 
   const handleAddPosition = async (data: NewPositionsFormData) => {
     setIsPending(true);
 
-  // Validate input data
-  // const isValid = Object.values(data).every(value => value !== undefined && value !== null && value !== '');
+    // Validate input data
+    // const isValid = Object.values(data).every(value => value !== undefined && value !== null && value !== '');
 
     // Validate wallet data
     if (!data.wallet) {
-      toast.error('Wallet is required.');
+      toast.error("Wallet is required.");
       setIsPending(false);
       return;
     }
 
-  // Check if required fields are defined and have valid values
-  // const validStatus = ['ACTIVE', 'CLOSED'].includes(data.status || '');
-  // const validDirection = ['LONG', 'SHORT'].includes(data.direction || '');
-
-  // if (!isValid || !validStatus || !validDirection || !data.wallet) {
-  //   toast.error('Please fill in all required fields and provide valid choices.');
-  //   setIsPending(false);
-  //   return;
-  // }
-    
-    //  // Handle custom wallet input if provided
-    //  const finalWallet = walletsOptions.some((option) => option.value === data.wallet)
-    //  ? data.wallet
-    //  : walletInput;
    
 
-   const formattedData = {
-     ...data,
-  //   //  wallet: finalWallet,
-     opened_at: data.opened_at ? new Date(data.opened_at).toISOString() : '',
-     closed_at: data.closed_at ? new Date(data.closed_at).toISOString() : undefined,
-   };
+    const formattedData = {
+      ...data,
+      ...data,
+      opened_at: data.opened_at ? new Date(data.opened_at).toISOString() : "",
+      closed_at: data.closed_at ? new Date(data.closed_at).toISOString() : undefined,
+      position_size: Number(data.position_size),
+      leverage: Number(data.leverage),
+      leveraged_amount: Number(data.leveraged_amount),
+      unrealized_pnl: Number(data.unrealized_pnl),
+      account_balance: Number(data.account_balance),
+      equity: Number(data.equity),
+    };
 
-  //  if (formattedData.opened_at) formattedData.opened_at = new Date(formattedData.opened_at).toISOString();
-  //  if (formattedData.closed_at) formattedData.closed_at = new Date(formattedData.closed_at).toISOString();
+    //  if (formattedData.opened_at) formattedData.opened_at = new Date(formattedData.opened_at).toISOString();
+    //  if (formattedData.closed_at) formattedData.closed_at = new Date(formattedData.closed_at).toISOString();
     // console.log('formatted data:',formattedData)
     // console.log('status:',formattedData)
     // console.log('wallet:',formattedData.wallet)
 
     try {
- 
-      console.log('formated data:', formattedData)
+      console.log("formated data:", formattedData);
       await apiClient.post<Position>(`/positions/`, formattedData);
 
-      toast.success('New position successfully created.');
+      toast.success("New position successfully created.");
       // navigate('/positions');
       onClose();
     } catch (err) {
-      console.error('Error while creating position:', err);
-      toast.error('An error occured while creating the position.');
+      console.error("Error while creating position:", err);
+      toast.error("An error occured while creating the position.");
     } finally {
       setIsPending(false);
     }
@@ -147,6 +178,7 @@ const AddPositionsDialog = ({
       >
         {() => (
           <>
+           <ComputedFields />
             <div className="border-2 border-white/10 overflow-hidden rounded-2xl bg-gray-800 h-[90vh] px-5 md:px-10 py-2 md:py-5 ">
               <div className="flex justify-between items-center px-1 md:px-3 py-3 md:py-6">
                 <h3 className="text-white/80 font-semibold text-xl">
@@ -164,13 +196,15 @@ const AddPositionsDialog = ({
               <div className="h-[75%] p-2 md:p-4 overflow-y-scroll">
                 <div className=" container max-w-3xl mx-auto text-white/90 ">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5 text-white mb-10">
-                    <div className="col-span-1">
-                      <FormSelectInput
+                    <div className="col-span-1 pt-2">
+
+                      <PositionsSearchInput
                         label="[Exhange] - Token"
                         name="market_id"
                         placeholder="Enter value here..."
                         options={marketOptions}
                       />
+                
                     </div>
                     <div className="col-span-1">
                       <FormSelectInput
@@ -181,15 +215,14 @@ const AddPositionsDialog = ({
                       />
                     </div>
 
-                      {/* Custom wallet input */}
-                        {/* <div className="col-span-1">
+                    {/* Custom wallet input */}
+                    {/* <div className="col-span-1">
                       <FormInput
                         label="Wallet"
                         name="wallet"
                         placeholder="Enter your wallet data..."
                       />
                     </div> */}
-
 
                     <div className="col-span-1 ">
                       <FormInput
@@ -213,8 +246,8 @@ const AddPositionsDialog = ({
                         label="Status"
                         defaultValue="ACTIVE"
                         options={[
-                          { label: 'Active', value: 'ACTIVE' },
-                          { label: 'Closed', value: 'CLOSED' },
+                          { label: "Active", value: "ACTIVE" },
+                          { label: "Closed", value: "CLOSED" },
                         ]}
                       />
                     </div>
@@ -224,8 +257,8 @@ const AddPositionsDialog = ({
                         label="Direction"
                         defaultValue="LONG"
                         options={[
-                          { label: 'Long', value: 'LONG' },
-                          { label: 'Short', value: 'SHORT' },
+                          { label: "Long", value: "LONG" },
+                          { label: "Short", value: "SHORT" },
                         ]}
                       />
                     </div>
@@ -244,12 +277,13 @@ const AddPositionsDialog = ({
                       />
                     </div>
                     <div className="col-span-1 ">
-                      <FormInput
-                        label="Position Size"
-                        name="position_size"
-                        placeholder="Enter value here..."
-                      />
-                    </div>
+                <FormInput
+                  label="Position Size"
+                  name="position_size"
+                  value={computedPositionSize}
+                  readOnly
+                />
+              </div>
                     <div className="col-span-1 ">
                       <FormInput
                         label="Entry Price"
@@ -306,13 +340,16 @@ const AddPositionsDialog = ({
                         placeholder="Enter value here..."
                       />
                     </div>
-                    <div className="col-span-1 ">
-                      <FormInput
-                        label="Equity"
-                        name="equity"
-                        placeholder="Enter value here..."
-                      />
-                    </div>
+                    <div className="col-span-1 flex flex-col ">
+                <label htmlFor="equity">Equity</label>
+                <Field
+                  name="equity"
+                  type="number"
+                  value={computedEquity}
+                  readOnly
+                  className="w-full px-5 py-3 border border-white/20 bg-[#0F1621] rounded-lg text-white/80 disabled:opacity-50"
+                />
+              </div>
                   </div>
                 </div>
               </div>
@@ -324,10 +361,10 @@ const AddPositionsDialog = ({
                   Cancel
                 </button>
                 <FormSubmitButton
-                  type='submit'
+                  type="submit"
                   loading={isPending}
                   className={`w-full py-3 px-5 bg-primary rounded-lg text-white shadow-primary ml-auto ${
-                    isPending ? 'animate-pulse' : ''
+                    isPending ? "animate-pulse" : ""
                   }`}
                 >
                   Add Position
