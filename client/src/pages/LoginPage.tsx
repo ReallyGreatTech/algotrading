@@ -2,9 +2,9 @@ import { useState } from "react";
 import { Formik } from "formik";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import axios from "axios"; // Importing Axios
 import FormInput from "../components/Form/FormInput";
 import FormSubmitButton from "../components/Form/FormSubmitButton";
+import { apiClient } from "../redux/api/apiClient";
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -14,13 +14,13 @@ const LoginPage = () => {
     setIsPending(true);
     try {
       
-      const response = await axios.post("", data);
+      const response = await apiClient.post("/login", data);
 
       // Save token or other necessary data
       localStorage.setItem("token", response.data.token);
 
       // Navigate to dashboard or another page
-      navigate("/dashboard");
+      navigate("/");
 
       // Optionally show success toast
       toast.success("Login successful!");
@@ -34,8 +34,8 @@ const LoginPage = () => {
   };
 
   return (
-    <section className="py-10 ">
-      <div className="container max-w-3xl mx-auto text-white/90 ">
+    <section className=" h-screen flex justify-center items-center">
+      <div className="container max-w-3xl mx-auto text-white/90">
         <div className="mb-10 ">
           <h1 className="text-2xl font-semibold text-center">
             Login to Ripley
