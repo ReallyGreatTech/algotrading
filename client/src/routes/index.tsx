@@ -6,6 +6,7 @@ import EditPositionPage from '../pages/EditPositionPage';
 import CreatePositionPage from '../pages/CreatePositionPage';
 import { useEffect } from 'react';
 import System from '../pages/System';
+import LoginPage from '../pages/LoginPage';
 
 const AppRoutes = () => {
   const location = useLocation();
@@ -19,6 +20,7 @@ const AppRoutes = () => {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<FundingRates />}></Route>
+          <Route path="/login" element={<LoginPage />}></Route>
           <Route path="/positions" element={<Positions />}></Route>
           <Route path="/positions/new" element={<CreatePositionPage />}></Route>
           <Route
