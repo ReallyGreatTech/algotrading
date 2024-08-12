@@ -27,7 +27,10 @@ const LoginPage = () => {
     } catch (error) {
       // Handle error and show error message
       const errorMessage = error.response?.data?.message || "Login failed";
+
       toast.error(errorMessage);
+      // Route to home page - remove when integrated
+      navigate("/")
     } finally {
       setIsPending(false); // Stop the loading indicator
     }
