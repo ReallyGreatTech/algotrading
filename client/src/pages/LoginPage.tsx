@@ -35,6 +35,7 @@ const LoginPage = () => {
       setIsPending(false); // Stop the loading indicator
     }
   };
+  
 
   return (
     <section className=" h-screen flex justify-center items-center">
