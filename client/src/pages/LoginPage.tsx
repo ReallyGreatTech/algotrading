@@ -10,7 +10,7 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const [isPending, setIsPending] = useState(false);
 
-  const handleLogin = async (data) => {
+  const handleLogin = async (data:unknown) => {
     setIsPending(true);
     try {
       
@@ -26,7 +26,7 @@ const LoginPage = () => {
       toast.success("Login successful!");
     } catch (error) {
       // Handle error and show error message
-      const errorMessage = error.response?.data?.message || "Login failed";
+      const errorMessage =  "Login failed";
 
       toast.error(errorMessage);
       // Route to home page - remove when integrated
@@ -35,7 +35,7 @@ const LoginPage = () => {
       setIsPending(false); // Stop the loading indicator
     }
   };
-  
+
 
   return (
     <section className=" h-screen flex justify-center items-center">
