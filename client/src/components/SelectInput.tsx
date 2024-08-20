@@ -1,8 +1,10 @@
 import { InputHTMLAttributes } from 'react';
 
+type SelectOptionValue = string | number;
+
 interface SelectOption {
   label: string;
-  value: string;
+  value: SelectOptionValue;
 }
 
 export interface SelectInputProps
@@ -21,13 +23,13 @@ const SelectInput = ({
   ...rest
 }: SelectInputProps) => {
   return (
-    <div className="flex flex-col">
-      <label htmlFor="select" className="mb-2">
+    <div className="flex flex-col text-white/90">
+      <label htmlFor="select" className="mb-[0.1em]">
         {label}
       </label>
       <select
         {...rest}
-        className="bg-gray-900 py-4 rounded-lg p-2.5  border border-white/20 "
+        className="bg-gray-900 py-[0.85em] rounded-lg p-2.5  border border-white/20 "
       >
         {options.map((option, index) => (
           <option
