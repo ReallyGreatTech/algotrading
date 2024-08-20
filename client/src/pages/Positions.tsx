@@ -266,11 +266,8 @@ const Positions = () => {
                                       onClick={(e) => {
                                         e.stopPropagation();
 
-                                        // console.log('Working...');
-
+                                        dispatch(selectPosition(item));
                                         setEditMonitorDialogOpen(true);
-
-                                        // dispatch(selectPosition(item));
                                       }}
                                     >
                                       Open Monitor
