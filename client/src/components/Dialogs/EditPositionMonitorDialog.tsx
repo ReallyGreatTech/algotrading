@@ -62,7 +62,7 @@ const EditPositionMonitorDialog = ({
             <div className="border-2 border-white/10 overflow-hidden rounded-2xl bg-gray-800">
               <div className="flex justify-between items-center px-3 py-6">
                 <h3 className="text-white/80 font-semibold text-xl">
-                  Edit Wallet
+                  Edit Monitor
                 </h3>
                 <button
                   onClick={onClose}
