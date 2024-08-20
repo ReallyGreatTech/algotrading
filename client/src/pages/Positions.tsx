@@ -33,6 +33,7 @@ import AddPositionsDialog from '../components/Dialogs/AddPositionsDialog';
 import EditPositionsDialog from '../components/Dialogs/EditPostionsDialog';
 import { FiEdit2 } from 'react-icons/fi';
 import { selectPosition } from '../redux/features/sub_positions/sub-positions';
+import EditPositionMonitorDialog from '../components/Dialogs/EditPositionMonitorDialog';
 
 const Positions = () => {
   const [investorDialogOpen, setInvestorDialogOpen] = useState(false);
@@ -40,6 +41,7 @@ const Positions = () => {
   const [addInvestorDialogOpen, setAddInvestorDialogOpen] = useState(false);
   const [addPositionDialogOpen, setPositionDialogOpen] = useState(false);
   const [editPositionDialogOpen, setEditPositionDialogOpen] = useState(false);
+  const [editMonitorDialogOpen, setEditMonitorDialogOpen] = useState(false);
   const [expandedPosition, setExpandedPosition] = useState<string | undefined>(
     undefined
   );
@@ -78,7 +80,6 @@ const Positions = () => {
     return exchangesBalances;
   };
 
-  
   useEffect(() => {
     dispatch(fetchWallets());
     dispatch(fetchInvestors());
@@ -254,6 +255,30 @@ const Positions = () => {
                           tableHeadRowClassName="bg-gray-900"
                           tableBodyRowClassName={`bg-[#334154] border-3 border-white/50 hover:cursor-pointer`}
                           columns={[
+                            {
+                              label: '',
+                              value: '',
+                              render(item) {
+                                return (
+                                  <div>
+                                    <button
+                                      className="p-2 hover:bg-primary-dark rounded-full text-xs"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+
+                                        // console.log('Working...');
+
+                                        setEditMonitorDialogOpen(true);
+
+                                        // dispatch(selectPosition(item));
+                                      }}
+                                    >
+                                      Open Monitor
+                                    </button>
+                                  </div>
+                                );
+                              },
+                            },
                             ...subPositionsTableColumn,
                             {
                               label: '',
@@ -318,6 +343,14 @@ const Positions = () => {
         positionId={subPositions.selectedPosition?.id}
         open={editPositionDialogOpen}
         onClose={handleEditDialogClose}
+      />
+
+      <EditPositionMonitorDialog
+        positionMonitor={null}
+        open={editMonitorDialogOpen}
+        onClose={() => {
+          setEditMonitorDialogOpen(false);
+        }}
       />
     </section>
   );
