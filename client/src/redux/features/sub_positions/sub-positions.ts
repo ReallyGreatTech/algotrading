@@ -59,6 +59,6 @@ export default subPositionsSlice.reducer;
 const { positionSelected } = subPositionsSlice.actions;
 
 export const selectPosition =
-  (position: Position) => (dispatch: AppDispatch) => {
+  (position: Position ) => (dispatch: AppDispatch) => {
     dispatch(positionSelected(position));
   };
