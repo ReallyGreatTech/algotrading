@@ -7,6 +7,7 @@ import CreatePositionPage from "../pages/CreatePositionPage";
 import { useEffect } from "react";
 import System from "../pages/System";
 import LoginPage from "../pages/LoginPage";
+import AuthContainer from "../pages/AuthContainer";
 
 const AppRoutes = () => {
   const location = useLocation();
@@ -18,7 +19,8 @@ const AppRoutes = () => {
   return (
     <main className="bg-gray-900">
       <Routes>
-        <Route path="/login" element={<LoginPage />}></Route>
+        {/* <Route path="/login" element={<LoginPage />}></Route> */}
+        <Route path="/login" element={<AuthContainer />}></Route>
         <Route path="/" element={<Layout />}>
           <Route index element={<FundingRates />}></Route>
 

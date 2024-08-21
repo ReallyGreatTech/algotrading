@@ -81,7 +81,7 @@ export interface EditPositionsFormData {
   equity?: string;
   wallet: number;
 }
-export interface NewPositionsFormData {
+export interface  NewPositionsFormData {
   opened_at: string;
   closed_at?: string;
   status?: string;
