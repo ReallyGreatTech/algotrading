@@ -6,7 +6,7 @@ import FormInput from "../components/Form/FormInput";
 import FormSubmitButton from "../components/Form/FormSubmitButton";
 import { apiClient } from "../redux/api/apiClient";
 
-const LoginPage = () => {
+const LoginPage = ({ onForgotPassword }) => {
   const navigate = useNavigate();
   const [isPending, setIsPending] = useState(false);
 
@@ -15,22 +15,18 @@ const LoginPage = () => {
     try {
       
       const response = await apiClient.post("/login", data);
-
-      // Save token or other necessary data
-      localStorage.setItem("token", response.data.token);
-
-      // Navigate to dashboard or another page
+      const { token, refreshToken } = response.data;
+      localStorage.setItem('authToken', token);
+      localStorage.setItem('refreshToken', refreshToken);
       navigate("/");
 
-      // Optionally show success toast
       toast.success("Login successful!");
     } catch (error) {
-      // Handle error and show error message
       const errorMessage =  "Login failed";
 
       toast.error(errorMessage);
       // Route to home page - remove when integrated
-      navigate("/")
+      // navigate("/")
     } finally {
       setIsPending(false); // Stop the loading indicator
     }
@@ -74,8 +70,11 @@ const LoginPage = () => {
                   <input id="rememberMe" type="checkbox" className="h-3.5 w-3.5" />
                   <label htmlFor="rememberMe"> Remember Me</label>
                 </span>
-                <span className="text-violet-500 font-bold">
-                  <a href="">Forgot your password? </a>
+                <span 
+                onClick={onForgotPassword}
+                className="text-violet-500 font-bold cursor-pointer">
+                  {/* <a href="">Forgot your password? </a> */}
+                  Forgot your password? 
                 </span>
               </div>
 

@@ -33,6 +33,7 @@ import AddPositionsDialog from '../components/Dialogs/AddPositionsDialog';
 import EditPositionsDialog from '../components/Dialogs/EditPostionsDialog';
 import { FiEdit2 } from 'react-icons/fi';
 import { selectPosition } from '../redux/features/sub_positions/sub-positions';
+import { useNavigate } from 'react-router-dom';
 
 const Positions = () => {
   const [investorDialogOpen, setInvestorDialogOpen] = useState(false);
@@ -45,6 +46,8 @@ const Positions = () => {
   );
   const [addPositionsTableDialogOpen, setAddPositionsTableDialogOpen] =
     useState(false);
+    // const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
+    const [isLoggedIn] = useState(true);
 
   const wallets = useAppSelector((state) => state.wallets);
   const investors = useAppSelector((state) => state.investors);
@@ -52,6 +55,7 @@ const Positions = () => {
   const subPositions = useAppSelector((state) => state.subPositions);
 
   const dispatch = useAppDispatch();
+  const navigate = useNavigate()
 
   const handlePositionsRowExpansion = (item: PositionsGroup) => {
     if (expandedPosition !== item.token && expandedPosition !== undefined) {
@@ -92,6 +96,10 @@ const Positions = () => {
   const handleRowClick = (item: Position) => {
     dispatch(selectPosition(item));
     setEditPositionDialogOpen(true);
+  };
+
+  const handleLoginRedirect = () => {
+    navigate('/login');
   };
 
   return (
@@ -192,7 +200,7 @@ const Positions = () => {
             <h3 className="text-white/90 font-semibold">Positions Table</h3>
             <div className="flex gap-5">
               <button
-                className="text-white bg-primary hover:bg-primary/90 px-5 py-2 rounded-md"
+                className="text-white bg-primary hover:bg-primary-dark transition duration-100 ease-in px-5 py-2 rounded-md"
                 onClick={(e) => {
                   e.stopPropagation();
                   setPositionDialogOpen(true);
@@ -215,6 +223,23 @@ const Positions = () => {
                 Loading positions...
               </div>
             ) : (
+              <div className={`relative overflow-x-auto max-h-[80vh] ${!isLoggedIn ? 'overflow-hidden' : ''}`}>
+              {/* Conditional Rendering */}
+              {!isLoggedIn && (
+                <div className={`absolute inset-0 right-0 w-full h-full flex items-center justify-center bg-black/50 backdrop-blur-sm z-10`}>
+                  <div className="text-center">
+                    <p className="text-lg font-base text-white/80 mb-4">Please log in to view positions.</p>
+                    <button
+                      onClick={handleLoginRedirect}
+                      className="px-6 py-2 bg-primary text-white rounded-md shadow-lg hover:bg-primary-dark"
+                    >
+                      Log In
+                    </button>
+                  </div>
+                </div>
+              )}
+        
+              {/* Table Component */}
               <AppTable<PositionsGroup>
                 columns={[
                   {
@@ -248,6 +273,7 @@ const Positions = () => {
                           Loading sub positions...
                         </p>
                       ) : (
+
                         <AppTable<Position>
                           selectedRow={subPositions.selectedPosition}
                           onRowClick={handleRowClick}
@@ -282,6 +308,7 @@ const Positions = () => {
                   </div>
                 }
               />
+              </div>
             )}
           </div>
           <PaginationControls />
