@@ -27,16 +27,6 @@ import { fetchPositions, fetchSubPositions } from "../redux/api/positions";
 import {
   MdOutlineKeyboardArrowDown,
   MdOutlineKeyboardArrowRight,
-<<<<<<< Updated upstream
-} from 'react-icons/md';
-import { fetchInvestorActions } from '../redux/api/investorActions';
-import AddPositionsDialog from '../components/Dialogs/AddPositionsDialog';
-import EditPositionsDialog from '../components/Dialogs/EditPostionsDialog';
-import { FiEdit2 } from 'react-icons/fi';
-import { selectPosition } from '../redux/features/sub_positions/sub-positions';
-import { useNavigate } from 'react-router-dom';
-import EditPositionMonitorDialog from '../components/Dialogs/EditPositionMonitorDialog';
-=======
 } from "react-icons/md";
 import { fetchInvestorActions } from "../redux/api/investorActions";
 import AddPositionsDialog from "../components/Dialogs/AddPositionsDialog";
@@ -44,7 +34,7 @@ import EditPositionsDialog from "../components/Dialogs/EditPostionsDialog";
 import { FiEdit2 } from "react-icons/fi";
 import { selectPosition } from "../redux/features/sub_positions/sub-positions";
 import EditPositionMonitorDialog from "../components/Dialogs/EditPositionMonitorDialog";
->>>>>>> Stashed changes
+import { useNavigate } from "react-router-dom";
 
 const Positions = () => {
   const [investorDialogOpen, setInvestorDialogOpen] = useState(false);
