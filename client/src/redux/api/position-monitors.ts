@@ -1,4 +1,7 @@
-import { CreatePositionMonitorFormData } from './../../types/index';
+import {
+  CreatePositionMonitorFormData,
+  PositionMonitor,
+} from './../../types/index';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { apiClient } from './apiClient';
@@ -12,7 +15,7 @@ export const createPositionMonitor = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const results = await apiClient.post(
+      const results = await apiClient.post<PositionMonitor>(
         `https://dev-api-algo.reallygreattech.com/api/monitors/positions/`,
         payload.data
       );
@@ -22,6 +25,42 @@ export const createPositionMonitor = createAsyncThunk(
       console.log(error);
       rejectWithValue(
         'Something went wrong while creating the position Monitor'
+      );
+    }
+  }
+);
+
+export const fetchPositionMonitors = createAsyncThunk(
+  '/fetch/positions',
+
+  async (payload: { id: number }, { rejectWithValue }) => {
+    try {
+      const results = await apiClient.get<PositionMonitor>(
+        `https://dev-api-algo.reallygreattech.com/api/monitors/positions/${payload.id}`
+      );
+
+      return results.data;
+    } catch (error) {
+      rejectWithValue(
+        'Something went wrong while fetching the position monitors'
+      );
+    }
+  }
+);
+
+export const deletePositionMonitors = createAsyncThunk(
+  'delete/positions',
+
+  async (payload: { id: number }, { rejectWithValue }) => {
+    try {
+      const results = await apiClient.delete<PositionMonitor>(
+        `https://dev-api-algo.reallygreattech.com/api/monitors/positions/${payload.id}`
+      );
+
+      return results.data;
+    } catch (error) {
+      rejectWithValue(
+        'Something went wrong while fetching the position monitors'
       );
     }
   }

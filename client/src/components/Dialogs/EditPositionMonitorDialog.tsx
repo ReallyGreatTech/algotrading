@@ -8,7 +8,7 @@ import Dialog from './AppDialog';
 import { Formik } from 'formik';
 import FormInput from '../Form/FormInput';
 import FormSelectInput from '../Form/FormSelectInput';
-import { useAppDispatch } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { createPositionMonitor } from '../../redux/api/position-monitors';
 
 interface EditPositionMonitorDialogProps extends DialogProps {
@@ -32,6 +32,7 @@ const EditPositionMonitorDialog = ({
   ...rest
 }: EditPositionMonitorDialogProps) => {
   //   const dispatch = useAppDispatch();
+  const { isPending } = useAppSelector((state) => state.positionMonitors);
 
   const dispatch = useAppDispatch();
   // const selectedPosition = useAppSelector((state) => state.subPositions.selectedPosition)
@@ -62,7 +63,7 @@ const EditPositionMonitorDialog = ({
   const handleCreatePositionMonitor = async (
     data: CreatePositionMonitorFormData
   ) => {
-    dispatch(createPositionMonitor({ data: shapeMonitorPayload(data) }));
+    await dispatch(createPositionMonitor({ data: shapeMonitorPayload(data) }));
 
     onClose();
   };
@@ -81,7 +82,7 @@ const EditPositionMonitorDialog = ({
           evaluation_method: EvaluationMethod.VALUE,
           on_field: `${onField}`,
           base_value: `${position[onField]}`,
-          on_value: `${position[onField]}`,
+          on_value: '',
           on_abs_distance: `${position[onField]}`,
           enabled: true,
           subject: position.id,
@@ -138,6 +139,7 @@ const EditPositionMonitorDialog = ({
                           name="base_value"
                           label="Base Value"
                           placeholder="Input a base value"
+                          disabled
                         />
                       </div>
                       {values.evaluation_method === EvaluationMethod.VALUE && (
@@ -190,10 +192,12 @@ const EditPositionMonitorDialog = ({
                     Cancel
                   </button>
                   <button
-                    className={`py-3 px-5 bg-primary rounded-lg text-white shadow-primary `}
+                    className={`py-3 px-5 bg-primary rounded-lg text-white shadow-primary ${
+                      isPending ? 'animate-pulse' : ''
+                    }`}
                     onClick={() => handleSubmit()}
                   >
-                    {/* {true ? "Creating Monitor" : "Create Monitor"} */}
+                    {isPending ? 'Creating Monitor' : 'Create Monitor'}
                     Create Monitor
                   </button>
                 </div>
