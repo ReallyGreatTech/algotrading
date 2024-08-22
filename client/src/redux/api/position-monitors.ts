@@ -8,7 +8,7 @@ import { apiClient } from './apiClient';
 import { toast } from 'react-toastify';
 
 export const createPositionMonitor = createAsyncThunk(
-  '/monitors/positions/',
+  'createPositionMonitor',
 
   async (
     payload: { data: CreatePositionMonitorFormData },
@@ -31,12 +31,12 @@ export const createPositionMonitor = createAsyncThunk(
 );
 
 export const fetchPositionMonitors = createAsyncThunk(
-  '/fetch/positions',
+  'fetchPositionMonitor',
 
-  async (payload: { id: number }, { rejectWithValue }) => {
+  async (_, { rejectWithValue }) => {
     try {
-      const results = await apiClient.get<PositionMonitor>(
-        `https://dev-api-algo.reallygreattech.com/api/monitors/positions/${payload.id}`
+      const results = await apiClient.get<{ results: PositionMonitor[] }>(
+        `https://dev-api-algo.reallygreattech.com/api/monitors/positions/`
       );
 
       return results.data;
@@ -49,7 +49,7 @@ export const fetchPositionMonitors = createAsyncThunk(
 );
 
 export const deletePositionMonitors = createAsyncThunk(
-  'delete/positions',
+  'deletePositionMonitor',
 
   async (payload: { id: number }, { rejectWithValue }) => {
     try {
@@ -60,7 +60,7 @@ export const deletePositionMonitors = createAsyncThunk(
       return results.data;
     } catch (error) {
       rejectWithValue(
-        'Something went wrong while fetching the position monitors'
+        'Something went wrong while deleting the given position monitor.'
       );
     }
   }

@@ -33,7 +33,7 @@ import AddPositionsDialog from '../components/Dialogs/AddPositionsDialog';
 import EditPositionsDialog from '../components/Dialogs/EditPostionsDialog';
 import { FiEdit2 } from 'react-icons/fi';
 import { selectPosition } from '../redux/features/sub_positions/sub-positions';
-import EditPositionMonitorDialog from '../components/Dialogs/EditPositionMonitorDialog';
+
 import { useNavigate } from 'react-router-dom';
 
 const Positions = () => {
@@ -42,13 +42,13 @@ const Positions = () => {
   const [addInvestorDialogOpen, setAddInvestorDialogOpen] = useState(false);
   const [addPositionDialogOpen, setPositionDialogOpen] = useState(false);
   const [editPositionDialogOpen, setEditPositionDialogOpen] = useState(false);
-  const [editMonitorDialogOpen, setEditMonitorDialogOpen] = useState(false);
+  const [_editMonitorDialogOpen, setEditMonitorDialogOpen] = useState(false);
   const [expandedPosition, setExpandedPosition] = useState<string | undefined>(
     undefined
   );
   const [addPositionsTableDialogOpen, setAddPositionsTableDialogOpen] =
     useState(false);
-  // const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
+
   const [isLoggedIn] = useState(true);
 
   const wallets = useAppSelector((state) => state.wallets);
