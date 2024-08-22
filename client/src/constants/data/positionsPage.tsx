@@ -17,11 +17,12 @@ import { shortenString } from '../../utils/stringTool';
 import InvestorRowActions from '../../components/InvestorRowActions';
 import { get24HourDateTime } from '../../utils/dateUtils';
 import WalletRowActionButtons from '../../components/WalletRowActionButtons';
-import { Button, Popover } from 'antd';
-import { HiMiniQuestionMarkCircle } from 'react-icons/hi2';
-import { FaEye } from 'react-icons/fa';
-import { IoMdAddCircle } from 'react-icons/io';
+// import { Button, Popover } from 'antd';
+// import { HiMiniQuestionMarkCircle } from 'react-icons/hi2';
+// import { FaEye } from 'react-icons/fa';
+// import { IoMdAddCircle } from 'react-icons/io';
 import MonitorMenu from '../../components/Monitors/MonitorMenu';
+import MonitorRowActions from '../../components/MonitorRowActions';
 
 export const positionGroupsTableColumn: TableColumn<PositionsGroup>[] = [
   {

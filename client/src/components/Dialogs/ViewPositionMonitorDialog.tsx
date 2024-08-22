@@ -3,7 +3,7 @@ import { IoMdClose } from "react-icons/io";
 import Dialog from "./AppDialog";
 import { Formik } from "formik";
 import { monitorTableColumn } from "../../constants/data/positionsPage";
-import { useAppDispatch, useAppSelector } from "../../hooks";
+import { useAppDispatch } from "../../hooks";
 import { createPositionMonitor } from "../../redux/api/positionMonitors";
 import AppTable from "../AppTable";
 import { monitorsMockData } from "../../constants/data/monitorsDummyData";
@@ -33,7 +33,7 @@ const ViewPositionMonitorDialog = ({
   ...rest
 }: EditPositionMonitorDialogProps) => {
   //   const dispatch = useAppDispatch();
-const investors = useAppSelector((state) => state.investors);
+
   const dispatch = useAppDispatch();
   // const selectedPosition = useAppSelector((state) => state.subPositions.selectedPosition)
 
