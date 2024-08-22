@@ -20,7 +20,7 @@ interface EditPositionMonitorDialogProps extends DialogProps {
 enum EvaluationMethod {
   VALUE = 'VALUE',
   METHOD = 'METHOD',
-  ABS_DISTANCE = 'ABS_DISTANCE ',
+  ABS_DISTANCE = 'ABS_DISTANCE',
 }
 
 const EditPositionMonitorDialog = ({
@@ -198,7 +198,7 @@ const EditPositionMonitorDialog = ({
                     onClick={() => handleSubmit()}
                   >
                     {isPending ? 'Creating Monitor' : 'Create Monitor'}
-                    Create Monitor
+                   
                   </button>
                 </div>
               </div>

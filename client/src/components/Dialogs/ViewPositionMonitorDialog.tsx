@@ -1,4 +1,4 @@
-import { DialogProps, Monitor } from "../../types";
+import { DialogProps, Monitor, Position } from "../../types";
 import { IoMdClose } from "react-icons/io";
 import Dialog from "./AppDialog";
 import { Formik } from "formik";
@@ -8,7 +8,7 @@ import { createPositionMonitor } from "../../redux/api/positionMonitors";
 import AppTable from "../AppTable";
 import { monitorsMockData } from "../../constants/data/monitorsDummyData";
 
-interface PositionMonitorEditFormData {
+interface ViewMonitorDialogProps {
   category_name: string;
   evaluation_method: string;
   on_field?: string | null;
@@ -22,7 +22,7 @@ interface PositionMonitorEditFormData {
 }
 
 interface EditPositionMonitorDialogProps extends DialogProps {
-  positionMonitor: unknown;
+  positionMonitor: Position;
 }
 
 
@@ -42,6 +42,8 @@ const ViewPositionMonitorDialog = ({
 
     // onClose();
   };
+
+  console.log(positionMonitor)
 
   return (
     <Dialog
@@ -67,15 +69,15 @@ const ViewPositionMonitorDialog = ({
         }}
         onSubmit={handleCreatePositionMonitor}
       >
-        {({ handleSubmit }) => {
+        {() => {
                  
 
           return (
             <>
               <div className="border-2 border-white/10 overflow-hidden rounded-2xl bg-gray-800">
                 <div className="flex justify-between items-center px-3 py-6">
-                  <h3 className="text-white/80 font-semibold text-xl">
-                    View Monitor(s)
+                  <h3 className="text-white/80 font-semibold text-xl ps-4">
+                    View Monitors
                   </h3>
                   <button
                     onClick={onClose}
@@ -100,7 +102,7 @@ const ViewPositionMonitorDialog = ({
                 </div>
 
                 <div className="p-5 flex justify-end gap-5">
-                  <button
+                  {/* <button
                     className="py-3 px-5 border-2 border-primary rounded-lg text-white/90 shadow-primary"
                     onClick={onClose}
                   >
@@ -110,9 +112,9 @@ const ViewPositionMonitorDialog = ({
                     className={`py-3 px-5 bg-primary rounded-lg text-white shadow-primary `}
                     onClick={() => handleSubmit()}
                   >
-                    {/* {true ? "Creating Monitor" : "Create Monitor"} */}
+                    {/* {true ? "Creating Monitor" : "Create Monitor"} *
                     Edit Monitors
-                  </button>
+                  </button> */}
                 </div>
               </div>
             </>

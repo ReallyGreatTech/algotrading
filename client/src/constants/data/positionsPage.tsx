@@ -434,8 +434,8 @@ export const monitorTableColumn: TableColumn<Monitor>[] = [
   {
     label: "",
     value: "",
-    render(monitor) {
-      return <MonitorRowActions monitor={monitor} />;
+    render(position) {
+      return <MonitorRowActions positon={position} />;
     },
   },
 ];

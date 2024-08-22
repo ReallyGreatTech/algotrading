@@ -1,4 +1,4 @@
-import {  Monitor } from "../types";
+import {  Monitor, Position } from "../types";
 import { FiEdit2 } from "react-icons/fi";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { useAppDispatch } from "../hooks";
@@ -7,10 +7,11 @@ import { useState } from "react";
 import EditMonitorDialog from "./Dialogs/EditMonitorDialog";
 
 interface MonitorRowActionsProps {
-  monitor: Monitor;
+  monitor?: Monitor;
+  positon:Position
 }
 
-const MonitorRowActions = ({ monitor }: MonitorRowActionsProps) => {
+const MonitorRowActions = ({ positon }: MonitorRowActionsProps) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const dispatch = useAppDispatch();
   const [deleting, setDeleting] = useState(false);
@@ -47,7 +48,8 @@ const MonitorRowActions = ({ monitor }: MonitorRowActionsProps) => {
       </button>
 
       <EditMonitorDialog
-        monitor={monitor}
+        
+       position={positon}
         open={dialogOpen}
         rootStyle={{ maxWidth: "38em" }}
         onClose={() => setDialogOpen(false)}
