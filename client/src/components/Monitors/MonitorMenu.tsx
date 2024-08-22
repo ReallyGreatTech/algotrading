@@ -3,7 +3,7 @@ import { HiMiniQuestionMarkCircle } from "react-icons/hi2";
 import { IoMdAddCircle } from "react-icons/io";
 import { FaEye } from "react-icons/fa";
 import { Position } from "../../types";
-import EditPositionMonitorDialog from "../Dialogs/EditPositionMonitorDialog";
+import CreatePositionMonitorDialog from "../Dialogs/CreatePositionMonitorDialog";
 import { useState } from "react";
 import { selectPosition } from "../../redux/features/sub_positions/sub-positions";
 import { useAppDispatch } from "../../hooks";
@@ -92,7 +92,7 @@ const MonitorMenu = ({
         <span onClick={() => setOpen(!open)}>{fieldValue}</span>
       </Popover>
 
-      <EditPositionMonitorDialog
+      <CreatePositionMonitorDialog
         positionMonitor={null}
         open={editMonitorDialogOpen}
         onClose={() => {

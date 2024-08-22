@@ -1,11 +1,12 @@
-import { DialogProps, Investor } from "../../types";
+import { DialogProps, Monitor } from "../../types";
 import { IoMdClose } from "react-icons/io";
 import Dialog from "./AppDialog";
 import { Formik } from "formik";
-import { investorTableColumn } from "../../constants/data/positionsPage";
+import { monitorTableColumn } from "../../constants/data/positionsPage";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { createPositionMonitor } from "../../redux/api/positionMonitors";
 import AppTable from "../AppTable";
+import { monitorsMockData } from "../../constants/data/monitorsDummyData";
 
 interface PositionMonitorEditFormData {
   category_name: string;
@@ -66,10 +67,8 @@ const investors = useAppSelector((state) => state.investors);
         }}
         onSubmit={handleCreatePositionMonitor}
       >
-        {({ handleSubmit, values }) => {
-                  function handleSelectInvestor(row: Investor): void {
-                      throw new Error("Function not implemented.");
-                  }
+        {({ handleSubmit }) => {
+                 
 
           return (
             <>
@@ -90,11 +89,11 @@ const investors = useAppSelector((state) => state.investors);
                 <div className="max-h-[60vh] overflow-auto">
                   <div>
                     <div className="mb-5 p-5  ">
-                      <AppTable<Investor>
+                      <AppTable<Monitor>
                         tableBodyRowClassName="cursor-pointer"
-                        onRowClick={handleSelectInvestor}
-                        columns={investorTableColumn}
-                        data={investors.data}
+                        
+                        columns={monitorTableColumn}
+                        data={monitorsMockData}
                       />
                     </div>
                   </div>

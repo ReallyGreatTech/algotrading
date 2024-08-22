@@ -137,6 +137,23 @@ export interface Investor {
   percentage_of_wallet?: number;
 }
 
+export interface Monitor {
+  id: number;
+  category_name?: string
+  evaluation_method?: string
+  on_field?: string
+  base_value?: null|string;
+  on_value?: string|number|null
+  on_abs_distance?: string|null;
+  on_method?: string|null;
+  on_method_kwargs?: string;
+  enabled: boolean;
+  created_at: string;
+  updated_at: string;
+  category?: number;
+  subject: number;
+}
+
 export interface AddInvestorData {
   name: string;
 }

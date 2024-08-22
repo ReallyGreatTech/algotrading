@@ -7,6 +7,7 @@ import {
   ExchangeBalance,
   Investor,
   InvestorAction,
+  Monitor,
   Position,
   PositionsGroup,
   TableColumn,
@@ -21,6 +22,7 @@ import { HiMiniQuestionMarkCircle } from "react-icons/hi2";
 import { FaEye } from "react-icons/fa";
 import { IoMdAddCircle } from "react-icons/io";
 import MonitorMenu from "../../components/Monitors/MonitorMenu";
+import MonitorRowActions from "../../components/MonitorRowActions";
 
 export const positionGroupsTableColumn: TableColumn<PositionsGroup>[] = [
   {
@@ -379,6 +381,52 @@ export const investorTableColumn: TableColumn<Investor>[] = [
     value: "",
     render(investor) {
       return <InvestorRowActions investor={investor} />;
+    },
+  },
+];
+
+export const monitorTableColumn: TableColumn<Monitor>[] = [
+  {
+    label: "Position Field",
+    value: "on_field",
+    render: (item) => item.on_field ?? "NA",
+    tableHeadCellClassName: "min-w-[7rem]",
+  },
+  // {
+  //   label: "Base Value",
+  //   value: "base_value",
+  //   tableHeadCellClassName: "min-w-[7rem]",
+  // },
+  {
+    label: "Evaluation Method",
+    value: "evaluation_method",
+    tableHeadCellClassName: "min-w-[]",
+  },
+  {
+    label: "On Value",
+    value: "on_value",
+    tableHeadCellClassName: "min-w-[7rem]",
+    render: (item) => {
+      return formatCurrency(Number(item.on_value));
+    },
+  },
+  {
+    label: "Absolute distance",
+    value: "on_abs_distance",
+    render: (item) => item.on_abs_distance ?? "NA",
+    tableHeadCellClassName: "min-w-[7rem]",
+  },
+
+  // {
+  //   label: "Category",
+  //   value: "category_name",
+  //   tableHeadCellClassName: "min-w-[7rem]",
+  // },
+  {
+    label: "",
+    value: "",
+    render(monitor) {
+      return <MonitorRowActions monitor={monitor} />;
     },
   },
 ];
