@@ -1,22 +1,23 @@
 import { DialogProps } from '../../types';
 import { IoMdClose } from 'react-icons/io';
 import Dialog from './AppDialog';
-import { Formik, useFormikContext } from 'formik';
+import { Formik } from 'formik';
 import FormInput from '../Form/FormInput';
 import FormSelectInput from '../Form/FormSelectInput';
-import { useAppDispatch, useAppSelector } from '../../hooks';
+import { useAppDispatch,  } from '../../hooks';
 import { createPositionMonitor } from '../../redux/api/positionMonitors';
 
 interface PositionMonitorEditFormData {
   category_name: string;
   evaluation_method: string;
-  on_field: string;
-  base_value: string;
-  on_abs_distance: string;
+  on_field?: string |null;
+  base_value?: string |null;
+  on_value?: string |null;
+  on_abs_distance?: string |null;
   on_method: string;
-  enabled: string;
-  category: string;
-  subject: string;
+  enabled: boolean;
+  category: number;
+  subject: number;
 }
 
 interface EditPositionMonitorDialogProps extends DialogProps {
@@ -41,14 +42,14 @@ const EditPositionMonitorDialog = ({
 
 
   const dispatch = useAppDispatch();
-  const selectedPosition = useAppSelector((state) => state.subPositions.selectedPosition)
+  // const selectedPosition = useAppSelector((state) => state.subPositions.selectedPosition)
   
   
 
   const handleCreatePositionMonitor = async (data: unknown) => {
 
    
-    dispatch(createPositionMonitor({id:selectedPosition?.id, data}))
+    dispatch(createPositionMonitor({data:data}))
     
     // onClose();
   };
@@ -70,11 +71,12 @@ const EditPositionMonitorDialog = ({
           evaluation_method: '',
           on_field: '',
           base_value: '',
+          on_value: '',
           on_abs_distance: '',
           on_method: '',
-          enabled: '',
-          category: '',
-          subject: '',
+          enabled: true,
+          category: 0,
+          subject: 0,
         }}
         onSubmit={handleCreatePositionMonitor}
       >
@@ -86,7 +88,7 @@ const EditPositionMonitorDialog = ({
             <div className="border-2 border-white/10 overflow-hidden rounded-2xl bg-gray-800">
               <div className="flex justify-between items-center px-3 py-6">
                 <h3 className="text-white/80 font-semibold text-xl">
-                  Edit Monitor
+                  Create Monitor
                 </h3>
                 <button
                   onClick={onClose}
@@ -155,9 +157,16 @@ const EditPositionMonitorDialog = ({
                     </div>
                     <div className="col-span-1">
                       <FormInput
+                        name="on_value"
+                        label="On Value"
+                        placeholder="Input a value"
+                      />
+                    </div>
+                    <div className="col-span-1">
+                      <FormInput
                         name="on_abs_distance"
-                        label="On Abs Value"
-                        placeholder="Enter On Abs Value"
+                        label="On Abs Distance"
+                        placeholder="Enter On Abs Distance"
                         disabled={
                           !(
                             values.evaluation_method ===

@@ -298,6 +298,7 @@ const Positions = () => {
                                     >
                                       Open Monitor
                                     </button>
+                                      
                                   </div>
                                 );
                               },

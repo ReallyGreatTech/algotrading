@@ -72,7 +72,7 @@ const AppTable = <T extends {}>({
                 <td
                   className={`py-3 px-2 text-sm ${
                     c.tableBodyCellClassName || ''
-                  }`}
+                  } ` }
                   key={`${dDndex}_${cIndex}`}
                 >
                   {renderCell(row, c)}
