@@ -1,40 +1,40 @@
-import { useEffect, useState } from 'react';
-import { AiOutlineExpandAlt } from 'react-icons/ai';
-import AppTable from '../components/AppTable';
-import InvestorActionsDialog from '../components/Dialogs/InvestorActionsDialog';
+import { useEffect, useState } from "react";
+import { AiOutlineExpandAlt } from "react-icons/ai";
+import AppTable from "../components/AppTable";
+import InvestorActionsDialog from "../components/Dialogs/InvestorActionsDialog";
 import {
   ExchangeBalance,
   Investor,
   Position,
   PositionsGroup,
   Wallet,
-} from '../types';
+} from "../types";
 import {
   exchangesBalanceTableColumn,
   investorTableColumn,
   positionGroupsTableColumn,
   subPositionsTableColumn,
   walletsTableColumn,
-} from '../constants/data/positionsPage';
-import AddWalletDialog from '../components/Dialogs/AddWalletDialog';
-import AddInvestorDialog from '../components/Dialogs/AddInvestorDialog';
-import PositionsTableDialog from '../components/Dialogs/PositionsTableDialog';
-import PaginationControls from '../components/PaginationControls';
-import { useAppDispatch, useAppSelector } from '../hooks';
-import { fetchWallets } from '../redux/api/wallets';
-import { fetchInvestors } from '../redux/api/investors';
-import { fetchPositions, fetchSubPositions } from '../redux/api/positions';
+} from "../constants/data/positionsPage";
+import AddWalletDialog from "../components/Dialogs/AddWalletDialog";
+import AddInvestorDialog from "../components/Dialogs/AddInvestorDialog";
+import PositionsTableDialog from "../components/Dialogs/PositionsTableDialog";
+import PaginationControls from "../components/PaginationControls";
+import { useAppDispatch, useAppSelector } from "../hooks";
+import { fetchWallets } from "../redux/api/wallets";
+import { fetchInvestors } from "../redux/api/investors";
+import { fetchPositions, fetchSubPositions } from "../redux/api/positions";
 import {
   MdOutlineKeyboardArrowDown,
   MdOutlineKeyboardArrowRight,
-} from 'react-icons/md';
-import { fetchInvestorActions } from '../redux/api/investorActions';
-import AddPositionsDialog from '../components/Dialogs/AddPositionsDialog';
-import EditPositionsDialog from '../components/Dialogs/EditPostionsDialog';
-import { FiEdit2 } from 'react-icons/fi';
-import { selectPosition } from '../redux/features/sub_positions/sub-positions';
-import { useNavigate } from 'react-router-dom';
-import EditPositionMonitorDialog from '../components/Dialogs/EditPositionMonitorDialog';
+} from "react-icons/md";
+import { fetchInvestorActions } from "../redux/api/investorActions";
+import AddPositionsDialog from "../components/Dialogs/AddPositionsDialog";
+import EditPositionsDialog from "../components/Dialogs/EditPostionsDialog";
+import { FiEdit2 } from "react-icons/fi";
+import { selectPosition } from "../redux/features/sub_positions/sub-positions";
+import EditPositionMonitorDialog from "../components/Dialogs/EditPositionMonitorDialog";
+import { useNavigate } from "react-router-dom";
 
 const Positions = () => {
   const [investorDialogOpen, setInvestorDialogOpen] = useState(false);
@@ -244,8 +244,8 @@ const Positions = () => {
               <AppTable<PositionsGroup>
                 columns={[
                   {
-                    label: '',
-                    value: 'expand-button',
+                    label: "",
+                    value: "expand-button",
                     render(item) {
                       return (
                         <button
@@ -265,7 +265,7 @@ const Positions = () => {
                 ]}
                 data={positionGroups.data}
                 expansionId={expandedPosition}
-                expansionProperty={'token'}
+                expansionProperty={"token"}
                 expandComponent={
                   <div className="bg-[#334154] p-5">
                     <div className="border-1 border-white/50 ">
@@ -282,9 +282,9 @@ const Positions = () => {
                           tableBodyRowClassName={`bg-[#334154] border-3 border-white/50 hover:cursor-pointer`}
                           columns={[
                             {
-                              label: '',
-                              value: '',
-                              render(item) {
+                              label: "",
+                              value: "",
+                              render(position) {
                                 return (
                                   <div>
                                     <button
@@ -292,20 +292,21 @@ const Positions = () => {
                                       onClick={(e) => {
                                         e.stopPropagation();
 
-                                        dispatch(selectPosition(item));
+                                        dispatch(selectPosition(position));
                                         setEditMonitorDialogOpen(true);
                                       }}
                                     >
                                       Open Monitor
                                     </button>
+                                      
                                   </div>
                                 );
                               },
                             },
                             ...subPositionsTableColumn,
                             {
-                              label: '',
-                              value: '',
+                              label: "",
+                              value: "",
                               render(item) {
                                 return (
                                   <div>
@@ -339,19 +340,19 @@ const Positions = () => {
 
       <InvestorActionsDialog
         open={investorDialogOpen}
-        rootStyle={{ maxWidth: '38em' }}
+        rootStyle={{ maxWidth: "38em" }}
         onClose={() => setInvestorDialogOpen(false)}
       />
 
       <AddWalletDialog
         open={addWalletDialogOpen}
-        rootStyle={{ maxWidth: '38em' }}
+        rootStyle={{ maxWidth: "38em" }}
         onClose={() => setAddWalletDialogOpen(false)}
       />
 
       <AddInvestorDialog
         open={addInvestorDialogOpen}
-        rootStyle={{ maxWidth: '38em' }}
+        rootStyle={{ maxWidth: "38em" }}
         onClose={() => setAddInvestorDialogOpen(false)}
       />
 

@@ -16,6 +16,11 @@ import { shortenString } from "../../utils/stringTool";
 import InvestorRowActions from "../../components/InvestorRowActions";
 import { get24HourDateTime } from "../../utils/dateUtils";
 import WalletRowActionButtons from "../../components/WalletRowActionButtons";
+import { Button, Popover } from "antd";
+import { HiMiniQuestionMarkCircle } from "react-icons/hi2";
+import { FaEye } from "react-icons/fa";
+import { IoMdAddCircle } from "react-icons/io";
+import MonitorMenu from "../../components/Monitors/MonitorMenu";
 
 export const positionGroupsTableColumn: TableColumn<PositionsGroup>[] = [
   {
@@ -129,7 +134,13 @@ export const subPositionsTableColumn: TableColumn<Position>[] = [
   {
     label: "Entry Price",
     value: "entry_price",
-    render: (item) => formatNumber(item.entry_price),
+    render: (item) => (
+      <MonitorMenu
+        fieldLabel="Entry Price"
+        fieldValue={formatNumber(item.entry_price)}
+        position={item}
+      />
+    ),
   },
   {
     label: "Direction",
@@ -152,46 +163,94 @@ export const subPositionsTableColumn: TableColumn<Position>[] = [
   {
     label: "Leverage",
     value: "leverage",
-    render: (item) => formatNumber(item.leverage),
+    render: (item) => (
+      <MonitorMenu
+        fieldLabel="Leverage"
+        fieldValue={formatNumber(item.leverage)}
+        position={item}
+      />
+    ),
   },
   {
     label: "Non-Leverage Value",
     value: "position_size",
-    render: (item) => formatNumber(item.position_size),
+    render: (item) => (
+      <MonitorMenu
+        fieldLabel="Non-Leverage Value"
+        fieldValue={formatNumber(item.position_size)}
+        position={item}
+      />
+    ),
   },
   {
     label: "Current Funding Rate",
     value: "live_funding_rate_hourly",
     render(item) {
-      return formatPercentage(
-        item.live_funding_rate_hourly ? item.live_funding_rate_hourly : 0
+      return (
+        <MonitorMenu
+          fieldLabel="Current Funding Rate"
+          fieldValue={formatPercentage(
+            item.live_funding_rate_hourly ? item.live_funding_rate_hourly : 0
+          )}
+          position={item}
+        />
       );
     },
   },
   {
     label: "Total Funding Received",
     value: "total_funding_received_usd",
-    render: (item) => formatCurrency(item.total_funding_received_usd ?? 0),
+    render: (item) => (
+      <MonitorMenu
+        fieldLabel="Total Funding Received"
+        fieldValue={formatCurrency(item.total_funding_received_usd ?? 0)}
+        position={item}
+      />
+    ),
   },
   {
     label: "Mark Price",
     value: "mark_price_usd",
-    render: (item) => formatCurrency(item.mark_price_usd),
+    render: (item) => (
+      <MonitorMenu
+        fieldLabel="Mark Price"
+        fieldValue={formatCurrency(item.mark_price_usd)}
+        position={item}
+      />
+    ),
   },
   {
     label: "Liquidation",
     value: "liquidation_price",
-    render: (item) => formatCurrency(item.liquidation_price),
+    render: (item) => (
+      <MonitorMenu
+        fieldLabel="Liquidation"
+        fieldValue={formatCurrency(item.liquidation_price)}
+        position={item}
+      />
+    ),
   },
   {
-    label: "SL",
+    label: "Stop Loss",
     value: "stop_loss",
-    render: (item) => formatNumber(item.stop_loss),
+    render: (item) => (
+      <MonitorMenu
+        fieldLabel="Stop Loss"
+        fieldValue={formatNumber(item.stop_loss)}
+        position={item}
+      />
+    ),
   },
   {
     label: "TP",
     value: "take_profit",
-    render: (item) => formatNumber(item.take_profit),
+    render: (item) => (
+      <MonitorMenu
+        fieldLabel="Take Profit"
+        fieldValue={formatNumber(item.take_profit)}
+        position={item}
+      />
+    ),
   },
   {
     label: "%SL",
@@ -271,7 +330,6 @@ export const walletsTableColumn: TableColumn<Wallet>[] = [
     },
   },
 ];
-
 
 export const investorTableColumn: TableColumn<Investor>[] = [
   {

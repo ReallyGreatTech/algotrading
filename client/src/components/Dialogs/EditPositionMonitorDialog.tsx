@@ -4,24 +4,35 @@ import Dialog from './AppDialog';
 import { Formik } from 'formik';
 import FormInput from '../Form/FormInput';
 import FormSelectInput from '../Form/FormSelectInput';
+import { useAppDispatch,  } from '../../hooks';
+import { createPositionMonitor } from '../../redux/api/positionMonitors';
 
 interface PositionMonitorEditFormData {
   category_name: string;
   evaluation_method: string;
-  on_field: string;
-  base_value: string;
-  on_abs_distance: string;
+  on_field?: string |null;
+  base_value?: string |null;
+  on_value?: string |null;
+  on_abs_distance?: string |null;
   on_method: string;
-  enabled: string;
-  category: string;
-  subject: string;
+  enabled: boolean;
+  category: number;
+  subject: number;
 }
 
 interface EditPositionMonitorDialogProps extends DialogProps {
   positionMonitor: unknown;
 }
 
+enum EvaluationMethod {
+  VALUE = "VALUE",
+  METHOD = "METHOD",
+  ABS_DISTANCE ="ABS_DISTANCE "
+}
+
 const EditPositionMonitorDialog = ({
+
+  
   positionMonitor,
   open,
   onClose,
@@ -29,10 +40,21 @@ const EditPositionMonitorDialog = ({
 }: EditPositionMonitorDialogProps) => {
   //   const dispatch = useAppDispatch();
 
-  const handleUpdateWallet = async (data: unknown) => {
-    console.log(data);
-    onClose();
+
+  const dispatch = useAppDispatch();
+  // const selectedPosition = useAppSelector((state) => state.subPositions.selectedPosition)
+  
+  
+
+  const handleCreatePositionMonitor = async (data: unknown) => {
+
+   
+    dispatch(createPositionMonitor({data:data}))
+    
+    // onClose();
   };
+
+  
 
   return (
     <Dialog
@@ -49,20 +71,24 @@ const EditPositionMonitorDialog = ({
           evaluation_method: '',
           on_field: '',
           base_value: '',
+          on_value: '',
           on_abs_distance: '',
           on_method: '',
-          enabled: '',
-          category: '',
-          subject: '',
+          enabled: true,
+          category: 0,
+          subject: 0,
         }}
-        onSubmit={handleUpdateWallet}
+        onSubmit={handleCreatePositionMonitor}
       >
-        {({ handleSubmit }) => (
+        {({ handleSubmit,values }) => {
+          
+          
+        return (
           <>
             <div className="border-2 border-white/10 overflow-hidden rounded-2xl bg-gray-800">
               <div className="flex justify-between items-center px-3 py-6">
                 <h3 className="text-white/80 font-semibold text-xl">
-                  Edit Monitor
+                  Create Monitor
                 </h3>
                 <button
                   onClick={onClose}
@@ -85,17 +111,41 @@ const EditPositionMonitorDialog = ({
                       />
                     </div>
                     <div className="col-span-1">
-                      <FormInput
+                      {/* <FormInput
                         name="evaluation_method"
                         label="Evaluation Method"
                         placeholder="Add wallet balance"
+                      /> */}
+                      <FormSelectInput
+                        label="Evaluation Method"
+                        name="evaluation_method"
+                        options={[
+                          {
+                            label: EvaluationMethod.VALUE,
+                            value: EvaluationMethod.VALUE,
+                          },
+                          {
+                            label: EvaluationMethod.METHOD,
+                            value: EvaluationMethod.METHOD,
+                          },
+                          {
+                            label: EvaluationMethod.ABS_DISTANCE,
+                            value: EvaluationMethod.ABS_DISTANCE,
+                          },
+                        ]}
                       />
                     </div>
                     <div className="col-span-1">
-                      <FormInput
-                        name="on_field"
+                      <FormSelectInput
                         label="On Field"
-                        placeholder="Input an on Field"
+                        name="on_field"
+                        options={[
+                          { label: "Exchange", value: "exchange" },
+                          { label: "Entry Price", value: "entry_price" },
+                          { label: "Direction", value: "direction" },
+                          { label: "Leverage", value: "leverage" },
+                          { label: "Mark Price", value: "mark_price_usd" },
+                        ]}
                       />
                     </div>
                     <div className="col-span-1">
@@ -107,9 +157,22 @@ const EditPositionMonitorDialog = ({
                     </div>
                     <div className="col-span-1">
                       <FormInput
+                        name="on_value"
+                        label="On Value"
+                        placeholder="Input a value"
+                      />
+                    </div>
+                    <div className="col-span-1">
+                      <FormInput
                         name="on_abs_distance"
-                        label="On Abs Value"
-                        placeholder="Enter On Abs Value"
+                        label="On Abs Distance"
+                        placeholder="Enter On Abs Distance"
+                        disabled={
+                          !(
+                            values.evaluation_method ===
+                            EvaluationMethod.ABS_DISTANCE
+                          )
+                        }
                       />
                     </div>
                     <div className="col-span-1">
@@ -117,6 +180,11 @@ const EditPositionMonitorDialog = ({
                         name="on_method"
                         label="On Method"
                         placeholder="Enter On Method"
+                        disabled={
+                          !(
+                            values.evaluation_method === EvaluationMethod.METHOD
+                          )
+                        }
                       />
                     </div>
                     <div className="col-span-1">
@@ -124,8 +192,8 @@ const EditPositionMonitorDialog = ({
                         label="Enabled?"
                         name="enabled"
                         options={[
-                          { label: 'Enabled', value: 1 },
-                          { label: 'Disabled', value: 0 },
+                          { label: "Enabled", value: 1 },
+                          { label: "Disabled", value: 0 },
                         ]}
                       />
                     </div>
@@ -155,17 +223,17 @@ const EditPositionMonitorDialog = ({
                   Cancel
                 </button>
                 <button
-                  className={`py-3 px-5 bg-primary rounded-lg text-white shadow-primary ${
-                    true ? 'animate-pulse' : 'animate-none'
-                  }`}
+                  className={`py-3 px-5 bg-primary rounded-lg text-white shadow-primary `}
                   onClick={() => handleSubmit()}
                 >
-                  {true ? 'Updating...' : 'Update Wallet'}
+                  {/* {true ? "Creating Monitor" : "Create Monitor"} */}
+                  Create Monitor
                 </button>
               </div>
             </div>
           </>
-        )}
+        );
+        }}
       </Formik>
     </Dialog>
   );
