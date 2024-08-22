@@ -8,10 +8,6 @@ export interface TableColumn<T> {
   render?(item: T): ReactNode;
 }
 
-
-
-
-
 export interface Position {
   id: number;
   token: string;
@@ -81,7 +77,7 @@ export interface EditPositionsFormData {
   equity?: string;
   wallet: number;
 }
-export interface  NewPositionsFormData {
+export interface NewPositionsFormData {
   opened_at: string;
   closed_at?: string;
   status?: string;
@@ -296,7 +292,7 @@ export interface FetchMarketParams {
 export interface RowParams {
   token: string;
   exchange: string;
-  from_datetime?: string
+  from_datetime?: string;
 }
 
 export interface SelectedFundingHistoryState {
@@ -354,4 +350,27 @@ export interface Tab {
 export interface LocalStorageMarketData {
   hidden: Market[];
   favourites: Market[];
+}
+
+export interface PositionMonitor {
+  id: number;
+  category_name: string;
+  evaluation_method: string;
+  on_field: string;
+  base_value: string;
+  on_value: string;
+  on_abs_distance: string;
+  on_method: string;
+  on_method_kwargs: string;
+  enabled: boolean;
+  created_at: string;
+  updated_at: string;
+  category: number;
+  subject: number;
+}
+
+export interface CreatePositionMonitorFormData
+  extends Omit<Partial<PositionMonitor>, 'id' | 'create_at' | 'updated_at'> {
+  subject: number;
+  evaluation_method: string;
 }

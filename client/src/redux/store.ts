@@ -13,6 +13,7 @@ import subPositionsReducer from './features/sub_positions/sub-positions';
 import statsReducer from './features/stats/statsSlice';
 import localStorageDataSlice from './features/localStorageData/localStorageDataSlice';
 import marketOptionsReducer from './features/marketOptions/marketOptionsSlice';
+import positionMonitorsReducer from './features/position-monitors/monitorsSlice';
 
 const store = configureStore({
   reducer: {
@@ -29,6 +30,7 @@ const store = configureStore({
     subPositions: subPositionsReducer,
     stats: statsReducer,
     localStorageMarketData: localStorageDataSlice,
+    positionMonitors: positionMonitorsReducer,
   },
 });
 
