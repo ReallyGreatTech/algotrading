@@ -1,60 +1,71 @@
-import { DialogProps } from '../../types';
+import {
+  CreatePositionMonitorFormData,
+  DialogProps,
+  Position,
+} from '../../types';
 import { IoMdClose } from 'react-icons/io';
 import Dialog from './AppDialog';
 import { Formik } from 'formik';
 import FormInput from '../Form/FormInput';
 import FormSelectInput from '../Form/FormSelectInput';
-import { useAppDispatch,  } from '../../hooks';
-import { createPositionMonitor } from '../../redux/api/positionMonitors';
-
-interface PositionMonitorEditFormData {
-  category_name: string;
-  evaluation_method: string;
-  on_field?: string |null;
-  base_value?: string |null;
-  on_value?: string |null;
-  on_abs_distance?: string |null;
-  on_method: string;
-  enabled: boolean;
-  category: number;
-  subject: number;
-}
+import { useAppDispatch } from '../../hooks';
+import { createPositionMonitor } from '../../redux/api/position-monitors';
 
 interface EditPositionMonitorDialogProps extends DialogProps {
-  positionMonitor: unknown;
+  position: Position;
+  onField: keyof Position;
+  fieldLabel: string;
 }
 
 enum EvaluationMethod {
-  VALUE = "VALUE",
-  METHOD = "METHOD",
-  ABS_DISTANCE ="ABS_DISTANCE "
+  VALUE = 'VALUE',
+  METHOD = 'METHOD',
+  ABS_DISTANCE = 'ABS_DISTANCE ',
 }
 
 const EditPositionMonitorDialog = ({
-
-  
-  positionMonitor,
+  position,
   open,
+  onField,
+  fieldLabel,
   onClose,
   ...rest
 }: EditPositionMonitorDialogProps) => {
   //   const dispatch = useAppDispatch();
 
-
   const dispatch = useAppDispatch();
   // const selectedPosition = useAppSelector((state) => state.subPositions.selectedPosition)
-  
-  
 
-  const handleCreatePositionMonitor = async (data: unknown) => {
+  const shapeMonitorPayload = (
+    data: CreatePositionMonitorFormData
+  ): CreatePositionMonitorFormData => {
+    const dataClone = { ...data };
+    let field: keyof CreatePositionMonitorFormData;
 
-   
-    dispatch(createPositionMonitor({data:data}))
-    
-    // onClose();
+    for (field in data) {
+      if (!data[field]) delete dataClone[field];
+    }
+
+    const _enabled = data.enabled as string | boolean;
+
+    if (typeof _enabled === 'string') {
+      if (_enabled === 'true') data.enabled = true;
+      else if (_enabled === 'false') data.enabled = false;
+    }
+
+    dataClone.on_field = onField;
+    dataClone.subject = position.id;
+
+    return dataClone;
   };
 
-  
+  const handleCreatePositionMonitor = async (
+    data: CreatePositionMonitorFormData
+  ) => {
+    dispatch(createPositionMonitor({ data: shapeMonitorPayload(data) }));
+
+    onClose();
+  };
 
   return (
     <Dialog
@@ -63,176 +74,132 @@ const EditPositionMonitorDialog = ({
       onClose={onClose}
       fullWidth
       maxWidth="xl"
-      rootStyle={{ maxWidth: '43em' }}
+      rootStyle={{ maxWidth: '38em' }}
     >
-      <Formik<PositionMonitorEditFormData>
+      <Formik<CreatePositionMonitorFormData>
         initialValues={{
-          category_name: '',
-          evaluation_method: '',
-          on_field: '',
-          base_value: '',
-          on_value: '',
-          on_abs_distance: '',
-          on_method: '',
+          evaluation_method: EvaluationMethod.VALUE,
+          on_field: `${onField}`,
+          base_value: `${position[onField]}`,
+          on_value: `${position[onField]}`,
+          on_abs_distance: `${position[onField]}`,
           enabled: true,
-          category: 0,
-          subject: 0,
+          subject: position.id,
         }}
         onSubmit={handleCreatePositionMonitor}
       >
-        {({ handleSubmit,values }) => {
-          
-          
-        return (
-          <>
-            <div className="border-2 border-white/10 overflow-hidden rounded-2xl bg-gray-800">
-              <div className="flex justify-between items-center px-3 py-6">
-                <h3 className="text-white/80 font-semibold text-xl">
-                  Create Monitor
-                </h3>
-                <button
-                  onClick={onClose}
-                  className="p-4 rounded-lg border-2 border-primary bg-[#121C2D] text-white shadow-primary"
-                  style={{}}
-                >
-                  <IoMdClose />
-                </button>
-              </div>
+        {({ handleSubmit, values }) => {
+          return (
+            <>
+              <div className="border-2 border-white/10 overflow-hidden rounded-2xl bg-gray-800">
+                <div className="flex justify-between items-center px-3 py-6">
+                  <div>
+                    <h3 className="text-white/80 font-semibold text-xl mb-3">
+                      Create Monitor
+                    </h3>
+                    <p className="text-xs">
+                      This monitor will be created for{' '}
+                      <span className="font-bold text-primary">
+                        {fieldLabel}
+                      </span>
+                    </p>
+                  </div>
+                  <button
+                    onClick={onClose}
+                    className="p-4 rounded-lg border-2 border-primary bg-[#121C2D] text-white shadow-primary"
+                    style={{}}
+                  >
+                    <IoMdClose />
+                  </button>
+                </div>
 
-              <div className="max-h-[60vh] overflow-auto">
-                <div>
-                  <div className="mb-5 p-5  grid grid-cols-2 gap-5">
-                    <div className="col-span-2">
-                      <FormInput
-                        autoFocus
-                        name="category_name"
-                        placeholder="Category Name"
-                        label="Input a category name"
-                      />
-                    </div>
-                    <div className="col-span-1">
-                      {/* <FormInput
-                        name="evaluation_method"
-                        label="Evaluation Method"
-                        placeholder="Add wallet balance"
-                      /> */}
-                      <FormSelectInput
-                        label="Evaluation Method"
-                        name="evaluation_method"
-                        options={[
-                          {
-                            label: EvaluationMethod.VALUE,
-                            value: EvaluationMethod.VALUE,
-                          },
-                          {
-                            label: EvaluationMethod.METHOD,
-                            value: EvaluationMethod.METHOD,
-                          },
-                          {
-                            label: EvaluationMethod.ABS_DISTANCE,
-                            value: EvaluationMethod.ABS_DISTANCE,
-                          },
-                        ]}
-                      />
-                    </div>
-                    <div className="col-span-1">
-                      <FormSelectInput
-                        label="On Field"
-                        name="on_field"
-                        options={[
-                          { label: "Exchange", value: "exchange" },
-                          { label: "Entry Price", value: "entry_price" },
-                          { label: "Direction", value: "direction" },
-                          { label: "Leverage", value: "leverage" },
-                          { label: "Mark Price", value: "mark_price_usd" },
-                        ]}
-                      />
-                    </div>
-                    <div className="col-span-1">
-                      <FormInput
-                        name="base_value"
-                        label="Base Value"
-                        placeholder="Input a base value"
-                      />
-                    </div>
-                    <div className="col-span-1">
-                      <FormInput
-                        name="on_value"
-                        label="On Value"
-                        placeholder="Input a value"
-                      />
-                    </div>
-                    <div className="col-span-1">
-                      <FormInput
-                        name="on_abs_distance"
-                        label="On Abs Distance"
-                        placeholder="Enter On Abs Distance"
-                        disabled={
-                          !(
-                            values.evaluation_method ===
-                            EvaluationMethod.ABS_DISTANCE
-                          )
-                        }
-                      />
-                    </div>
-                    <div className="col-span-1">
-                      <FormInput
-                        name="on_method"
-                        label="On Method"
-                        placeholder="Enter On Method"
-                        disabled={
-                          !(
-                            values.evaluation_method === EvaluationMethod.METHOD
-                          )
-                        }
-                      />
-                    </div>
-                    <div className="col-span-1">
-                      <FormSelectInput
-                        label="Enabled?"
-                        name="enabled"
-                        options={[
-                          { label: "Enabled", value: 1 },
-                          { label: "Disabled", value: 0 },
-                        ]}
-                      />
-                    </div>
-                    <div className="col-span-1">
-                      <FormInput
-                        name="category"
-                        label="Category"
-                        placeholder="Enter Category"
-                      />
-                    </div>
-                    <div className="col-span-1">
-                      <FormInput
-                        name="subject"
-                        label="Subject"
-                        placeholder="Enter subject"
-                      />
+                <div className="max-h-[60vh] overflow-auto">
+                  <div>
+                    <div className="mb-5 p-5  grid grid-cols-2 gap-5">
+                      <div className="col-span-2">
+                        <FormSelectInput
+                          label="Evaluation Method"
+                          name="evaluation_method"
+                          options={[
+                            {
+                              label: EvaluationMethod.VALUE,
+                              value: EvaluationMethod.VALUE,
+                            },
+                            {
+                              label: EvaluationMethod.ABS_DISTANCE,
+                              value: EvaluationMethod.ABS_DISTANCE,
+                            },
+                          ]}
+                        />
+                      </div>
+
+                      <div className="col-span-1">
+                        <FormInput
+                          name="base_value"
+                          label="Base Value"
+                          placeholder="Input a base value"
+                        />
+                      </div>
+                      {values.evaluation_method === EvaluationMethod.VALUE && (
+                        <div className="col-span-1">
+                          <FormInput
+                            name="on_value"
+                            label="On Value"
+                            placeholder="Input a value"
+                          />
+                        </div>
+                      )}
+                      {values.evaluation_method ===
+                        EvaluationMethod.ABS_DISTANCE && (
+                        <div className="col-span-1">
+                          <FormInput
+                            name="on_abs_distance"
+                            label="On Abs Distance"
+                            placeholder="Enter On Abs Distance"
+                          />
+                        </div>
+                      )}
+                      {values.evaluation_method === EvaluationMethod.METHOD && (
+                        <div className="col-span-1">
+                          <FormInput
+                            name="on_method"
+                            label="On Method"
+                            placeholder="Enter On Method"
+                          />
+                        </div>
+                      )}
+                      <div className="col-span-2">
+                        <FormSelectInput
+                          label="Enabled?"
+                          name="enabled"
+                          options={[
+                            { label: 'Enabled', value: 'true' },
+                            { label: 'Disabled', value: 'false' },
+                          ]}
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="p-5 flex justify-end gap-5">
-                <button
-                  className="py-3 px-5 border-2 border-primary rounded-lg text-white/90 shadow-primary"
-                  onClick={onClose}
-                >
-                  Cancel
-                </button>
-                <button
-                  className={`py-3 px-5 bg-primary rounded-lg text-white shadow-primary `}
-                  onClick={() => handleSubmit()}
-                >
-                  {/* {true ? "Creating Monitor" : "Create Monitor"} */}
-                  Create Monitor
-                </button>
+                <div className="p-5 flex justify-end gap-5">
+                  <button
+                    className="py-3 px-5 border-2 border-primary rounded-lg text-white/90 shadow-primary"
+                    onClick={onClose}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    className={`py-3 px-5 bg-primary rounded-lg text-white shadow-primary `}
+                    onClick={() => handleSubmit()}
+                  >
+                    {/* {true ? "Creating Monitor" : "Create Monitor"} */}
+                    Create Monitor
+                  </button>
+                </div>
               </div>
-            </div>
-          </>
-        );
+            </>
+          );
         }}
       </Formik>
     </Dialog>

@@ -1,23 +1,25 @@
-import { Button, Popover } from "antd";
-import { HiMiniQuestionMarkCircle } from "react-icons/hi2";
-import { IoMdAddCircle } from "react-icons/io";
-import { FaEye } from "react-icons/fa";
-import { Position } from "../../types";
-import EditPositionMonitorDialog from "../Dialogs/EditPositionMonitorDialog";
-import { useState } from "react";
-import { selectPosition } from "../../redux/features/sub_positions/sub-positions";
-import { useAppDispatch } from "../../hooks";
-import ViewPositionMonitorDialog from "../Dialogs/ViewPositionMonitorDialog";
+import { Button, Popover } from 'antd';
+import { HiMiniQuestionMarkCircle } from 'react-icons/hi2';
+import { IoMdAddCircle } from 'react-icons/io';
+import { FaEye } from 'react-icons/fa';
+import { Position } from '../../types';
+import EditPositionMonitorDialog from '../Dialogs/EditPositionMonitorDialog';
+import { useState } from 'react';
+import { selectPosition } from '../../redux/features/sub_positions/sub-positions';
+import { useAppDispatch } from '../../hooks';
+import ViewPositionMonitorDialog from '../Dialogs/ViewPositionMonitorDialog';
 
 interface MonitorMenuProps {
   position: Position;
   fieldLabel: string;
+  onField: keyof Position;
   fieldValue: number | string;
 }
 
 const MonitorMenu = ({
   position,
   fieldLabel,
+  onField,
   fieldValue,
 }: MonitorMenuProps) => {
   const [editMonitorDialogOpen, setEditMonitorDialogOpen] = useState(false);
@@ -43,7 +45,7 @@ const MonitorMenu = ({
             <div className="my-3">
               <div className="flex border-b-2 border-purple-400 text-sm items-center mb-3 gap-1 pb-1">
                 <h4 className="text-center text-lg font-bold">Monitors</h4>
-                <HiMiniQuestionMarkCircle fontSize={"18px"} />
+                <HiMiniQuestionMarkCircle fontSize={'18px'} />
               </div>
 
               <div className="flex flex-col gap-1">
@@ -93,8 +95,11 @@ const MonitorMenu = ({
       </Popover>
 
       <EditPositionMonitorDialog
-        positionMonitor={null}
+        position={position}
+        // positionMonitor={null}
         open={editMonitorDialogOpen}
+        fieldLabel={fieldLabel}
+        onField={onField}
         onClose={() => {
           setEditMonitorDialogOpen(false);
         }}

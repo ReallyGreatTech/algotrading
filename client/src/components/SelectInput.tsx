@@ -17,7 +17,7 @@ export interface SelectInputProps
 
 const SelectInput = ({
   options,
-  defaultValue=undefined,
+  defaultValue = undefined,
 
   label,
   ...rest
