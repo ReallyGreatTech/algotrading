@@ -50,16 +50,14 @@ export const fetchPositionMonitors = createAsyncThunk(
 
 export const deletePositionMonitors = createAsyncThunk(
   "positionMonitors/deletePositionMonitor",
-
   async (payload: { id: number }, { rejectWithValue }) => {
     try {
       const results = await apiClient.delete<PositionMonitor>(
         `https://dev-api-algo.reallygreattech.com/api/monitors/positions/${payload.id}`
       );
-
       return results.data;
     } catch (error) {
-      rejectWithValue(
+      return rejectWithValue(
         "Something went wrong while deleting the given position monitor."
       );
     }
