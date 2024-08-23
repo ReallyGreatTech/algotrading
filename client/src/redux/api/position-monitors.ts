@@ -29,6 +29,28 @@ export const createPositionMonitor = createAsyncThunk(
     }
   }
 );
+export const editPositionMonitor = createAsyncThunk(
+  'editPositionMonitor',
+
+  async (
+    payload: { id:number, data: CreatePositionMonitorFormData },
+    { rejectWithValue }
+  ) => {
+    try {
+      const results = await apiClient.patch<PositionMonitor>(
+        `https://dev-api-algo.reallygreattech.com/api/monitors/positions/${payload.id}/`,
+        payload.data
+      );
+      toast.success(`Monitor edited successfully.`);
+      return results.data;
+    } catch (error) {
+      console.log(error);
+      rejectWithValue(
+        'Something went wrong while editing the position Monitor'
+      );
+    }
+  }
+);
 
 export const fetchPositionMonitors = createAsyncThunk(
   'fetchPositionMonitor',

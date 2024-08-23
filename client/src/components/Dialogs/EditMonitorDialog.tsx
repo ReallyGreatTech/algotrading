@@ -10,7 +10,7 @@ import { Formik } from "formik";
 import FormInput from "../Form/FormInput";
 import FormSelectInput from "../Form/FormSelectInput";
 import { useAppDispatch, useAppSelector } from "../../hooks";
-import { createPositionMonitor } from "../../redux/api/position-monitors";
+import {  editPositionMonitor, fetchPositionMonitors } from "../../redux/api/position-monitors";
 interface EditPositionMonitorDialogProps extends DialogProps {
   positionMonitor: PositionMonitor;
 }
@@ -33,35 +33,19 @@ const EditMonitorDialog = ({
   const dispatch = useAppDispatch();
   // const selectedPosition = useAppSelector((state) => state.subPositions.selectedPosition)
 
-  const shapeMonitorPayload = (
-    data: CreatePositionMonitorFormData
-  ): CreatePositionMonitorFormData => {
-    const dataClone = { ...data };
-    let field: keyof CreatePositionMonitorFormData;
 
-    for (field in data) {
-      if (!data[field]) delete dataClone[field];
-    }
 
-    const _enabled = data.enabled as string | boolean;
-
-    if (typeof _enabled === "string") {
-      if (_enabled === "true") data.enabled = true;
-      else if (_enabled === "false") data.enabled = false;
-    }
-
-    dataClone.on_field = "";
-    dataClone.subject = positionMonitor.id;
-
-    return dataClone;
-  };
-
-  const handleCreatePositionMonitor = async (
+  const handleEditPositionMonitor = async (
     data: CreatePositionMonitorFormData
   ) => {
-    await dispatch(createPositionMonitor({ data: shapeMonitorPayload(data) }));
-
-    onClose();
+     try {
+       console.log("Data to be edited", data);
+       await dispatch(editPositionMonitor({ id: positionMonitor.id, data }));
+       dispatch(fetchPositionMonitors());
+       onClose();
+     } catch (error) {
+       console.error("Error editing position monitor:", error);
+     }
   };
 
   return (
@@ -75,15 +59,15 @@ const EditMonitorDialog = ({
     >
       <Formik<CreatePositionMonitorFormData>
         initialValues={{
-          evaluation_method: EvaluationMethod.VALUE,
-          on_field: ``,
-          base_value: ``,
-          on_value: "",
-          on_abs_distance: ``,
-          enabled: true,
+          evaluation_method: positionMonitor.evaluation_method,
+          on_field: positionMonitor.on_field,
+          base_value: positionMonitor.base_value,
+          on_value: positionMonitor.on_value,
+          on_abs_distance: positionMonitor.on_abs_distance,
+          enabled: positionMonitor.enabled,
           subject: positionMonitor.subject,
         }}
-        onSubmit={handleCreatePositionMonitor}
+        onSubmit={handleEditPositionMonitor}
       >
         {({ handleSubmit, values }) => {
           return (
