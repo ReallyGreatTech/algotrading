@@ -1,26 +1,30 @@
-import {  Monitor, Position } from "../types";
+import {  PositionMonitor } from "../types";
 import { FiEdit2 } from "react-icons/fi";
 import { RiDeleteBin5Line } from "react-icons/ri";
-import { useAppDispatch } from "../hooks";
-// import { deletemonitor } from "../redux/api/monitors";
 import { useState } from "react";
 import EditMonitorDialog from "./Dialogs/EditMonitorDialog";
+import { useAppDispatch, useAppSelector } from "../hooks";
+import { deletePositionMonitors } from "../redux/api/position-monitors";
 
 interface MonitorRowActionsProps {
-  monitor?: Monitor;
-  positon:Position
+  
+  positionMonitor: PositionMonitor;
 }
 
-const MonitorRowActions = ({ positon }: MonitorRowActionsProps) => {
+const MonitorRowActions = ({ positionMonitor }: MonitorRowActionsProps) => {
+  const { isPending: deleting } = useAppSelector(
+    (state) => state.positionMonitors
+  );
   const [dialogOpen, setDialogOpen] = useState(false);
   const dispatch = useAppDispatch();
-  const [deleting, setDeleting] = useState(false);
+  // const dispatch = useAppDispatch();
 
   const handleDeletemonitor = async () => {
-    // setDeleting(true);
-    // await dispatch(deletemonitor(monitor.id));
-    // setDeleting(false);
+    dispatch(deletePositionMonitors({ id: positionMonitor.id }))
+    
   };
+
+  
 
   return (
     <div className="flex gap-4">
@@ -48,8 +52,7 @@ const MonitorRowActions = ({ positon }: MonitorRowActionsProps) => {
       </button>
 
       <EditMonitorDialog
-        
-       position={positon}
+        positionMonitor={positionMonitor}
         open={dialogOpen}
         rootStyle={{ maxWidth: "38em" }}
         onClose={() => setDialogOpen(false)}

@@ -198,7 +198,7 @@ const EditPositionMonitorDialog = ({
                     onClick={() => handleSubmit()}
                   >
                     {isPending ? 'Creating Monitor' : 'Create Monitor'}
-                    Create Monitor
+                  
                   </button>
                 </div>
               </div>

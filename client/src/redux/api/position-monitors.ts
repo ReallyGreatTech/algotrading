@@ -49,7 +49,7 @@ export const fetchPositionMonitors = createAsyncThunk(
 );
 
 export const deletePositionMonitors = createAsyncThunk(
-  'deletePositionMonitor',
+  "positionMonitors/deletePositionMonitor",
 
   async (payload: { id: number }, { rejectWithValue }) => {
     try {
@@ -60,7 +60,7 @@ export const deletePositionMonitors = createAsyncThunk(
       return results.data;
     } catch (error) {
       rejectWithValue(
-        'Something went wrong while deleting the given position monitor.'
+        "Something went wrong while deleting the given position monitor."
       );
     }
   }

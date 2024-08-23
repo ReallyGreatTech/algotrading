@@ -1,4 +1,6 @@
-export const monitorsMockData: Monitor[] = [
+import { PositionMonitor } from "../../types";
+
+export const monitorsMockData: PositionMonitor[] = [
   {
     id: 1,
     category_name: "CUSTOM_USER_DEFINED",
@@ -200,5 +202,5 @@ export const monitorsMockData: Monitor[] = [
     updated_at: "2024-08-21T14:21:58.962447Z",
     category: 2,
     subject: 153,
-  }
+  },
 ];

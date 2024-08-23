@@ -1,7 +1,8 @@
 import {
   CreatePositionMonitorFormData,
   DialogProps,
-  Position,
+  
+  PositionMonitor,
 } from "../../types";
 import { IoMdClose } from "react-icons/io";
 import Dialog from "./AppDialog";
@@ -11,8 +12,7 @@ import FormSelectInput from "../Form/FormSelectInput";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { createPositionMonitor } from "../../redux/api/position-monitors";
 interface EditPositionMonitorDialogProps extends DialogProps {
-  position: Position;
-  
+  positionMonitor: PositionMonitor;
 }
 
 enum EvaluationMethod {
@@ -22,7 +22,7 @@ enum EvaluationMethod {
 }
 
 const EditMonitorDialog = ({
-  position,
+  positionMonitor,
   open,
   onClose,
   ...rest
@@ -51,7 +51,7 @@ const EditMonitorDialog = ({
     }
 
     dataClone.on_field = "";
-    dataClone.subject = position.id;
+    dataClone.subject = positionMonitor.id;
 
     return dataClone;
   };
@@ -81,7 +81,7 @@ const EditMonitorDialog = ({
           on_value: "",
           on_abs_distance: ``,
           enabled: true,
-          subject: position.id,
+          subject: positionMonitor.subject,
         }}
         onSubmit={handleCreatePositionMonitor}
       >
@@ -193,7 +193,7 @@ const EditMonitorDialog = ({
                     }`}
                     onClick={() => handleSubmit()}
                   >
-                    {isPending ? "Creating Monitor" : "Create Monitor"}
+                    {isPending ? "Editing Monitor" : "Edit Monitor"}
                   </button>
                 </div>
               </div>
