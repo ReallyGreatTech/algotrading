@@ -6,23 +6,26 @@ import FormInput from "../components/Form/FormInput";
 import FormSubmitButton from "../components/Form/FormSubmitButton";
 import { apiClient } from "../redux/api/apiClient";
 
-const LoginPage = ({ onForgotPassword }) => {
+interface LoginPageProps {
+  onForgotPassword: () => void;
+}
+
+const LoginPage = ({ onForgotPassword }: LoginPageProps) => {
   const navigate = useNavigate();
   const [isPending, setIsPending] = useState(false);
 
-  const handleLogin = async (data:unknown) => {
+  const handleLogin = async (data: unknown) => {
     setIsPending(true);
     try {
-      
       const response = await apiClient.post("/login", data);
       const { token, refreshToken } = response.data;
-      localStorage.setItem('authToken', token);
-      localStorage.setItem('refreshToken', refreshToken);
+      localStorage.setItem("authToken", token);
+      localStorage.setItem("refreshToken", refreshToken);
       navigate("/");
 
       toast.success("Login successful!");
     } catch (error) {
-      const errorMessage =  "Login failed";
+      const errorMessage = "Login failed";
 
       toast.error(errorMessage);
       // Route to home page - remove when integrated
@@ -31,7 +34,6 @@ const LoginPage = ({ onForgotPassword }) => {
       setIsPending(false); // Stop the loading indicator
     }
   };
-
 
   return (
     <section className=" h-screen flex justify-center items-center">
@@ -67,14 +69,19 @@ const LoginPage = ({ onForgotPassword }) => {
               </div>
               <div className="col-span-2 flex justify-between">
                 <span className="flex  gap-2  items-center  justify-center">
-                  <input id="rememberMe" type="checkbox" className="h-3.5 w-3.5" />
+                  <input
+                    id="rememberMe"
+                    type="checkbox"
+                    className="h-3.5 w-3.5"
+                  />
                   <label htmlFor="rememberMe"> Remember Me</label>
                 </span>
-                <span 
-                onClick={onForgotPassword}
-                className="text-violet-500 font-bold cursor-pointer">
+                <span
+                  onClick={onForgotPassword}
+                  className="text-violet-500 font-bold cursor-pointer"
+                >
                   {/* <a href="">Forgot your password? </a> */}
-                  Forgot your password? 
+                  Forgot your password?
                 </span>
               </div>
 

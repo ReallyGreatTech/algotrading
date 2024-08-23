@@ -8,6 +8,7 @@ import { useState } from 'react';
 import { selectPosition } from '../../redux/features/sub_positions/sub-positions';
 import { useAppDispatch } from '../../hooks';
 import ViewPositionMonitorDialog from '../Dialogs/ViewPositionMonitorDialog';
+import { fetchPositionMonitors } from '../../redux/api/position-monitors';
 
 interface MonitorMenuProps {
   position: Position;
@@ -25,7 +26,6 @@ const MonitorMenu = ({
   const [editMonitorDialogOpen, setEditMonitorDialogOpen] = useState(false);
   const [viewMonitorDialogOpen, setViewMonitorDialogOpen] = useState(false);
   const [open, setOpen] = useState(false);
-
   const hide = () => {
     setOpen(false);
   };
@@ -45,7 +45,7 @@ const MonitorMenu = ({
             <div className="my-3">
               <div className="flex border-b-2 border-purple-400 text-sm items-center mb-3 gap-1 pb-1">
                 <h4 className="text-center text-lg font-bold">Monitors</h4>
-                <HiMiniQuestionMarkCircle fontSize={'18px'} />
+                <HiMiniQuestionMarkCircle fontSize={"18px"} />
               </div>
 
               <div className="flex flex-col gap-1">
@@ -79,6 +79,7 @@ const MonitorMenu = ({
                   e.stopPropagation();
                   hide(); // Close the Popover
                   dispatch(selectPosition(position));
+                  dispatch(fetchPositionMonitors());
                   setEditMonitorDialogOpen(true); // Open the dialog
                 }}
               >
@@ -105,7 +106,10 @@ const MonitorMenu = ({
         }}
       />
       <ViewPositionMonitorDialog
-        positionMonitor={null}
+        fieldLabel={fieldLabel}
+      
+        onField={onField}
+        position={position}
         open={viewMonitorDialogOpen}
         onClose={() => {
           setViewMonitorDialogOpen(false);

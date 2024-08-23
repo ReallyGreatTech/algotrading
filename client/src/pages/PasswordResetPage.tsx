@@ -5,6 +5,10 @@ import { Formik } from 'formik';
 import FormSubmitButton from '../components/Form/FormSubmitButton';
 import { useState } from 'react';
 
+interface PasswordResetFormData {
+  email:string
+}
+
 const PasswordResetPage = ({
   onSwitchToLogin,
 }: {
@@ -12,10 +16,10 @@ const PasswordResetPage = ({
 }) => {
   const [isLoading, setIsLoading] = useState(false);
 
-  const handlePasswordReset = async (email: string) => {
+  const handlePasswordReset = async (data: PasswordResetFormData) => {
     setIsLoading(true);
     try {
-      await apiClient.post('/password-reset', { email: email });
+      await apiClient.post('/password-reset', { email: data.email });
       toast.success(
         'Password reset instructions have been sent to your email.'
       );
@@ -38,11 +42,11 @@ const PasswordResetPage = ({
             how to reset your password.
           </p>
         </div>
-        <Formik
+        <Formik<PasswordResetFormData>
           initialValues={{
             email: '',
           }}
-          onSubmit={async (data) => await handlePasswordReset(data)}
+          onSubmit={handlePasswordReset}
         >
           {() => (
             <div className="grid grid-cols-2 gap-5 text-white mb-10 max-w-lg mx-auto">

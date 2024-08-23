@@ -1,45 +1,60 @@
-import { DialogProps, Investor } from "../../types";
+import {
+  CreatePositionMonitorFormData,
+  DialogProps,
+  Position,
+  PositionMonitor,
+} from "../../types";
 import { IoMdClose } from "react-icons/io";
 import Dialog from "./AppDialog";
 import { Formik } from "formik";
-import { investorTableColumn } from "../../constants/data/positionsPage";
+import { monitorTableColumn } from "../../constants/data/positionsPage";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { createPositionMonitor } from "../../redux/api/positionMonitors";
 import AppTable from "../AppTable";
+import { useEffect, useState } from "react";
+import { fetchPositionMonitors } from "../../redux/api/position-monitors";
+import { FaFrownOpen } from "react-icons/fa";
 
-interface PositionMonitorEditFormData {
-  category_name: string;
-  evaluation_method: string;
-  on_field?: string | null;
-  base_value?: string | null;
-  on_value?: string | null;
-  on_abs_distance?: string | null;
-  on_method: string;
-  enabled: boolean;
-  category: number;
-  subject: number;
-}
+
 
 interface EditPositionMonitorDialogProps extends DialogProps {
-  positionMonitor: unknown;
+  position: Position;
+  onField: keyof Position;
+  fieldLabel: string;
 }
 
-
 const ViewPositionMonitorDialog = ({
-  positionMonitor,
+  position,
   open,
   onClose,
+  onField,
+  fieldLabel,
   ...rest
 }: EditPositionMonitorDialogProps) => {
-  //   const dispatch = useAppDispatch();
-const investors = useAppSelector((state) => state.investors);
+  const positionsMonitors = useAppSelector(
+    (state) => state.positionMonitors.data
+  );
+
   const dispatch = useAppDispatch();
-  // const selectedPosition = useAppSelector((state) => state.subPositions.selectedPosition)
+
+  const [selectedMonitors, setSelectedMonitors] = useState<PositionMonitor[]>(
+    []
+  );
+
+  useEffect(() => {
+    dispatch(fetchPositionMonitors());
+  }, [dispatch]);
+
+  useEffect(() => {
+    const filteredMonitors = positionsMonitors.filter(
+      (monitor) =>
+        monitor.on_field === onField && monitor.subject === position.id
+    );
+    setSelectedMonitors(filteredMonitors);
+  }, [positionsMonitors, onField, position.id]);
 
   const handleCreatePositionMonitor = async (data: unknown) => {
-    dispatch(createPositionMonitor({ data: data }));
-
-    // onClose();
+    dispatch(createPositionMonitor({ data }));
   };
 
   return (
@@ -51,7 +66,7 @@ const investors = useAppSelector((state) => state.investors);
       maxWidth="xl"
       rootStyle={{ maxWidth: "43em" }}
     >
-      <Formik<PositionMonitorEditFormData>
+      <Formik<CreatePositionMonitorFormData>
         initialValues={{
           category_name: "",
           evaluation_method: "",
@@ -66,59 +81,52 @@ const investors = useAppSelector((state) => state.investors);
         }}
         onSubmit={handleCreatePositionMonitor}
       >
-        {({ handleSubmit, values }) => {
-                  function handleSelectInvestor(row: Investor): void {
-                      throw new Error("Function not implemented.");
-                  }
+        {() => (
+          <>
+            <div className="border-2 border-white/10 overflow-hidden rounded-2xl bg-gray-800">
+              <div className="flex justify-between items-center px-3 pt-6">
+                <h3 className="text-white/80 font-semibold text-xl ps-4">
+                  Viewing Monitors{" "}
+                  <span className="text-primary font-bold">({fieldLabel})</span>
+                </h3>
 
-          return (
-            <>
-              <div className="border-2 border-white/10 overflow-hidden rounded-2xl bg-gray-800">
-                <div className="flex justify-between items-center px-3 py-6">
-                  <h3 className="text-white/80 font-semibold text-xl">
-                    View Monitor(s)
-                  </h3>
-                  <button
-                    onClick={onClose}
-                    className="p-4 rounded-lg border-2 border-primary bg-[#121C2D] text-white shadow-primary"
-                    style={{}}
-                  >
-                    <IoMdClose />
-                  </button>
-                </div>
+                <button
+                  onClick={onClose}
+                  className="p-4 rounded-lg border-2 border-primary bg-[#121C2D] text-white shadow-primary"
+                >
+                  <IoMdClose />
+                </button>
+              </div>
 
-                <div className="max-h-[60vh] overflow-auto">
-                  <div>
-                    <div className="mb-5 p-5  ">
-                      <AppTable<Investor>
-                        tableBodyRowClassName="cursor-pointer"
-                        onRowClick={handleSelectInvestor}
-                        columns={investorTableColumn}
-                        data={investors.data}
-                      />
+              <div className="max-h-[60vh] overflow-auto">
+                <div className="mb-5 p-5">
+                  {selectedMonitors.length > 0 ? (
+                    <AppTable<PositionMonitor>
+                      tableBodyRowClassName="cursor-pointer"
+                      columns={monitorTableColumn}
+                      data={selectedMonitors}
+                    />
+                  ) : (
+                    <div className="flex flex-col items-center gap-5 justify-center">
+                      <span>
+                        <FaFrownOpen fontSize={"3rem"} />
+                      </span>
+                      <h4 className=" text-2xl font-bold text-center">
+                        No monitors have been set for{" "}
+                        <span className="text-primary"> {fieldLabel}</span> on
+                        this position.
+                      </h4>
                     </div>
-                  </div>
-                </div>
-
-                <div className="p-5 flex justify-end gap-5">
-                  <button
-                    className="py-3 px-5 border-2 border-primary rounded-lg text-white/90 shadow-primary"
-                    onClick={onClose}
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    className={`py-3 px-5 bg-primary rounded-lg text-white shadow-primary `}
-                    onClick={() => handleSubmit()}
-                  >
-                    {/* {true ? "Creating Monitor" : "Create Monitor"} */}
-                    Edit Monitors
-                  </button>
+                  )}
                 </div>
               </div>
-            </>
-          );
-        }}
+
+              <div className="p-5 flex justify-end gap-5">
+                {/* Placeholder for buttons or additional actions */}
+              </div>
+            </div>
+          </>
+        )}
       </Formik>
     </Dialog>
   );

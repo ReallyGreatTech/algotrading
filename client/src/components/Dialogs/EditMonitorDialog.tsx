@@ -1,33 +1,29 @@
 import {
   CreatePositionMonitorFormData,
   DialogProps,
-  Position,
-} from '../../types';
-import { IoMdClose } from 'react-icons/io';
-import Dialog from './AppDialog';
-import { Formik } from 'formik';
-import FormInput from '../Form/FormInput';
-import FormSelectInput from '../Form/FormSelectInput';
-import { useAppDispatch, useAppSelector } from '../../hooks';
-import { createPositionMonitor } from '../../redux/api/position-monitors';
-
+  
+  PositionMonitor,
+} from "../../types";
+import { IoMdClose } from "react-icons/io";
+import Dialog from "./AppDialog";
+import { Formik } from "formik";
+import FormInput from "../Form/FormInput";
+import FormSelectInput from "../Form/FormSelectInput";
+import { useAppDispatch, useAppSelector } from "../../hooks";
+import { createPositionMonitor } from "../../redux/api/position-monitors";
 interface EditPositionMonitorDialogProps extends DialogProps {
-  position: Position;
-  onField: keyof Position;
-  fieldLabel: string;
+  positionMonitor: PositionMonitor;
 }
 
 enum EvaluationMethod {
-  VALUE = 'VALUE',
-  METHOD = 'METHOD',
-  ABS_DISTANCE = 'ABS_DISTANCE',
+  VALUE = "VALUE",
+  METHOD = "METHOD",
+  ABS_DISTANCE = "ABS_DISTANCE",
 }
 
-const EditPositionMonitorDialog = ({
-  position,
+const EditMonitorDialog = ({
+  positionMonitor,
   open,
-  onField,
-  fieldLabel,
   onClose,
   ...rest
 }: EditPositionMonitorDialogProps) => {
@@ -49,13 +45,13 @@ const EditPositionMonitorDialog = ({
 
     const _enabled = data.enabled as string | boolean;
 
-    if (typeof _enabled === 'string') {
-      if (_enabled === 'true') data.enabled = true;
-      else if (_enabled === 'false') data.enabled = false;
+    if (typeof _enabled === "string") {
+      if (_enabled === "true") data.enabled = true;
+      else if (_enabled === "false") data.enabled = false;
     }
 
-    dataClone.on_field = onField;
-    dataClone.subject = position.id;
+    dataClone.on_field = "";
+    dataClone.subject = positionMonitor.id;
 
     return dataClone;
   };
@@ -75,17 +71,17 @@ const EditPositionMonitorDialog = ({
       onClose={onClose}
       fullWidth
       maxWidth="xl"
-      rootStyle={{ maxWidth: '38em' }}
+      rootStyle={{ maxWidth: "38em" }}
     >
       <Formik<CreatePositionMonitorFormData>
         initialValues={{
           evaluation_method: EvaluationMethod.VALUE,
-          on_field: `${onField}`,
-          base_value: `${position[onField]}`,
-          on_value: '',
-          on_abs_distance: `${position[onField]}`,
+          on_field: ``,
+          base_value: ``,
+          on_value: "",
+          on_abs_distance: ``,
           enabled: true,
-          subject: position.id,
+          subject: positionMonitor.subject,
         }}
         onSubmit={handleCreatePositionMonitor}
       >
@@ -96,14 +92,14 @@ const EditPositionMonitorDialog = ({
                 <div className="flex justify-between items-center px-3 py-6">
                   <div>
                     <h3 className="text-white/80 font-semibold text-xl mb-3">
-                      Create Monitor
+                      Edit Monitor
                     </h3>
-                    <p className="text-xs">
-                      This monitor will be created for{' '}
+                    {/* <p className="text-xs">
+                      This monitor will be edited for{" "}
                       <span className="font-bold text-primary">
                         {fieldLabel}
                       </span>
-                    </p>
+                    </p> */}
                   </div>
                   <button
                     onClick={onClose}
@@ -175,8 +171,8 @@ const EditPositionMonitorDialog = ({
                           label="Enabled?"
                           name="enabled"
                           options={[
-                            { label: 'Enabled', value: 'true' },
-                            { label: 'Disabled', value: 'false' },
+                            { label: "Enabled", value: "true" },
+                            { label: "Disabled", value: "false" },
                           ]}
                         />
                       </div>
@@ -193,12 +189,11 @@ const EditPositionMonitorDialog = ({
                   </button>
                   <button
                     className={`py-3 px-5 bg-primary rounded-lg text-white shadow-primary ${
-                      isPending ? 'animate-pulse' : ''
+                      isPending ? "animate-pulse" : ""
                     }`}
                     onClick={() => handleSubmit()}
                   >
-                    {isPending ? 'Creating Monitor' : 'Create Monitor'}
-                  
+                    {isPending ? "Editing Monitor" : "Edit Monitor"}
                   </button>
                 </div>
               </div>
@@ -210,4 +205,4 @@ const EditPositionMonitorDialog = ({
   );
 };
 
-export default EditPositionMonitorDialog;
+export default EditMonitorDialog;
