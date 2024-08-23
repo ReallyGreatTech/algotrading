@@ -2,15 +2,16 @@ import { Button, Popover } from 'antd';
 import { HiMiniQuestionMarkCircle } from 'react-icons/hi2';
 import { IoMdAddCircle } from 'react-icons/io';
 import { FaEye } from 'react-icons/fa';
-import { Position } from '../../types';
+import { Position, PositionMonitor } from '../../types';
 import EditPositionMonitorDialog from '../Dialogs/EditPositionMonitorDialog';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { selectPosition } from '../../redux/features/sub_positions/sub-positions';
-import { useAppDispatch } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import ViewPositionMonitorDialog from '../Dialogs/ViewPositionMonitorDialog';
 import { fetchPositionMonitors } from '../../redux/api/position-monitors';
 
 interface MonitorMenuProps {
+
   position: Position;
   fieldLabel: string;
   onField: keyof Position;
@@ -25,12 +26,27 @@ const MonitorMenu = ({
 }: MonitorMenuProps) => {
   const [editMonitorDialogOpen, setEditMonitorDialogOpen] = useState(false);
   const [viewMonitorDialogOpen, setViewMonitorDialogOpen] = useState(false);
+   const positionsMonitors = useAppSelector(
+     (state) => state.positionMonitors.data
+   );
+
+  const [selectedMonitors, setSelectedMonitors] = useState<PositionMonitor[]>(
+    []
+  );
   const [open, setOpen] = useState(false);
   const hide = () => {
     setOpen(false);
   };
 
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    const filteredMonitors = positionsMonitors.filter(
+      (monitor) =>
+        monitor.on_field === onField && monitor.subject === position.id
+    );
+    setSelectedMonitors(filteredMonitors);
+  }, [positionsMonitors, onField, position.id]);
 
   return (
     <>
@@ -56,7 +72,7 @@ const MonitorMenu = ({
                   <span className="font-bold">Value:</span> {fieldValue}
                 </p>
                 <p className="text-sm">
-                  <span className="font-bold">Monitors Set: </span>0
+                  <span className="font-bold">Monitors Set: </span> { selectedMonitors.length}
                 </p>
               </div>
             </div>
