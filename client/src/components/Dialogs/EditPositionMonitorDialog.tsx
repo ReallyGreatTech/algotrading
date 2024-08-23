@@ -63,6 +63,8 @@ const EditPositionMonitorDialog = ({
   const handleCreatePositionMonitor = async (
     data: CreatePositionMonitorFormData
   ) => {
+    console.log("Create Positions Data", data);
+    
     await dispatch(createPositionMonitor({ data: shapeMonitorPayload(data) }));
 
     onClose();

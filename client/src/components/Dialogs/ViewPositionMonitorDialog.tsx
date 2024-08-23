@@ -15,8 +15,6 @@ import { useEffect, useState } from "react";
 import { fetchPositionMonitors } from "../../redux/api/position-monitors";
 import { FaFrownOpen } from "react-icons/fa";
 
-
-
 interface EditPositionMonitorDialogProps extends DialogProps {
   position: Position;
   onField: keyof Position;
@@ -86,7 +84,7 @@ const ViewPositionMonitorDialog = ({
             <div className="border-2 border-white/10 overflow-hidden rounded-2xl bg-gray-800">
               <div className="flex justify-between items-center px-3 pt-6">
                 <h3 className="text-white/80 font-semibold text-xl ps-4">
-                  Viewing Monitors{" "}
+                  Viewing Monitors {""}
                   <span className="text-primary font-bold">({fieldLabel})</span>
                 </h3>
 

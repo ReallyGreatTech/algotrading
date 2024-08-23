@@ -423,11 +423,6 @@ export const monitorTableColumn: TableColumn<PositionMonitor>[] = [
    
   },
 
-  // {
-  //   label: "Category",
-  //   value: "category_name",
-  //   tableHeadCellClassName: "min-w-[7rem]",
-  // },
   {
     label: "",
     value: "",
