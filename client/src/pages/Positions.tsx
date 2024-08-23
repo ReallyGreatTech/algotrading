@@ -42,7 +42,7 @@ const Positions = () => {
   const [addInvestorDialogOpen, setAddInvestorDialogOpen] = useState(false);
   const [addPositionDialogOpen, setPositionDialogOpen] = useState(false);
   const [editPositionDialogOpen, setEditPositionDialogOpen] = useState(false);
-  const [editMonitorDialogOpen, setEditMonitorDialogOpen] = useState(false);
+  const [_editMonitorDialogOpen, setEditMonitorDialogOpen] = useState(false);
   const [expandedPosition, setExpandedPosition] = useState<string | undefined>(
     undefined
   );

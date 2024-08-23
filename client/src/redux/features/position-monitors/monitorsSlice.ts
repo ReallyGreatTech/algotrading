@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { PositionMonitor } from '../../../types';
 import {
   createPositionMonitor,
+  deletePositionMonitors,
   fetchPositionMonitors,
 } from '../../api/position-monitors';
 
@@ -35,15 +36,27 @@ const positionMonitorsSlice = createSlice({
       state.isPending = false;
     });
     builder.addCase(fetchPositionMonitors.pending, (state) => {
-      state.isPending = true;
+      state.loading = true;
     });
     builder.addCase(fetchPositionMonitors.rejected, (state) => {
       state.loading = false;
     });
     builder.addCase(fetchPositionMonitors.fulfilled, (state, action) => {
-      state.data = action.payload as PositionMonitor[];
+      state.data = (action.payload?.results as PositionMonitor[]) ?? [];
 
       state.loading = false;
+    });
+    builder.addCase(deletePositionMonitors.pending, (state) => {
+      state.isPending = true;
+    });
+    builder.addCase(deletePositionMonitors.rejected, (state) => {
+      state.isPending = false;
+    });
+    builder.addCase(deletePositionMonitors.fulfilled, (state, action) => {
+      const monitor = action.payload as PositionMonitor;
+      state.data = state.data.filter((m) => m.id !== monitor.id);
+
+      state.isPending = false;
     });
   },
 });

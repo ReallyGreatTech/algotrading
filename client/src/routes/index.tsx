@@ -1,13 +1,12 @@
-import { Route, Routes, useLocation } from "react-router-dom";
-import FundingRates from "../pages/FundingRates";
-import Positions from "../pages/Positions";
-import Layout from "../pages/Layout";
-import EditPositionPage from "../pages/EditPositionPage";
-import CreatePositionPage from "../pages/CreatePositionPage";
-import { useEffect } from "react";
-import System from "../pages/System";
-import LoginPage from "../pages/LoginPage";
-import AuthContainer from "../pages/AuthContainer";
+import { Route, Routes, useLocation } from 'react-router-dom';
+import FundingRates from '../pages/FundingRates';
+import Positions from '../pages/Positions';
+import Layout from '../pages/Layout';
+import EditPositionPage from '../pages/EditPositionPage';
+import CreatePositionPage from '../pages/CreatePositionPage';
+import { useEffect } from 'react';
+import System from '../pages/System';
+import AuthContainer from '../pages/AuthContainer';
 
 const AppRoutes = () => {
   const location = useLocation();

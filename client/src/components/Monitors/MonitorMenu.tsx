@@ -44,7 +44,7 @@ const MonitorMenu = ({
           >
             <div className="my-3">
               <div className="flex border-b-2 border-purple-400 text-sm items-center mb-3 gap-1 pb-1">
-                <h4 className="text-center text-lg font-bold ">Monitors</h4>
+                <h4 className="text-center text-lg font-bold">Monitors</h4>
                 <HiMiniQuestionMarkCircle fontSize={'18px'} />
               </div>
 

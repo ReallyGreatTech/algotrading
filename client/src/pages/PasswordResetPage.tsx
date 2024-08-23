@@ -1,21 +1,27 @@
-import React, { useState } from "react";
-import { apiClient } from "../redux/api/apiClient";
-import { toast } from "react-toastify";
-import FormInput from "../components/Form/FormInput";
-import { Formik } from "formik";
-import FormSubmitButton from "../components/Form/FormSubmitButton";
+import { apiClient } from '../redux/api/apiClient';
+import { toast } from 'react-toastify';
+import FormInput from '../components/Form/FormInput';
+import { Formik } from 'formik';
+import FormSubmitButton from '../components/Form/FormSubmitButton';
+import { useState } from 'react';
 
-const PasswordResetPage = ({ onSwitchToLogin }) => {
+const PasswordResetPage = ({
+  onSwitchToLogin,
+}: {
+  onSwitchToLogin(): void;
+}) => {
   const [isLoading, setIsLoading] = useState(false);
 
-  const handlePasswordReset = async (email) => {
+  const handlePasswordReset = async (email: string) => {
     setIsLoading(true);
     try {
-      await apiClient.post("/password-reset", { email: email });
-      toast.success("Password reset instructions have been sent to your email.");
+      await apiClient.post('/password-reset', { email: email });
+      toast.success(
+        'Password reset instructions have been sent to your email.'
+      );
       onSwitchToLogin(); // Switch back to login UI after successful request
     } catch (error) {
-      toast.error("Failed to reset password. Please try again later.");
+      toast.error('Failed to reset password. Please try again later.');
       onSwitchToLogin();
     } finally {
       setIsLoading(false);
@@ -28,12 +34,13 @@ const PasswordResetPage = ({ onSwitchToLogin }) => {
         <div className="mb-10">
           <h1 className="text-2xl font-semibold text-center">Reset Password</h1>
           <p className="text-sm text-center text-wrap px-52 text-white/30">
-            Enter your email address below and we'll send you instructions on how to reset your password.
+            Enter your email address below and we'll send you instructions on
+            how to reset your password.
           </p>
         </div>
         <Formik
           initialValues={{
-            email: "",
+            email: '',
           }}
           onSubmit={async (data) => await handlePasswordReset(data)}
         >
@@ -52,10 +59,10 @@ const PasswordResetPage = ({ onSwitchToLogin }) => {
                 <FormSubmitButton
                   loading={isLoading}
                   className={`w-full py-3 px-5 ${
-                    isLoading ? "bg-primary animate-pulse" : "bg-primary"
+                    isLoading ? 'bg-primary animate-pulse' : 'bg-primary'
                   } rounded-lg text-white shadow-primary ml-auto`}
                 >
-                  {isLoading ? "Sending..." : "Reset Password"}
+                  {isLoading ? 'Sending...' : 'Reset Password'}
                 </FormSubmitButton>
               </div>
             </div>
