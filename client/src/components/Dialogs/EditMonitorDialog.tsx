@@ -11,6 +11,7 @@ import FormInput from "../Form/FormInput";
 import FormSelectInput from "../Form/FormSelectInput";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import {  editPositionMonitor, fetchPositionMonitors } from "../../redux/api/position-monitors";
+import { formatNumber } from "../../utils/formatNumbers";
 interface EditPositionMonitorDialogProps extends DialogProps {
   positionMonitor: PositionMonitor;
 }
@@ -61,9 +62,11 @@ const EditMonitorDialog = ({
         initialValues={{
           evaluation_method: positionMonitor.evaluation_method,
           on_field: positionMonitor.on_field,
-          base_value: positionMonitor.base_value,
-          on_value: positionMonitor.on_value,
-          on_abs_distance: positionMonitor.on_abs_distance,
+          base_value: formatNumber(Number(positionMonitor.base_value)),
+          on_value: formatNumber(Number(positionMonitor.on_value)),
+          on_abs_distance: formatNumber(
+            Number(positionMonitor.on_abs_distance)
+          ),
           enabled: positionMonitor.enabled,
           subject: positionMonitor.subject,
         }}
