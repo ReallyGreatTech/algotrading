@@ -14,7 +14,7 @@ import { updateSelectedToken } from "../redux/features/tokens/tokenSlice";
 import TimeFilter from "../components/TimeFilter";
 import { AiOutlineExpandAlt } from "react-icons/ai";
 import { Bars } from "react-loader-spinner";
-import HistoryChart from "../components/Charts/HistoryChart";
+// import HistoryChart from "../components/Charts/HistoryChart";
 import { formatTimestamp } from "../utils/formatTime";
 import { fetchCryptoComparePrices } from "../utils/fetchCryptoPrices";
 import TradingViewChart from "../components/TradingViewChart";
@@ -25,6 +25,7 @@ import Tabs from "../components/Tabs";
 import MarketFilterBox from "../components/MarketFilterBox";
 import { getDateTime } from "../utils/dateUtils";
 import usePreLoadData from "../hooks/usePreLoadData";
+import HistoryChart from "../components/Charts/HistoryChartUpdate";
 
 const FundingRates = () => {
   const [fundingHistoryTab, setFundingHistoryTab] = useState(
@@ -382,6 +383,8 @@ const FundingRates = () => {
                   </div>
                 </div>
                 <div>
+                  {/* <HistoryChart data={getFundingData()} timeRange={timeRange} /> */}
+                  {/* <HistoryChart data={getFundingData()} timeRange={timeRange} /> */}
                   <HistoryChart data={getFundingData()} timeRange={timeRange} />
                 </div>
               </div>
