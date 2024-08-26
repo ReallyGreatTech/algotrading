@@ -1,8 +1,7 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ChartOptions, TimeScale } from 'chart.js';
 import { Line } from 'react-chartjs-2';
-import 'chartjs-adapter-date-fns';
-import { subHours, subDays, startOfDay } from 'date-fns';
+import 'chartjs-adapter-date-fns'; // For date/time axis support
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, TimeScale);
 
@@ -26,43 +25,17 @@ const HistoryChart: React.FC<HistoryChartProps> = ({ data, timeRange }) => {
     return new Date(new Date().getFullYear(), monthNumber - 1, parseInt(day), parseInt(hour), parseInt(minute));
   };
 
-  const processedData = useMemo(() => {
-    return data.map((item) => ({
-      x: parseTimestamp(item.timestamp),
-      y: item.funding,
-    }));
-  }, [data]);
-
-  const filteredData = useMemo(() => {
-    const now = new Date();
-    let startDate: Date;
-
-    switch (timeRange) {
-      case '1h':
-        startDate = subHours(now, 1);
-        break;
-      case '24h':
-        startDate = subHours(now, 24);
-        break;
-      case '7d':
-        startDate = subDays(now, 7);
-        break;
-      case '30d':
-        startDate = subDays(now, 30);
-        break;
-      case 'all':
-      default:
-        return processedData;
-    }
-
-    return processedData.filter(item => item.x >= startDate);
-  }, [processedData, timeRange]);
+  const processedData = data.map((item) => ({
+    x: parseTimestamp(item.timestamp),
+    y: item.funding,
+  }));
 
   const chartData = {
     datasets: [
       {
         label: 'Funding',
-        data: filteredData,
+        data: processedData,
+        // borderColor: 'rgb(75, 192, 192)',
         borderColor: 'rgb(75, 192, 192)',
         backgroundColor: 'rgba(75, 192, 192, 0.5)',
         tension: 0.1,
@@ -75,12 +48,19 @@ const HistoryChart: React.FC<HistoryChartProps> = ({ data, timeRange }) => {
     maintainAspectRatio: false,
     scales: {
       x: {
+        // type: 'time',
+        // time: {
+        //   unit: 'hour',
+        //   displayFormats: {
+        //     // hour: 'MMM dd, HH:mm',
+        //     hour: 'MMM dd',
+        //   },
+        // },
         type: 'time',
         time: {
-          unit: timeRange === '1h' ? 'minute' : timeRange === '24h' ? 'hour' : 'day',
+          unit: timeRange === '1h' || timeRange === '24h' ? 'hour' : 'day',
           displayFormats: {
-            minute: 'HH:mm',
-            hour: 'MMM dd, HH:mm',
+            hour: 'HH:mm',
             day: 'MMM dd',
           },
         },
@@ -102,7 +82,7 @@ const HistoryChart: React.FC<HistoryChartProps> = ({ data, timeRange }) => {
       },
       title: {
         display: true,
-        text: `Funding History (${timeRange})`,
+        text: 'Funding History',
       },
       tooltip: {
         callbacks: {
