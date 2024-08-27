@@ -1,11 +1,11 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 import {
   createPositionGroupMonitor,
   deletePositionGroupMonitor,
   fetchPositionGroupMonitors,
   updatePositionGroupMonitor,
-} from '../../api/positionGroupMonitors';
-import { PositionGroupMonitor } from '../../../types';
+} from "../../api/positionGroupMonitors";
+import { PositionGroupMonitor } from "../../../types";
 
 interface PositionGroupMonitorsState {
   loading: boolean;
@@ -20,7 +20,7 @@ const initialState: PositionGroupMonitorsState = {
 };
 
 const positionGroupMonitorSlice = createSlice({
-  name: 'positionGroupMonitors',
+  name: "positionGroupMonitors",
   initialState,
   reducers: {},
   extraReducers: (builder) => {

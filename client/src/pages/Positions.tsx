@@ -88,7 +88,7 @@ const Positions = () => {
     dispatch(fetchInvestors());
     dispatch(fetchPositions());
     dispatch(fetchPositionGroupMonitors());
-  }, []);
+  }, [dispatch]);
 
   const handleEditDialogClose = () => {
     setEditPositionDialogOpen(false);
@@ -226,7 +226,7 @@ const Positions = () => {
             ) : (
               <div
                 className={`relative overflow-x-auto max-h-[80vh] ${
-                  !isLoggedIn ? 'overflow-hidden' : ''
+                  !isLoggedIn ? "overflow-hidden" : ""
                 }`}
               >
                 {/* Conditional Rendering */}
@@ -250,10 +250,11 @@ const Positions = () => {
 
                 {/* Table Component */}
                 <AppTable<PositionsGroup>
+                  tableBodyRowClassName = "hover:cursor-pointer "
                   columns={[
                     {
-                      label: '',
-                      value: 'expand-button',
+                      label: "",
+                      value: "expand-button",
                       render(item) {
                         return (
                           <button
@@ -273,7 +274,7 @@ const Positions = () => {
                   ]}
                   data={positionGroups.data}
                   expansionId={expandedPosition}
-                  expansionProperty={'token'}
+                  expansionProperty={"token"}
                   expandComponent={
                     <div className="bg-[#334154] p-5">
                       <div className="border-1 border-white/50 ">
@@ -289,8 +290,8 @@ const Positions = () => {
                             tableBodyRowClassName={`bg-[#334154] border-3 border-white/50 hover:cursor-pointer`}
                             columns={[
                               {
-                                label: '',
-                                value: '',
+                                label: "",
+                                value: "",
                                 render(position) {
                                   return (
                                     <div>
@@ -310,8 +311,8 @@ const Positions = () => {
                               },
                               ...subPositionsTableColumn,
                               {
-                                label: '',
-                                value: '',
+                                label: "",
+                                value: "",
                                 render(item) {
                                   return (
                                     <div>
@@ -345,19 +346,19 @@ const Positions = () => {
 
       <InvestorActionsDialog
         open={investorDialogOpen}
-        rootStyle={{ maxWidth: '38em' }}
+        rootStyle={{ maxWidth: "38em" }}
         onClose={() => setInvestorDialogOpen(false)}
       />
 
       <AddWalletDialog
         open={addWalletDialogOpen}
-        rootStyle={{ maxWidth: '38em' }}
+        rootStyle={{ maxWidth: "38em" }}
         onClose={() => setAddWalletDialogOpen(false)}
       />
 
       <AddInvestorDialog
         open={addInvestorDialogOpen}
-        rootStyle={{ maxWidth: '38em' }}
+        rootStyle={{ maxWidth: "38em" }}
         onClose={() => setAddInvestorDialogOpen(false)}
       />
 
