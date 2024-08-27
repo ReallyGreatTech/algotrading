@@ -9,6 +9,10 @@ interface FundingData {
   timestamp: string;
   funding: number;
 }
+// interface FundingData {
+//   timestamp: string;
+//   funding: number;
+// }
 
 interface HistoryChartProps {
   data: FundingData[];
