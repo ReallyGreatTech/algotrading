@@ -5,8 +5,6 @@ export const createPositionMonitor = createAsyncThunk(
   '/monitors/positions/',
 
   async (payload: { data: unknown }, { rejectWithValue }) => {
-    console.log(JSON.stringify(payload));
-
     try {
       const results = await apiClient.post(
         `https://dev-api-algo.reallygreattech.com/api/monitors/positions/`,

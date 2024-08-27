@@ -33,7 +33,7 @@ export const editPositionMonitor = createAsyncThunk(
   'editPositionMonitor',
 
   async (
-    payload: { id:number, data: CreatePositionMonitorFormData },
+    payload: { id: number; data: CreatePositionMonitorFormData },
     { rejectWithValue }
   ) => {
     try {
@@ -71,7 +71,7 @@ export const fetchPositionMonitors = createAsyncThunk(
 );
 
 export const deletePositionMonitors = createAsyncThunk(
-  "positionMonitors/deletePositionMonitor",
+  'positionMonitors/deletePositionMonitor',
   async (payload: { id: number }, { rejectWithValue }) => {
     try {
       const results = await apiClient.delete<PositionMonitor>(
@@ -80,7 +80,7 @@ export const deletePositionMonitors = createAsyncThunk(
       return results.data;
     } catch (error) {
       return rejectWithValue(
-        "Something went wrong while deleting the given position monitor."
+        'Something went wrong while deleting the given position monitor.'
       );
     }
   }

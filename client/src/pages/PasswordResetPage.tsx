@@ -6,7 +6,7 @@ import FormSubmitButton from '../components/Form/FormSubmitButton';
 import { useState } from 'react';
 
 interface PasswordResetFormData {
-  email:string
+  email: string;
 }
 
 const PasswordResetPage = ({
