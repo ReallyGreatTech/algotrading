@@ -90,7 +90,7 @@ const HistoryChart: React.FC<HistoryChartProps> = ({ data, timeRange }) => {
       },
       tooltip: {
         callbacks: {
-          label: (context) => {
+          label: (context:any) => {
             const value = context.parsed.y;
             return `Funding: $${value.toFixed(2)}`;
           },
