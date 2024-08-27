@@ -17,6 +17,7 @@
     "antd": "^5.20.2",
     "axios": "^1.7.2",
     "chart.js": "^4.4.4",
+    "chartjs-adapter-date-fns": "^3.0.0",
     "formik": "^2.4.6",
     "lodash": "^4.17.21",
     "moment": "^2.30.1",
