@@ -19,7 +19,8 @@ import { get24HourDateTime } from "../../utils/dateUtils";
 import WalletRowActionButtons from "../../components/WalletRowActionButtons";
 import MonitorMenu from "../../components/Monitors/MonitorMenu";
 import MonitorRowActions from "../../components/MonitorRowActions";
-import PositionGroupMonitor from "../../components/Monitors/PostionGroupMonitorMenu";
+import { PositionGroupMonitor } from "../../types";
+import PositionGroupMonitorMenu from "../../components/Monitors/PostionGroupMonitorMenu";
 
 export const positionGroupsTableColumn: TableColumn<PositionsGroup>[] = [
   {
@@ -43,7 +44,7 @@ export const positionGroupsTableColumn: TableColumn<PositionsGroup>[] = [
     label: "Non-Leverage Amount",
     value: "non_leveraged_value",
     render: (item) => (
-      <PositionGroupMonitor
+      <PositionGroupMonitorMenu
         positionGroup={item}
         onField="non_leveraged_value"
         fieldLabel="Non-Leverage Amount"
@@ -56,7 +57,7 @@ export const positionGroupsTableColumn: TableColumn<PositionsGroup>[] = [
     label: "Leverage Amount",
     value: "leveraged_value",
     render: (item) => (
-      <PositionGroupMonitor
+      <PositionGroupMonitorMenu
         positionGroup={item}
         onField="leveraged_value"
         fieldLabel="Leverage Amount"
@@ -69,7 +70,7 @@ export const positionGroupsTableColumn: TableColumn<PositionsGroup>[] = [
     label: "Total Funding Paid",
     value: "total_funding_received_usd",
     render: (item) => (
-      <PositionGroupMonitor
+      <PositionGroupMonitorMenu
         positionGroup={item}
         onField="total_funding_received_usd"
         fieldLabel="Total Funding Paid"
@@ -82,7 +83,7 @@ export const positionGroupsTableColumn: TableColumn<PositionsGroup>[] = [
     label: "Average Mark Price",
     value: "avg_mark_price_usd",
     render: (item) => (
-      <PositionGroupMonitor
+      <PositionGroupMonitorMenu
         positionGroup={item}
         onField="avg_mark_price_usd"
         fieldLabel="Average Mark Price"
@@ -96,7 +97,7 @@ export const positionGroupsTableColumn: TableColumn<PositionsGroup>[] = [
     value: "avg_daily_funding_usd",
     tableHeadCellClassName: "min-w-[12em]",
     render: (item) => (
-      <PositionGroupMonitor
+      <PositionGroupMonitorMenu
         positionGroup={item}
         onField="avg_daily_funding_usd"
         fieldLabel="Average Daily Funding"
@@ -110,7 +111,7 @@ export const positionGroupsTableColumn: TableColumn<PositionsGroup>[] = [
     label: "Delta PNL",
     value: "delta_pnl",
     render: (item) => (
-      <PositionGroupMonitor
+      <PositionGroupMonitorMenu
         positionGroup={item}
         onField="delta_pnl"
         fieldLabel="Delta PNL"
@@ -125,7 +126,7 @@ export const positionGroupsTableColumn: TableColumn<PositionsGroup>[] = [
     tableHeadCellClassName: "min-w-[10em]",
     render(item) {
       return (
-        <PositionGroupMonitor
+        <PositionGroupMonitorMenu
           positionGroup={item}
           onField="max_stop_loss"
           fieldLabel="Stop Loss"
@@ -142,7 +143,7 @@ export const positionGroupsTableColumn: TableColumn<PositionsGroup>[] = [
     tableHeadCellClassName: "min-w-[10em]",
     render(item) {
       return (
-        <PositionGroupMonitor
+        <PositionGroupMonitorMenu
           positionGroup={item}
           onField="max_take_profit"
           fieldLabel="Take Profit"
@@ -167,7 +168,7 @@ export const positionGroupsTableColumn: TableColumn<PositionsGroup>[] = [
       });
 
       return (
-        <PositionGroupMonitor
+        <PositionGroupMonitorMenu
           positionGroup={item}
           onField="total_funding_received_usd"
           fieldLabel="Entry Price"
@@ -181,7 +182,7 @@ export const positionGroupsTableColumn: TableColumn<PositionsGroup>[] = [
     value: "min_liquidation_price",
     tableHeadCellClassName: "min-w-[12em]",
     render: (item) => (
-      <PositionGroupMonitor
+      <PositionGroupMonitorMenu
         positionGroup={item}
         onField="min_liquidation_price"
         fieldLabel="Non Leverage + Leverage Value"
@@ -466,6 +467,47 @@ export const investorTableColumn: TableColumn<Investor>[] = [
 ];
 
 export const monitorTableColumn: TableColumn<PositionMonitor>[] = [
+  
+  {
+    label: "Current Value",
+    value: "base_value",
+    render: (item) => formatNumber(Number(item.base_value)) ?? "NA",
+   
+  },
+  // {
+  //   label: "Base Value",
+  //   value: "base_value",
+  //   tableHeadCellClassName: "min-w-[7rem]",
+  // },
+  {
+    label: "Evaluation Method",
+    value: "evaluation_method",
+    
+  },
+  {
+    label: "Set Value Limit",
+    value: "on_value",
+    tableBodyCellClassName: "min-w-[6rem]",
+    render: (item) => {
+      return formatCurrency(Number(item.on_value));
+    },
+  },
+  {
+    label: "Absolute distance",
+    value: "on_abs_distance",
+    render: (item) => formatNumber(Number(item.on_abs_distance)) ?? "NA",
+   
+  },
+
+  {
+    label: "",
+    value: "",
+    render(position) {
+      return <MonitorRowActions positionMonitor={position} />;
+    },
+  },
+];
+export const positionGroupMonitorTableColumn: TableColumn<PositionGroupMonitor>[] = [
   
   {
     label: "Current Value",

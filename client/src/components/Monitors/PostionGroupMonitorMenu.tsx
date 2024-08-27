@@ -2,13 +2,14 @@ import { Button, Popover } from "antd";
 import { HiMiniQuestionMarkCircle } from "react-icons/hi2";
 import { IoMdAddCircle } from "react-icons/io";
 import { FaEye } from "react-icons/fa";
-import { Position, PositionMonitor, PositionsGroup } from "../../types";
-import EditPositionMonitorDialog from "../Dialogs/EditPositionMonitorDialog";
+import {  PositionMonitor, PositionsGroup } from "../../types";
+// import EditPositionMonitorDialog from "../Dialogs/EditPositionMonitorDialog";
 import { useEffect, useState } from "react";
-import { selectPosition } from "../../redux/features/sub_positions/sub-positions";
 import { useAppDispatch, useAppSelector } from "../../hooks";
-import ViewPositionMonitorDialog from "../Dialogs/ViewPositionMonitorDialog";
+// import ViewPositionMonitorDialog from "../Dialogs/ViewPositionMonitorDialog";
 import { fetchPositionMonitors } from "../../redux/api/position-monitors";
+import CreatePositionGroupMonitor from "../Dialogs/CreatePositionGroupMonitor";
+import ViewPositionGroupMonitorDialog from "../Dialogs/ViewPositionGroupMonitorDialog";
 
 interface MonitorMenuProps {
   positionGroup: PositionsGroup;
@@ -24,7 +25,7 @@ const PositionGroupMonitor = ({
   fieldValue,
 }: MonitorMenuProps) => {
   const [editMonitorDialogOpen, setEditMonitorDialogOpen] = useState(false);
-  const [viewMonitorDialogOpen, setViewMonitorDialogOpen] = useState(false);
+   const [viewMonitorDialogOpen, setViewMonitorDialogOpen] = useState(false);
   const positionsMonitors = useAppSelector(
     (state) => state.positionMonitors.data
   );
@@ -39,13 +40,13 @@ const PositionGroupMonitor = ({
 
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    const filteredMonitors = positionsMonitors.filter(
-      (monitor) =>
-        monitor.on_field === onField && monitor.base_value === positionGroup.token
-    );
-    setSelectedMonitors(filteredMonitors);
-  }, [positionsMonitors, onField]);
+  // useEffect(() => {
+  //   const filteredMonitors = positionsMonitors.filter(
+  //     (monitor) =>
+  //       monitor.on_field === onField && monitor.base_value === positionGroup.token
+  //   );
+  //   setSelectedMonitors(filteredMonitors);
+  // }, [positionsMonitors, onField]);
 
   return (
     <>
@@ -72,7 +73,7 @@ const PositionGroupMonitor = ({
                 </p>
                 <p className="text-sm">
                   <span className="font-bold">Monitors Set: </span>{" "}
-                  {selectedMonitors.length}
+                  000
                 </p>
               </div>
             </div>
@@ -80,24 +81,23 @@ const PositionGroupMonitor = ({
             <div className="flex gap-1">
               <Button
                 icon={<FaEye />}
-                // onClick={(e) => {
-                //   e.stopPropagation();
-                //   hide(); // Close the Popover
-                //   dispatch(selectPosition(position));
-                //   setViewMonitorDialogOpen(true); // Open the dialog
-                // }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  hide(); // Close the Popover
+                  // dispatch(selectPosition(position));
+                  setViewMonitorDialogOpen(true); // Open the dialog
+                }}
               >
                 View
               </Button>
               <Button
                 icon={<IoMdAddCircle />}
-                // onClick={(e) => {
-                //   e.stopPropagation();
-                //   hide(); // Close the Popover
-                //   dispatch(selectPosition(position));
-                //   dispatch(fetchPositionMonitors());
-                //   setEditMonitorDialogOpen(true); // Open the dialog
-                // }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  hide(); // Close the Popover
+                  dispatch(fetchPositionMonitors());
+                  setEditMonitorDialogOpen(true); // Open the dialog
+                }}
               >
                 Add
               </Button>
@@ -111,8 +111,8 @@ const PositionGroupMonitor = ({
         <span onClick={() => setOpen(!open)}>{fieldValue}</span>
       </Popover>
 
-      {/* <EditPositionMonitorDialog
-        position={position}
+      <CreatePositionGroupMonitor
+        position={positionGroup}
         // positionMonitor={null}
         open={editMonitorDialogOpen}
         fieldLabel={fieldLabel}
@@ -121,7 +121,7 @@ const PositionGroupMonitor = ({
           setEditMonitorDialogOpen(false);
         }}
       />
-      <ViewPositionMonitorDialog
+      {/* <ViewPositionMonitorDialog
         fieldLabel={fieldLabel}
         onField={onField}
         position={position}
@@ -130,6 +130,15 @@ const PositionGroupMonitor = ({
           setViewMonitorDialogOpen(false);
         }}
       /> */}
+      <ViewPositionGroupMonitorDialog
+        fieldLabel={fieldLabel}
+        // onField={onField}
+        // position={position}
+        open={viewMonitorDialogOpen}
+        onClose={() => {
+          setViewMonitorDialogOpen(false);
+        }}
+      />
     </>
   );
 };

@@ -1,7 +1,8 @@
 import {
-  CreatePositionMonitorFormData,
   DialogProps,
-  Position,
+  EditPositionGroupMonitorData,
+  
+  PositionsGroup,
 } from "../../types";
 import { IoMdClose } from "react-icons/io";
 import Dialog from "./AppDialog";
@@ -9,12 +10,12 @@ import { Formik } from "formik";
 import FormInput from "../Form/FormInput";
 import FormSelectInput from "../Form/FormSelectInput";
 import { useAppDispatch, useAppSelector } from "../../hooks";
-import { createPositionMonitor } from "../../redux/api/position-monitors";
 import { formatNumber } from "../../utils/formatNumbers";
+import { createPositionGroupMonitor } from "../../redux/api/positionGroupMonitors";
 
-interface EditPositionMonitorDialogProps extends DialogProps {
-  position: Position;
-  onField: keyof Position;
+interface CreatePositionsGroupMonitorDialogProps extends DialogProps {
+  position: PositionsGroup;
+  onField: keyof PositionsGroup;
   fieldLabel: string;
 }
 
@@ -24,25 +25,25 @@ enum EvaluationMethod {
   ABS_DISTANCE = "ABS_DISTANCE",
 }
 
-const CreatePositionMonitorGroup = ({
+const CreatePositionGroupMonitor = ({
   position,
   open,
   onField,
   fieldLabel,
   onClose,
   ...rest
-}: EditPositionMonitorDialogProps) => {
+}: CreatePositionsGroupMonitorDialogProps) => {
   //   const dispatch = useAppDispatch();
-  const { isPending } = useAppSelector((state) => state.positionMonitors);
+  const { isPending } = useAppSelector((state) => state.positionGroupMonitors);
 
   const dispatch = useAppDispatch();
   // const selectedPosition = useAppSelector((state) => state.subPositions.selectedPosition)
 
   const shapeMonitorPayload = (
-    data: CreatePositionMonitorFormData
-  ): CreatePositionMonitorFormData => {
+    data: EditPositionGroupMonitorData
+  ): EditPositionGroupMonitorData => {
     const dataClone = { ...data };
-    let field: keyof CreatePositionMonitorFormData;
+    let field: keyof EditPositionGroupMonitorData;
 
     for (field in data) {
       if (!data[field]) delete dataClone[field];
@@ -56,17 +57,17 @@ const CreatePositionMonitorGroup = ({
     }
 
     dataClone.on_field = onField;
-    dataClone.subject = position.id;
+    
 
     return dataClone;
   };
 
-  const handleCreatePositionMonitor = async (
-    data: CreatePositionMonitorFormData
+  const handleCreatePositionGroupMonitor = async (
+    data: EditPositionGroupMonitorData
   ) => {
-    console.log("Create Positions Data", data);
+    console.log("Create Positions Monitor Data", data);
 
-    await dispatch(createPositionMonitor({ data: shapeMonitorPayload(data) }));
+    await dispatch(createPositionGroupMonitor({ data: shapeMonitorPayload(data) }));
 
     onClose();
   };
@@ -80,7 +81,7 @@ const CreatePositionMonitorGroup = ({
       maxWidth="xl"
       rootStyle={{ maxWidth: "38em" }}
     >
-      <Formik<CreatePositionMonitorFormData>
+      <Formik<EditPositionGroupMonitorData>
         initialValues={{
           evaluation_method: EvaluationMethod.VALUE,
           on_field: `${formatNumber(Number(onField))}`,
@@ -88,9 +89,10 @@ const CreatePositionMonitorGroup = ({
           on_value: "",
           on_abs_distance: `${formatNumber(Number(position[onField]))}`,
           enabled: true,
-          subject: position.id,
+          token: position.token
+         
         }}
-        onSubmit={handleCreatePositionMonitor}
+        onSubmit={handleCreatePositionGroupMonitor}
       >
         {({ handleSubmit, values }) => {
           return (
@@ -99,7 +101,7 @@ const CreatePositionMonitorGroup = ({
                 <div className="flex justify-between items-center px-3 py-6">
                   <div>
                     <h3 className="text-white/80 font-semibold text-xl mb-3">
-                      Create Monitor
+                      Create Position Group Monitor
                     </h3>
                     <p className="text-xs">
                       This monitor will be created for{" "}
@@ -212,4 +214,4 @@ const CreatePositionMonitorGroup = ({
   );
 };
 
-export default CreatePositionMonitorGroup;
+export default CreatePositionGroupMonitor;
