@@ -23,7 +23,7 @@ export const createPositionGroupMonitor = createAsyncThunk(
       toast.success(`Position Group Monitor Created successfully.`);
       return data;
     } catch (error) {
-       toast.warning("Problem with creating Position Group Monitor")
+      toast.warning("Problem with creating Position Group Monitor");
       rejectWithValue(
         "An error occured while creating a position group monitor."
       );
@@ -73,9 +73,12 @@ export const updatePositionGroupMonitor = createAsyncThunk(
         `${POSITION_MONITORS_URL}/${payload.id}/`,
         payload.data
       );
-
+      toast.success(`Position Group Monitor Edited successfully.`);
       return data;
     } catch {
+      toast.warning(
+        `An error occured while updating the position group monitor.`
+      );
       rejectWithValue(
         "An error occured while updating the position group monitor."
       );

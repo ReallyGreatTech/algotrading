@@ -2,55 +2,56 @@ import {
   CreatePositionMonitorFormData,
   DialogProps,
   PositionGroupMonitor,
-  PositionMonitor,
   PositionsGroup,
+  
 } from "../../types";
 import { IoMdClose } from "react-icons/io";
 import Dialog from "./AppDialog";
 import { Formik } from "formik";
-import { monitorTableColumn } from "../../constants/data/positionsPage";
+import {  positionGroupMonitorTableColumn } from "../../constants/data/positionsPage";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { createPositionMonitor } from "../../redux/api/positionMonitors";
 import AppTable from "../AppTable";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { fetchPositionMonitors } from "../../redux/api/position-monitors";
 import { FaFrownOpen } from "react-icons/fa";
 
 interface EditPositionGroupMonitorData extends DialogProps {
-  // positionGroup: PositionsGroup;
-  // onField: keyof PositionGroupMonitor;
+  positionGroup: PositionsGroup;
+  onField: keyof PositionsGroup;
   fieldLabel: string;
 }
 
 const ViewPositionGroupMonitorDialog = ({
-  // positionGroup,
+  positionGroup,
   open,
   onClose,
-  // onField,
+  onField,
   fieldLabel,
   ...rest
 }: EditPositionGroupMonitorData) => {
+
   const positionGroupMonitors = useAppSelector(
     (state) => state.positionGroupMonitors.data
   );
 
   const dispatch = useAppDispatch();
 
-  // const [selectedMonitors, setSelectedMonitors] = useState<PositionGroupMonitor[]>(
-  //   []
-  // );
+  const [selectedMonitors, setSelectedMonitors] = useState<PositionGroupMonitor[]>(
+    []
+  );
 
   useEffect(() => {
     dispatch(fetchPositionMonitors());
   }, [dispatch]);
 
-  // useEffect(() => {
-  //   const filteredMonitors = positionsMonitors.filter(
-  //     (monitor) =>
-  //       monitor.on_field === onField && monitor.subject === position.id
-  //   );
-  //   setSelectedMonitors(filteredMonitors);
-  // }, [positionsMonitors, onField]);
+  useEffect(() => {
+    const filteredMonitors = positionGroupMonitors.filter(
+      (monitor) =>
+        monitor.on_field === onField && positionGroup.token === monitor.token
+    );
+    setSelectedMonitors(filteredMonitors);
+  }, [positionGroupMonitors, onField, positionGroup.token]);
 
   const handleCreatePositionMonitor = async (data: unknown) => {
     dispatch(createPositionMonitor({ data }));
@@ -99,13 +100,12 @@ const ViewPositionGroupMonitorDialog = ({
 
               <div className="max-h-[60vh] overflow-auto">
                 <div className="mb-5 p-5">
-                  {positionGroupMonitors.length > 0 ? (
-                  <div>ds</div>
-                    // <AppTable<PositionMonitor>
-                    //   tableBodyRowClassName="cursor-pointer"
-                    //   columns={monitorTableColumn}
-                    //   data={selectedMonitors}
-                    // />
+                  {selectedMonitors.length > 0 ? (
+                    <AppTable<PositionGroupMonitor>
+                      tableBodyRowClassName="cursor-pointer"
+                      columns={positionGroupMonitorTableColumn}
+                      data={selectedMonitors}
+                    />
                   ) : (
                     <div className="flex flex-col items-center gap-5 justify-center">
                       <span>
@@ -114,7 +114,7 @@ const ViewPositionGroupMonitorDialog = ({
                       <h4 className=" text-2xl font-bold text-center">
                         No monitors have been set for{" "}
                         <span className="text-primary"> {fieldLabel}</span> on
-                        this position.
+                        this position Group.
                       </h4>
                     </div>
                   )}

@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useAppDispatch } from "../hooks";
 import { unwrapResult } from "@reduxjs/toolkit";
 import { deletePositionGroupMonitor, fetchPositionGroupMonitors } from "../redux/api/positionGroupMonitors";
+import EditPositionGroupMonitorDialog from "./Dialogs/EditPositionGroupMonitorDialog";
 
 interface MonitorRowActionsProps {
   positionGroupMonitor: PositionGroupMonitor;
@@ -55,13 +56,13 @@ const PositionGroupMonitorRowActions = ({
       >
         <RiDeleteBin5Line />
       </button>
-{/* 
-      <EditMonitorDialog
-        positionMonitor={positionMonitor}
+
+      <EditPositionGroupMonitorDialog
+        positionGroupMonitor={positionGroupMonitor}
         open={dialogOpen}
         rootStyle={{ maxWidth: "38em" }}
         onClose={() => setDialogOpen(false)}
-      /> */}
+      />
     </div>
   );
 };

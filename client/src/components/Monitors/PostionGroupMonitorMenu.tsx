@@ -2,7 +2,7 @@ import { Button, Popover } from "antd";
 import { HiMiniQuestionMarkCircle } from "react-icons/hi2";
 import { IoMdAddCircle } from "react-icons/io";
 import { FaEye } from "react-icons/fa";
-import {  PositionMonitor, PositionsGroup } from "../../types";
+import {   PositionGroupMonitor , PositionsGroup } from "../../types";
 // import EditPositionMonitorDialog from "../Dialogs/EditPositionMonitorDialog";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks";
@@ -18,7 +18,7 @@ interface MonitorMenuProps {
   fieldValue: number | string;
 }
 
-const PositionGroupMonitor = ({
+const PositionGroupMonitorMenu = ({
   positionGroup,
   fieldLabel,
   onField,
@@ -26,13 +26,14 @@ const PositionGroupMonitor = ({
 }: MonitorMenuProps) => {
   const [editMonitorDialogOpen, setEditMonitorDialogOpen] = useState(false);
    const [viewMonitorDialogOpen, setViewMonitorDialogOpen] = useState(false);
-  const positionsMonitors = useAppSelector(
-    (state) => state.positionMonitors.data
+  const positionGroupMonitors = useAppSelector(
+    (state) => state.positionGroupMonitors.data
   );
 
-  const [selectedMonitors, setSelectedMonitors] = useState<PositionMonitor[]>(
-    []
-  );
+
+  const [selectedMonitors, setSelectedMonitors] = useState<
+    PositionGroupMonitor[]
+  >([]);
   const [open, setOpen] = useState(false);
   const hide = () => {
     setOpen(false);
@@ -40,13 +41,13 @@ const PositionGroupMonitor = ({
 
   const dispatch = useAppDispatch();
 
-  // useEffect(() => {
-  //   const filteredMonitors = positionsMonitors.filter(
-  //     (monitor) =>
-  //       monitor.on_field === onField && monitor.base_value === positionGroup.token
-  //   );
-  //   setSelectedMonitors(filteredMonitors);
-  // }, [positionsMonitors, onField]);
+  useEffect(() => {
+    const filteredMonitors = positionGroupMonitors.filter(
+      (monitor) =>
+        monitor.on_field === onField && monitor.token === positionGroup.token
+    );
+    setSelectedMonitors(filteredMonitors);
+  }, [positionGroup.token,positionGroupMonitors, onField]);
 
   return (
     <>
@@ -60,7 +61,9 @@ const PositionGroupMonitor = ({
           >
             <div className="my-3">
               <div className="flex border-b-2 border-purple-400 text-sm items-center mb-3 gap-1 pb-1">
-                <h4 className="text-center text-lg font-bold">Position Group Monitors</h4>
+                <h4 className="text-center text-lg font-bold">
+                  Position Group Monitors
+                </h4>
                 <HiMiniQuestionMarkCircle fontSize={"18px"} />
               </div>
 
@@ -73,7 +76,7 @@ const PositionGroupMonitor = ({
                 </p>
                 <p className="text-sm">
                   <span className="font-bold">Monitors Set: </span>{" "}
-                  000
+                  {selectedMonitors.length}
                 </p>
               </div>
             </div>
@@ -121,19 +124,11 @@ const PositionGroupMonitor = ({
           setEditMonitorDialogOpen(false);
         }}
       />
-      {/* <ViewPositionMonitorDialog
-        fieldLabel={fieldLabel}
-        onField={onField}
-        position={position}
-        open={viewMonitorDialogOpen}
-        onClose={() => {
-          setViewMonitorDialogOpen(false);
-        }}
-      /> */}
+
       <ViewPositionGroupMonitorDialog
         fieldLabel={fieldLabel}
-        // onField={onField}
-        // position={position}
+        onField={onField}
+        positionGroup={positionGroup}
         open={viewMonitorDialogOpen}
         onClose={() => {
           setViewMonitorDialogOpen(false);
@@ -143,4 +138,4 @@ const PositionGroupMonitor = ({
   );
 };
 
-export default PositionGroupMonitor;
+export default PositionGroupMonitorMenu;

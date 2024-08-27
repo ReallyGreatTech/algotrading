@@ -88,7 +88,7 @@ const Positions = () => {
     dispatch(fetchInvestors());
     dispatch(fetchPositions());
     dispatch(fetchPositionGroupMonitors());
-  }, []);
+  }, [dispatch]);
 
   const handleEditDialogClose = () => {
     setEditPositionDialogOpen(false);

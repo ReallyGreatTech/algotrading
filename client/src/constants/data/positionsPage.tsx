@@ -21,6 +21,7 @@ import MonitorMenu from "../../components/Monitors/MonitorMenu";
 import MonitorRowActions from "../../components/MonitorRowActions";
 import { PositionGroupMonitor } from "../../types";
 import PositionGroupMonitorMenu from "../../components/Monitors/PostionGroupMonitorMenu";
+import PositionGroupMonitorRowActions from "../../components/PositionGroupMonitorRowActions";
 
 export const positionGroupsTableColumn: TableColumn<PositionsGroup>[] = [
   {
@@ -544,7 +545,7 @@ export const positionGroupMonitorTableColumn: TableColumn<PositionGroupMonitor>[
     label: "",
     value: "",
     render(position) {
-      return <MonitorRowActions positionMonitor={position} />;
+      return <PositionGroupMonitorRowActions positionGroupMonitor={position} />;
     },
   },
 ];
