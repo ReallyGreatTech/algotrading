@@ -1,14 +1,21 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { apiClient } from './apiClient';
+import {
+  EditPositionGroupMonitorData,
+  PositionGroupMonitor,
+} from '../../types';
 
 const POSITION_MONITORS_URL =
-  'https://dev-api-algo.reallygreattech.com/api/monitors/positions-groups/';
+  'https://dev-api-algo.reallygreattech.com/api/monitors/position-groups';
 
 export const createPositionGroupMonitor = createAsyncThunk(
   'createPositionMonitor',
-  async (payload: { data: unknown }, { rejectWithValue }) => {
+  async (
+    payload: { data: EditPositionGroupMonitorData },
+    { rejectWithValue }
+  ) => {
     try {
-      const { data } = await apiClient.post(
+      const { data } = await apiClient.post<PositionGroupMonitor>(
         POSITION_MONITORS_URL,
         payload.data
       );
@@ -26,7 +33,9 @@ export const fetchPositionGroupMonitors = createAsyncThunk(
   'fetchPositionMonitors',
   async (_, { rejectWithValue }) => {
     try {
-      const { data } = await apiClient.get(POSITION_MONITORS_URL);
+      const { data } = await apiClient.get<{ results: PositionGroupMonitor[] }>(
+        POSITION_MONITORS_URL
+      );
 
       return data.results;
     } catch {
@@ -41,7 +50,7 @@ export const getPositionGroupMonitor = createAsyncThunk(
   'fetchPositionMonitor',
   async (payload: { id: number }, { rejectWithValue }) => {
     try {
-      const { data } = await apiClient.get(
+      const { data } = await apiClient.get<PositionGroupMonitor>(
         `${POSITION_MONITORS_URL}/${payload.id}/`
       );
 
@@ -58,7 +67,7 @@ export const updatePositionGroupMonitor = createAsyncThunk(
   'updatePositionGroupMonitor',
   async (payload: { id: number; data: unknown }, { rejectWithValue }) => {
     try {
-      const { data } = await apiClient.patch(
+      const { data } = await apiClient.patch<PositionGroupMonitor>(
         `${POSITION_MONITORS_URL}/${payload.id}/`,
         payload.data
       );

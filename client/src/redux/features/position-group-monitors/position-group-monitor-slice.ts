@@ -1,14 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
 import {
   createPositionGroupMonitor,
+  deletePositionGroupMonitor,
   fetchPositionGroupMonitors,
+  updatePositionGroupMonitor,
 } from '../../api/positionGroupMonitors';
-import { fetchPositionMonitors } from '../../api/position-monitors';
+import { PositionGroupMonitor } from '../../../types';
 
 interface PositionGroupMonitorsState {
   loading: boolean;
   isPending: boolean;
-  data: unknown[];
+  data: PositionGroupMonitor[];
 }
 
 const initialState: PositionGroupMonitorsState = {
@@ -30,8 +32,8 @@ const positionGroupMonitorSlice = createSlice({
       state.isPending = false;
     });
     builder.addCase(createPositionGroupMonitor.fulfilled, (state, action) => {
-      const monitor = action.payload.data;
-      state.data.push(monitor);
+      if (action.payload) state.data.push(action.payload);
+
       state.isPending = false;
     });
     //EXTRA REDUCERS FOR FETCH POSITION MONITORS
@@ -42,37 +44,41 @@ const positionGroupMonitorSlice = createSlice({
       state.loading = false;
     });
     builder.addCase(fetchPositionGroupMonitors.fulfilled, (state, action) => {
-      const monitors = action.payload.data.result;
-      state.data = monitors;
+      if (action.payload) state.data = action.payload;
+
       state.loading = false;
     });
     //EXTRA REDUCERS FOR PATCH POSITION MONITOR
-    builder.addCase(fetchPositionGroupMonitors.pending, (state) => {
+    builder.addCase(updatePositionGroupMonitor.pending, (state) => {
       state.isPending = true;
     });
-    builder.addCase(fetchPositionGroupMonitors.rejected, (state) => {
+    builder.addCase(updatePositionGroupMonitor.rejected, (state) => {
       state.isPending = false;
     });
-    builder.addCase(fetchPositionGroupMonitors.fulfilled, (state, action) => {
-      const monitor = action.payload.data;
+    builder.addCase(updatePositionGroupMonitor.fulfilled, (state, action) => {
+      const monitor = action.payload;
 
-      const index = 0;
-      state.data[index] = monitor;
+      if (monitor) {
+        const index = state.data.findIndex((m) => m.id === monitor.id);
+        state.data[index] = monitor;
+      }
 
       state.loading = false;
     });
     //EXTRA REDUCERS FOR DELETE POSITION MONITOR
-    builder.addCase(fetchPositionGroupMonitors.pending, (state) => {
+    builder.addCase(deletePositionGroupMonitor.pending, (state) => {
       state.isPending = true;
     });
-    builder.addCase(fetchPositionGroupMonitors.rejected, (state) => {
+    builder.addCase(deletePositionGroupMonitor.rejected, (state) => {
       state.isPending = false;
     });
-    builder.addCase(fetchPositionGroupMonitors.fulfilled, (state, action) => {
-      const monitor = action.payload.data;
+    builder.addCase(deletePositionGroupMonitor.fulfilled, (state, action) => {
+      const monitor = action.payload;
 
-      const index = 0;
-      state.data.splice(index, 1);
+      if (monitor) {
+        const index = state.data.findIndex((m) => m.id === monitor.id);
+        state.data.splice(index, 1);
+      }
 
       state.loading = false;
     });

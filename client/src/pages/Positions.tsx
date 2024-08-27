@@ -34,6 +34,7 @@ import EditPositionsDialog from '../components/Dialogs/EditPostionsDialog';
 import { FiEdit2 } from 'react-icons/fi';
 import { selectPosition } from '../redux/features/sub_positions/sub-positions';
 import { useNavigate } from 'react-router-dom';
+import { fetchPositionGroupMonitors } from '../redux/api/positionGroupMonitors';
 
 const Positions = () => {
   const [investorDialogOpen, setInvestorDialogOpen] = useState(false);
@@ -86,6 +87,7 @@ const Positions = () => {
     dispatch(fetchWallets());
     dispatch(fetchInvestors());
     dispatch(fetchPositions());
+    dispatch(fetchPositionGroupMonitors());
   }, []);
 
   const handleEditDialogClose = () => {
