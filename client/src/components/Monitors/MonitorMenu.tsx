@@ -2,14 +2,16 @@ import { Button, Popover } from 'antd';
 import { HiMiniQuestionMarkCircle } from 'react-icons/hi2';
 import { IoMdAddCircle } from 'react-icons/io';
 import { FaEye } from 'react-icons/fa';
-import { Position } from '../../types';
+import { Position, PositionMonitor } from '../../types';
 import EditPositionMonitorDialog from '../Dialogs/EditPositionMonitorDialog';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { selectPosition } from '../../redux/features/sub_positions/sub-positions';
-import { useAppDispatch } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import ViewPositionMonitorDialog from '../Dialogs/ViewPositionMonitorDialog';
+import { fetchPositionMonitors } from '../../redux/api/position-monitors';
 
 interface MonitorMenuProps {
+
   position: Position;
   fieldLabel: string;
   onField: keyof Position;
@@ -24,13 +26,27 @@ const MonitorMenu = ({
 }: MonitorMenuProps) => {
   const [editMonitorDialogOpen, setEditMonitorDialogOpen] = useState(false);
   const [viewMonitorDialogOpen, setViewMonitorDialogOpen] = useState(false);
-  const [open, setOpen] = useState(false);
+   const positionsMonitors = useAppSelector(
+     (state) => state.positionMonitors.data
+   );
 
+  const [selectedMonitors, setSelectedMonitors] = useState<PositionMonitor[]>(
+    []
+  );
+  const [open, setOpen] = useState(false);
   const hide = () => {
     setOpen(false);
   };
 
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    const filteredMonitors = positionsMonitors.filter(
+      (monitor) =>
+        monitor.on_field === onField && monitor.subject === position.id
+    );
+    setSelectedMonitors(filteredMonitors);
+  }, [positionsMonitors, onField, position.id]);
 
   return (
     <>
@@ -45,7 +61,7 @@ const MonitorMenu = ({
             <div className="my-3">
               <div className="flex border-b-2 border-purple-400 text-sm items-center mb-3 gap-1 pb-1">
                 <h4 className="text-center text-lg font-bold">Monitors</h4>
-                <HiMiniQuestionMarkCircle fontSize={'18px'} />
+                <HiMiniQuestionMarkCircle fontSize={"18px"} />
               </div>
 
               <div className="flex flex-col gap-1">
@@ -56,7 +72,7 @@ const MonitorMenu = ({
                   <span className="font-bold">Value:</span> {fieldValue}
                 </p>
                 <p className="text-sm">
-                  <span className="font-bold">Monitors Set: </span>0
+                  <span className="font-bold">Monitors Set: </span> { selectedMonitors.length}
                 </p>
               </div>
             </div>
@@ -79,6 +95,7 @@ const MonitorMenu = ({
                   e.stopPropagation();
                   hide(); // Close the Popover
                   dispatch(selectPosition(position));
+                  dispatch(fetchPositionMonitors());
                   setEditMonitorDialogOpen(true); // Open the dialog
                 }}
               >
@@ -105,7 +122,10 @@ const MonitorMenu = ({
         }}
       />
       <ViewPositionMonitorDialog
-        positionMonitor={null}
+        fieldLabel={fieldLabel}
+      
+        onField={onField}
+        position={position}
         open={viewMonitorDialogOpen}
         onClose={() => {
           setViewMonitorDialogOpen(false);
