@@ -10,7 +10,7 @@ import FormInput from '../Form/FormInput';
 import FormSelectInput from '../Form/FormSelectInput';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { createPositionMonitor } from '../../redux/api/position-monitors';
-import { formatNumber } from '../../utils/formatNumbers';
+
 
 interface EditPositionMonitorDialogProps extends DialogProps {
   position: Position;
@@ -83,10 +83,10 @@ const EditPositionMonitorDialog = ({
       <Formik<CreatePositionMonitorFormData>
         initialValues={{
           evaluation_method: EvaluationMethod.VALUE,
-          on_field: `${formatNumber(Number(onField))}`,
-          base_value: `${formatNumber(Number(position[onField]))}`,
+          on_field: onField,
+          base_value: position[onField]?.toString(),
           on_value: "",
-          on_abs_distance: `${formatNumber(Number(position[onField]))}`,
+          on_abs_distance: position[onField]?.toString(),
           enabled: true,
           subject: position.id,
         }}

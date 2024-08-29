@@ -289,26 +289,7 @@ const Positions = () => {
                             tableHeadRowClassName="bg-gray-900"
                             tableBodyRowClassName={`bg-[#334154] border-3 border-white/50 hover:cursor-pointer`}
                             columns={[
-                              {
-                                label: "",
-                                value: "",
-                                render(position) {
-                                  return (
-                                    <div>
-                                      <button
-                                        className="p-2 hover:bg-primary-dark rounded-full text-xs"
-                                        onClick={(e) => {
-                                          e.stopPropagation();
-
-                                          dispatch(selectPosition(position));
-                                        }}
-                                      >
-                                        Open Monitor
-                                      </button>
-                                    </div>
-                                  );
-                                },
-                              },
+                              
                               ...subPositionsTableColumn,
                               {
                                 label: "",

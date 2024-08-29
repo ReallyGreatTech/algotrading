@@ -107,11 +107,11 @@ const ViewPositionGroupMonitorDialog = ({
                       data={selectedMonitors}
                     />
                   ) : (
-                    <div className="flex flex-col items-center gap-5 justify-center">
+                    <div className="flex flex-col items-center gap-5 justify-center py-14">
                       <span>
                         <FaFrownOpen fontSize={"3rem"} />
                       </span>
-                      <h4 className=" text-2xl font-bold text-center">
+                      <h4 className=" text-base font-semibold text-center max-w-sm">
                         No monitors have been set for{" "}
                         <span className="text-primary"> {fieldLabel}</span> on
                         this position Group.
