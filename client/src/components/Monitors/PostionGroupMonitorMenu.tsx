@@ -3,13 +3,12 @@ import { HiMiniQuestionMarkCircle } from "react-icons/hi2";
 import { IoMdAddCircle } from "react-icons/io";
 import { FaEye } from "react-icons/fa";
 import {   PositionGroupMonitor , PositionsGroup } from "../../types";
-// import EditPositionMonitorDialog from "../Dialogs/EditPositionMonitorDialog";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks";
-// import ViewPositionMonitorDialog from "../Dialogs/ViewPositionMonitorDialog";
 import { fetchPositionMonitors } from "../../redux/api/position-monitors";
 import CreatePositionGroupMonitor from "../Dialogs/CreatePositionGroupMonitor";
 import ViewPositionGroupMonitorDialog from "../Dialogs/ViewPositionGroupMonitorDialog";
+import { MdMonitorHeart } from "react-icons/md";
 
 interface MonitorMenuProps {
   positionGroup: PositionsGroup;
@@ -60,7 +59,7 @@ const PositionGroupMonitorMenu = ({
             className="bg-[#334154] p-4 text-white"
           >
             <div className="my-3">
-              <div className="flex border-b-2 border-purple-400 text-sm items-center mb-3 gap-1 pb-1">
+              <div className="flex border-b border-primary-light/80 text-sm items-center mb-3 gap-1 pb-1">
                 <h4 className="text-center text-lg font-bold">
                   Position Group Monitors
                 </h4>
@@ -111,7 +110,12 @@ const PositionGroupMonitorMenu = ({
         open={open}
         onOpenChange={setOpen}
       >
+
+        <div className="inline-flex gap-2 items-center justify-center px-1">
         <span onClick={() => setOpen(!open)}>{fieldValue}</span>
+       {selectedMonitors.length ? <MdMonitorHeart className="text-green-400"  />:null} 
+        </div>
+       
       </Popover>
 
       <CreatePositionGroupMonitor

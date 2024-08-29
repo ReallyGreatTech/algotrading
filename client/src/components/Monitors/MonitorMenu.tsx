@@ -9,6 +9,7 @@ import { selectPosition } from '../../redux/features/sub_positions/sub-positions
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import ViewPositionMonitorDialog from '../Dialogs/ViewPositionMonitorDialog';
 import { fetchPositionMonitors } from '../../redux/api/position-monitors';
+import { MdMonitorHeart } from 'react-icons/md';
 
 interface MonitorMenuProps {
 
@@ -59,7 +60,7 @@ const MonitorMenu = ({
             className="bg-[#334154] p-4 text-white"
           >
             <div className="my-3">
-              <div className="flex border-b-2 border-purple-400 text-sm items-center mb-3 gap-1 pb-1">
+              <div className="flex border-b border-primary-light/80 text-sm items-center mb-3 gap-1 pb-1">
                 <h4 className="text-center text-lg font-bold">Monitors</h4>
                 <HiMiniQuestionMarkCircle fontSize={"18px"} />
               </div>
@@ -108,7 +109,12 @@ const MonitorMenu = ({
         open={open}
         onOpenChange={setOpen}
       >
+        <span onClick={() => setOpen(!open)}>
+        <div className="inline-flex gap-2 items-center justify-center px-1">
         <span onClick={() => setOpen(!open)}>{fieldValue}</span>
+       {selectedMonitors.length ? <MdMonitorHeart className="text-yellow-400"  />:null} 
+        </div>
+          </span>
       </Popover>
 
       <EditPositionMonitorDialog

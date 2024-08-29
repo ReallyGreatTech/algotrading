@@ -9,7 +9,6 @@ import { Formik } from "formik";
 import FormInput from "../Form/FormInput";
 import FormSelectInput from "../Form/FormSelectInput";
 import { useAppDispatch, useAppSelector } from "../../hooks";
-import { formatNumber } from "../../utils/formatNumbers";
 import { fetchPositionGroupMonitors, updatePositionGroupMonitor } from "../../redux/api/positionGroupMonitors";
 interface EditPositionMonitorDialogProps extends DialogProps {
   positionGroupMonitor: PositionGroupMonitor;
@@ -62,11 +61,9 @@ const EditPositionGroupMonitorDialog = ({
           token: positionGroupMonitor.token,
           evaluation_method: positionGroupMonitor.evaluation_method,
           on_field: positionGroupMonitor.on_field,
-          base_value: formatNumber(Number(positionGroupMonitor.base_value)),
-          on_value: formatNumber(Number(positionGroupMonitor.on_value)),
-          on_abs_distance: formatNumber(
-            Number(positionGroupMonitor.on_abs_distance)
-          ),
+          base_value: positionGroupMonitor.base_value?.toString(),
+          on_value: positionGroupMonitor.on_value?.toString(),
+          on_abs_distance: positionGroupMonitor.on_abs_distance?.toString(),
           enabled: positionGroupMonitor.enabled,
         }}
         onSubmit={handleEditPositionMonitor}

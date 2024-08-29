@@ -24,7 +24,7 @@ const SelectInput = ({
 }: SelectInputProps) => {
   return (
     <div className="flex flex-col text-white/90">
-      <label htmlFor="select" className="mb-[0.1em]">
+      <label htmlFor="select" className="mb-[0.5em]">
         {label}
       </label>
       <select
