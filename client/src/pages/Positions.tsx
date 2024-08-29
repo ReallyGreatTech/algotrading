@@ -1,40 +1,40 @@
-import { useEffect, useState } from 'react';
-import { AiOutlineExpandAlt } from 'react-icons/ai';
-import AppTable from '../components/AppTable';
-import InvestorActionsDialog from '../components/Dialogs/InvestorActionsDialog';
+import { useEffect, useState } from "react";
+import { AiOutlineExpandAlt } from "react-icons/ai";
+import AppTable from "../components/AppTable";
+import InvestorActionsDialog from "../components/Dialogs/InvestorActionsDialog";
 import {
   ExchangeBalance,
   Investor,
   Position,
   PositionsGroup,
   Wallet,
-} from '../types';
+} from "../types";
 import {
   exchangesBalanceTableColumn,
   investorTableColumn,
   positionGroupsTableColumn,
   subPositionsTableColumn,
   walletsTableColumn,
-} from '../constants/data/positionsPage';
-import AddWalletDialog from '../components/Dialogs/AddWalletDialog';
-import AddInvestorDialog from '../components/Dialogs/AddInvestorDialog';
-import PositionsTableDialog from '../components/Dialogs/PositionsTableDialog';
-import PaginationControls from '../components/PaginationControls';
-import { useAppDispatch, useAppSelector } from '../hooks';
-import { fetchWallets } from '../redux/api/wallets';
-import { fetchInvestors } from '../redux/api/investors';
-import { fetchPositions, fetchSubPositions } from '../redux/api/positions';
+} from "../constants/data/positionsPage";
+import AddWalletDialog from "../components/Dialogs/AddWalletDialog";
+import AddInvestorDialog from "../components/Dialogs/AddInvestorDialog";
+import PositionsTableDialog from "../components/Dialogs/PositionsTableDialog";
+import PaginationControls from "../components/PaginationControls";
+import { useAppDispatch, useAppSelector } from "../hooks";
+import { fetchWallets } from "../redux/api/wallets";
+import { fetchInvestors } from "../redux/api/investors";
+import { fetchPositions, fetchSubPositions } from "../redux/api/positions";
 import {
   MdOutlineKeyboardArrowDown,
   MdOutlineKeyboardArrowRight,
-} from 'react-icons/md';
-import { fetchInvestorActions } from '../redux/api/investorActions';
-import AddPositionsDialog from '../components/Dialogs/AddPositionsDialog';
-import EditPositionsDialog from '../components/Dialogs/EditPostionsDialog';
-import { FiEdit2 } from 'react-icons/fi';
-import { selectPosition } from '../redux/features/sub_positions/sub-positions';
-import { useNavigate } from 'react-router-dom';
-import { fetchPositionGroupMonitors } from '../redux/api/positionGroupMonitors';
+} from "react-icons/md";
+import { fetchInvestorActions } from "../redux/api/investorActions";
+import AddPositionsDialog from "../components/Dialogs/AddPositionsDialog";
+import EditPositionsDialog from "../components/Dialogs/EditPostionsDialog";
+import { FiEdit2 } from "react-icons/fi";
+import { selectPosition } from "../redux/features/sub_positions/sub-positions";
+import { useNavigate } from "react-router-dom";
+import { fetchPositionGroupMonitors } from "../redux/api/positionGroupMonitors";
 
 const Positions = () => {
   const [investorDialogOpen, setInvestorDialogOpen] = useState(false);
@@ -100,7 +100,7 @@ const Positions = () => {
   };
 
   const handleLoginRedirect = () => {
-    navigate('/login');
+    navigate("/login");
   };
 
   return (
@@ -250,7 +250,7 @@ const Positions = () => {
 
                 {/* Table Component */}
                 <AppTable<PositionsGroup>
-                  tableBodyRowClassName = "hover:cursor-pointer "
+                  tableBodyRowClassName="hover:cursor-pointer "
                   columns={[
                     {
                       label: "",

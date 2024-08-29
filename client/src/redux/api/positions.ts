@@ -1,17 +1,17 @@
 import {
   EditPositionsFormData,
   NewPositionsFormData,
-} from './../../types/index';
-import { createAsyncThunk } from '@reduxjs/toolkit';
-import { apiClient } from './apiClient';
-import { Position, PositionsGroup } from '../../types';
+} from "./../../types/index";
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import { apiClient } from "./apiClient";
+import { Position, PositionsGroup } from "../../types";
 
 export const fetchPositions = createAsyncThunk(
-  'tokens/fetchPositions',
+  "tokens/fetchPositions",
   async (_, { rejectWithValue }) => {
     try {
       const { data } = await apiClient.get<PositionsGroup[]>(
-        '/position-groups/'
+        "/position-groups/"
       );
 
       return data;
@@ -26,11 +26,11 @@ interface SubPositionsQueryParams {
 }
 
 export const fetchSubPositions = createAsyncThunk(
-  'tokens/fetchSubPositions',
+  "tokens/fetchSubPositions",
   async (params: SubPositionsQueryParams = {}, { rejectWithValue }) => {
     try {
       const { data } = await apiClient.get<{ results: Position[] }>(
-        '/positions',
+        "/positions",
         { params }
       );
 
@@ -42,7 +42,7 @@ export const fetchSubPositions = createAsyncThunk(
 );
 
 export const updatePosition = createAsyncThunk(
-  'positions/updatePosition',
+  "positions/updatePosition",
   async (
     { id, data }: { id: number; data: EditPositionsFormData },
     { rejectWithValue }
@@ -60,23 +60,23 @@ export const updatePosition = createAsyncThunk(
         return rejectWithValue(err.response.data);
       } else {
         // Return a generic error message
-        return rejectWithValue('An unknown error occurred');
+        return rejectWithValue("An unknown error occurred");
       }
     }
   }
 );
 
 export const createPosition = createAsyncThunk(
-  'positions/createPosition',
+  "positions/createPosition",
   async (data: NewPositionsFormData, { rejectWithValue }) => {
     try {
-      const response = await apiClient.post<Position>('/positions/', data);
+      const response = await apiClient.post<Position>("/positions/", data);
       return response.data;
     } catch (error: any) {
       if (error.response && error.response.data) {
         return rejectWithValue(error.response.data);
       } else {
-        return rejectWithValue('An unknown error occurred');
+        return rejectWithValue("An unknown error occurred");
       }
     }
   }

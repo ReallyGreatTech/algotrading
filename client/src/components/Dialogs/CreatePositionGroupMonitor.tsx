@@ -1,7 +1,6 @@
 import {
   DialogProps,
   EditPositionGroupMonitorData,
-  
   PositionsGroup,
 } from "../../types";
 import { IoMdClose } from "react-icons/io";
@@ -57,7 +56,6 @@ const CreatePositionGroupMonitor = ({
     }
 
     dataClone.on_field = onField;
-    
 
     return dataClone;
   };
@@ -67,7 +65,9 @@ const CreatePositionGroupMonitor = ({
   ) => {
     console.log("Create Positions Monitor Data", data);
 
-    await dispatch(createPositionGroupMonitor({ data: shapeMonitorPayload(data) }));
+    await dispatch(
+      createPositionGroupMonitor({ data: shapeMonitorPayload(data) })
+    );
 
     onClose();
   };
@@ -89,26 +89,25 @@ const CreatePositionGroupMonitor = ({
           on_value: "",
           on_abs_distance: `${formatNumber(Number(position[onField]))}`,
           enabled: true,
-          token: position.token
-         
+          token: position.token,
         }}
         onSubmit={handleCreatePositionGroupMonitor}
       >
         {({ handleSubmit, values }) => {
           return (
             <>
-              <div className="border-2 border-white/10 overflow-hidden rounded-2xl bg-gray-800">
-                <div className="flex justify-between items-center px-3 py-6">
+              <div className="border-2 border-white/10 overflow-hidden rounded-2xl bg-[#1B222C]">
+                <div className="flex justify-between items-center px-3 pt-6">
                   <div>
                     <h3 className="text-white/80 font-semibold text-xl mb-3">
-                      Create Position Group Monitor
+                      Add Alert
                     </h3>
-                    <p className="text-xs">
-                      This monitor will be created for{" "}
+                    {/* <p className="text-xs">
+                      This alert will be created for{" "}
                       <span className="font-bold text-primary">
                         {fieldLabel}
                       </span>
-                    </p>
+                    </p> */}
                   </div>
                   <button
                     onClick={onClose}
@@ -121,69 +120,79 @@ const CreatePositionGroupMonitor = ({
 
                 <div className="max-h-[60vh] overflow-auto">
                   <div>
-                    <div className="mb-5 p-5  grid grid-cols-2 gap-5">
+                    <div className="mb-5 px-5  gap-5 ">
                       <div className="col-span-2">
                         <FormSelectInput
                           label="Evaluation Method"
                           name="evaluation_method"
                           options={[
                             {
-                              label: EvaluationMethod.VALUE,
+                              label: "Value",
                               value: EvaluationMethod.VALUE,
                             },
                             {
-                              label: EvaluationMethod.ABS_DISTANCE,
+                              label: "Absolue Distance",
                               value: EvaluationMethod.ABS_DISTANCE,
                             },
                           ]}
                         />
                       </div>
+                      <div className="border-y my-4 py-3 flex flex-col gap-2 border-gray-600">
+                        <h4 className="text-white/80 font-semibold text-lg mb-1">
+                          Criteria
+                        </h4>
+                        <div className="col-span-1">
+                          <FormInput
+                            name="fieldLabel"
+                            label="On field"
+                            placeholder={fieldLabel}
+                            disabled
+                          />
+                        </div>
+                        <div className="col-span-1">
+                          <FormInput
+                            name="base_value"
+                            label="Current Value"
+                            placeholder="Input a base value"
+                            disabled
+                          />
+                        </div>
 
-                      <div className="col-span-1">
-                        <FormInput
-                          name="base_value"
-                          label="Base Value"
-                          placeholder="Input a base value"
-                          disabled
-                        />
+                        {/* <div className="col-span-2">
+                          <FormSelectInput
+                            label="Enabled?"
+                            name="enabled"
+                            options={[
+                              { label: "Enabled", value: "true" },
+                              { label: "Disabled", value: "false" },
+                            ]}
+                          />
+                        </div> */}
                       </div>
-                      {values.evaluation_method === EvaluationMethod.VALUE && (
-                        <div className="col-span-1">
-                          <FormInput
-                            name="on_value"
-                            label="On Value"
-                            placeholder="Input a value"
-                          />
-                        </div>
-                      )}
-                      {values.evaluation_method ===
-                        EvaluationMethod.ABS_DISTANCE && (
-                        <div className="col-span-1">
-                          <FormInput
-                            name="on_abs_distance"
-                            label="On Abs Distance"
-                            placeholder="Enter On Abs Distance"
-                          />
-                        </div>
-                      )}
-                      {values.evaluation_method === EvaluationMethod.METHOD && (
-                        <div className="col-span-1">
-                          <FormInput
-                            name="on_method"
-                            label="On Method"
-                            placeholder="Enter On Method"
-                          />
-                        </div>
-                      )}
-                      <div className="col-span-2">
-                        <FormSelectInput
-                          label="Enabled?"
-                          name="enabled"
-                          options={[
-                            { label: "Enabled", value: "true" },
-                            { label: "Disabled", value: "false" },
-                          ]}
-                        />
+                      <div>
+                        <h4 className="text-white/80 font-semibold text-lg mb-3">
+                          Notify when
+                        </h4>
+                        {values.evaluation_method ===
+                          EvaluationMethod.VALUE && (
+                          <div className="col-span-1">
+                            <FormInput
+                              name="on_value"
+                              label="Projected Value"
+                              placeholder="Input a value"
+                            />
+                          </div>
+                        )}
+                        {values.evaluation_method ===
+                          EvaluationMethod.ABS_DISTANCE && (
+                          <div className="col-span-1">
+                            <FormInput
+                              name="on_abs_distance"
+                              label="Project Distance"
+                              placeholder="Enter On Abs Distance"
+                            />
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -202,7 +211,7 @@ const CreatePositionGroupMonitor = ({
                     }`}
                     onClick={() => handleSubmit()}
                   >
-                    {isPending ? "Creating Monitor" : "Create Monitor"}
+                    {isPending ? "Adding Alert" : "Add Alert"}
                   </button>
                 </div>
               </div>

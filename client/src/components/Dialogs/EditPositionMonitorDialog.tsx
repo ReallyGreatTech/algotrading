@@ -99,7 +99,7 @@ const EditPositionMonitorDialog = ({
                 <div className="flex justify-between items-center px-3 py-6">
                   <div>
                     <h3 className="text-white/80 font-semibold text-xl mb-3">
-                      Create Monitor
+                      Add Alert
                     </h3>
                     <p className="text-xs">
                       This monitor will be created for{" "}
