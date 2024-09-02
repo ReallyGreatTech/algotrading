@@ -17,7 +17,6 @@ import FormSelectInput from '../Form/FormSelectInput';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchMarketOptions } from '../../redux/api/marketsOptions';
 import PositionsSearchInput from '../PositionsSearchInput';
-import SelectInput from '../SelectInput';
 
 interface AddPositionsDialogProps extends DialogProps {}
 
