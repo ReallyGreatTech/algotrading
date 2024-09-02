@@ -18,7 +18,7 @@ export interface SelectInputProps
 const SelectInput = ({
   options,
   defaultValue = undefined,
-
+  placeholder,
   label,
   ...rest
 }: SelectInputProps) => {
@@ -31,16 +31,19 @@ const SelectInput = ({
         {...rest}
         className="bg-gray-900 py-[0.85em] rounded-lg p-2.5  border border-white/20 "
       >
-        {options.map((option, index) => (
-          <option
-            className="text-[16px]"
-            key={index}
-            selected={Boolean(defaultValue)}
-            value={option.value}
-          >
-            {option.label}
-          </option>
-        ))}
+        {[{ value: '', label: placeholder }, ...options].map(
+          (option, index) => (
+            <option
+              className="text-[16px]"
+              key={index}
+              selected={Boolean(defaultValue)}
+              value={option.value}
+              disabled={!option.value}
+            >
+              {option.label}
+            </option>
+          )
+        )}
       </select>
     </div>
   );
