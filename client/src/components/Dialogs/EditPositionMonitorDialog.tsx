@@ -11,7 +11,6 @@ import FormSelectInput from '../Form/FormSelectInput';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { createPositionMonitor } from '../../redux/api/position-monitors';
 
-
 interface EditPositionMonitorDialogProps extends DialogProps {
   position: Position;
   onField: keyof Position;
@@ -64,8 +63,8 @@ const EditPositionMonitorDialog = ({
   const handleCreatePositionMonitor = async (
     data: CreatePositionMonitorFormData
   ) => {
-    console.log("Create Positions Data", data);
-    
+    console.log('Create Positions Data', data);
+
     await dispatch(createPositionMonitor({ data: shapeMonitorPayload(data) }));
 
     onClose();
@@ -78,14 +77,14 @@ const EditPositionMonitorDialog = ({
       onClose={onClose}
       fullWidth
       maxWidth="xl"
-      rootStyle={{ maxWidth: "38em" }}
+      rootStyle={{ maxWidth: '38em' }}
     >
       <Formik<CreatePositionMonitorFormData>
         initialValues={{
           evaluation_method: EvaluationMethod.VALUE,
           on_field: onField,
           base_value: position[onField]?.toString(),
-          on_value: "",
+          on_value: '',
           on_abs_distance: position[onField]?.toString(),
           enabled: true,
           subject: position.id,
@@ -102,7 +101,7 @@ const EditPositionMonitorDialog = ({
                       Add Alert
                     </h3>
                     <p className="text-xs">
-                      This monitor will be created for{" "}
+                      This monitor will be created for{' '}
                       <span className="font-bold text-primary">
                         {fieldLabel}
                       </span>
@@ -177,9 +176,10 @@ const EditPositionMonitorDialog = ({
                         <FormSelectInput
                           label="Enabled?"
                           name="enabled"
+                          defaultValue="true"
                           options={[
-                            { label: "Enabled", value: "true" },
-                            { label: "Disabled", value: "false" },
+                            { label: 'Enabled', value: 'true' },
+                            { label: 'Disabled', value: 'false' },
                           ]}
                         />
                       </div>
@@ -196,11 +196,11 @@ const EditPositionMonitorDialog = ({
                   </button>
                   <button
                     className={`py-3 px-5 bg-primary rounded-lg text-white shadow-primary ${
-                      isPending ? "animate-pulse" : ""
+                      isPending ? 'animate-pulse' : ''
                     }`}
                     onClick={() => handleSubmit()}
                   >
-                    {isPending ? "Creating Monitor" : "Create Monitor"}
+                    {isPending ? 'Creating Monitor' : 'Create Monitor'}
                   </button>
                 </div>
               </div>
