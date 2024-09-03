@@ -1,4 +1,4 @@
-import { Button, Popover } from 'antd';
+import { Popover } from 'antd';
 import { HiMiniQuestionMarkCircle } from 'react-icons/hi2';
 import { IoMdAddCircle } from 'react-icons/io';
 import { FaEye } from 'react-icons/fa';
@@ -8,7 +8,6 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchPositionMonitors } from '../../redux/api/position-monitors';
 import CreatePositionGroupMonitor from '../Dialogs/CreatePositionGroupMonitor';
 import ViewPositionGroupMonitorDialog from '../Dialogs/ViewPositionGroupMonitorDialog';
-import { MdMonitorHeart } from 'react-icons/md';
 
 interface MonitorMenuProps {
   positionGroup: PositionsGroup;
@@ -117,7 +116,7 @@ const PositionGroupMonitorMenu = ({
         <div className="inline-flex gap-2 items-center justify-center px-1">
           <span onClick={() => setOpen(!open)}>{fieldValue}</span>
           {selectedMonitors.length ? (
-            <div className="bg-green-400 h-2 w-2 rounded-full" />
+            <div className="bg-green-400 h-[0.4em] w-[0.35em] rounded-full" />
           ) : null}
         </div>
       </Popover>
