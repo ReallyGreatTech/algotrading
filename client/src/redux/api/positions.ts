@@ -15,8 +15,11 @@ export const fetchPositions = createAsyncThunk(
       );
 
       return data;
-    } catch (error: any) {
-      return rejectWithValue(error.response?.data || error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        return rejectWithValue(error.message);
+      }
+      return rejectWithValue('An unknown error occurred');
     }
   }
 );
@@ -35,8 +38,11 @@ export const fetchSubPositions = createAsyncThunk(
       );
 
       return data;
-    } catch (error: any) {
-      return rejectWithValue(error.response?.data || error.message);
+    }  catch (error: unknown) {
+      if (error instanceof Error) {
+        return rejectWithValue(error.message);
+      }
+      return rejectWithValue('An unknown error occurred');
     }
   }
 );
@@ -53,15 +59,11 @@ export const updatePosition = createAsyncThunk(
         data
       );
       return response.data;
-    } catch (err: any) {
-      console.log(err);
-      if (err.response && err.response.data) {
-        // Return the error response data
-        return rejectWithValue(err.response.data);
-      } else {
-        // Return a generic error message
-        return rejectWithValue("An unknown error occurred");
+    }  catch (error: unknown) {
+      if (error instanceof Error) {
+        return rejectWithValue(error.message);
       }
+      return rejectWithValue('An unknown error occurred');
     }
   }
 );
@@ -72,12 +74,11 @@ export const createPosition = createAsyncThunk(
     try {
       const response = await apiClient.post<Position>("/positions/", data);
       return response.data;
-    } catch (error: any) {
-      if (error.response && error.response.data) {
-        return rejectWithValue(error.response.data);
-      } else {
-        return rejectWithValue("An unknown error occurred");
+    }  catch (error: unknown) {
+      if (error instanceof Error) {
+        return rejectWithValue(error.message);
       }
+      return rejectWithValue('An unknown error occurred');
     }
   }
 );
