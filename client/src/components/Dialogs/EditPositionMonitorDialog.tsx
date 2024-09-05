@@ -94,13 +94,12 @@ const EditPositionMonitorDialog = ({
         {({ handleSubmit, values }) => {
           return (
             <>
-               <div className="border-2 border-white/10 overflow-hidden rounded-2xl bg-[#1B222C]">
+              <div className="border-2 border-white/10 overflow-hidden rounded-2xl bg-[#1B222C]">
                 <div className="flex justify-between items-center px-3 pt-6">
                   <div>
                     <h3 className="text-white/80 font-semibold text-xl mb-3">
-                      Add Alert
+                      Add Monitor
                     </h3>
-                   
                   </div>
                   <button
                     onClick={onClose}
@@ -120,11 +119,11 @@ const EditPositionMonitorDialog = ({
                           name="evaluation_method"
                           options={[
                             {
-                              label: "Value",
+                              label: 'Value',
                               value: EvaluationMethod.VALUE,
                             },
                             {
-                              label: "Absolue Distance",
+                              label: 'Absolue Distance',
                               value: EvaluationMethod.ABS_DISTANCE,
                             },
                           ]}
@@ -200,11 +199,11 @@ const EditPositionMonitorDialog = ({
                   </button>
                   <button
                     className={`py-3 px-5 bg-primary rounded-lg text-white shadow-primary ${
-                      isPending ? "animate-pulse" : ""
+                      isPending ? 'animate-pulse' : ''
                     }`}
                     onClick={() => handleSubmit()}
                   >
-                    {isPending ? "Adding Alert" : "Add Alert"}
+                    {isPending ? 'Creating Monitor...' : 'Create Monitor'}
                   </button>
                 </div>
               </div>

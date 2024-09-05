@@ -2,14 +2,14 @@ import {
   DialogProps,
   EditPositionGroupMonitorData,
   PositionsGroup,
-} from "../../types";
-import { IoMdClose } from "react-icons/io";
-import Dialog from "./AppDialog";
-import { Formik } from "formik";
-import FormInput from "../Form/FormInput";
-import FormSelectInput from "../Form/FormSelectInput";
-import { useAppDispatch, useAppSelector } from "../../hooks";
-import { createPositionGroupMonitor } from "../../redux/api/positionGroupMonitors";
+} from '../../types';
+import { IoMdClose } from 'react-icons/io';
+import Dialog from './AppDialog';
+import { Formik } from 'formik';
+import FormInput from '../Form/FormInput';
+import FormSelectInput from '../Form/FormSelectInput';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { createPositionGroupMonitor } from '../../redux/api/positionGroupMonitors';
 
 interface CreatePositionsGroupMonitorDialogProps extends DialogProps {
   position: PositionsGroup;
@@ -18,9 +18,9 @@ interface CreatePositionsGroupMonitorDialogProps extends DialogProps {
 }
 
 enum EvaluationMethod {
-  VALUE = "VALUE",
-  METHOD = "METHOD",
-  ABS_DISTANCE = "ABS_DISTANCE",
+  VALUE = 'VALUE',
+  METHOD = 'METHOD',
+  ABS_DISTANCE = 'ABS_DISTANCE',
 }
 
 const CreatePositionGroupMonitor = ({
@@ -49,9 +49,9 @@ const CreatePositionGroupMonitor = ({
 
     const _enabled = data.enabled as string | boolean;
 
-    if (typeof _enabled === "string") {
-      if (_enabled === "true") data.enabled = true;
-      else if (_enabled === "false") data.enabled = false;
+    if (typeof _enabled === 'string') {
+      if (_enabled === 'true') data.enabled = true;
+      else if (_enabled === 'false') data.enabled = false;
     }
 
     dataClone.on_field = onField;
@@ -62,7 +62,7 @@ const CreatePositionGroupMonitor = ({
   const handleCreatePositionGroupMonitor = async (
     data: EditPositionGroupMonitorData
   ) => {
-    console.log("Create Positions Monitor Data", data);
+    console.log('Create Positions Monitor Data', data);
 
     await dispatch(
       createPositionGroupMonitor({ data: shapeMonitorPayload(data) })
@@ -78,14 +78,14 @@ const CreatePositionGroupMonitor = ({
       onClose={onClose}
       fullWidth
       maxWidth="xl"
-      rootStyle={{ maxWidth: "38em" }}
+      rootStyle={{ maxWidth: '38em' }}
     >
       <Formik<EditPositionGroupMonitorData>
         initialValues={{
           evaluation_method: EvaluationMethod.VALUE,
           on_field: onField,
-          base_value:position[onField]?.toString(),
-          on_value: "",
+          base_value: position[onField]?.toString(),
+          on_value: '',
           on_abs_distance: position[onField]?.toString(),
           enabled: true,
           token: position.token,
@@ -99,7 +99,7 @@ const CreatePositionGroupMonitor = ({
                 <div className="flex justify-between items-center px-3 pt-6">
                   <div>
                     <h3 className="text-white/80 font-semibold text-xl mb-3">
-                      Add Alert
+                      Add Monitor
                     </h3>
                     {/* <p className="text-xs">
                       This alert will be created for{" "}
@@ -126,11 +126,11 @@ const CreatePositionGroupMonitor = ({
                           name="evaluation_method"
                           options={[
                             {
-                              label: "Value",
+                              label: 'Value',
                               value: EvaluationMethod.VALUE,
                             },
                             {
-                              label: "Absolue Distance",
+                              label: 'Absolue Distance',
                               value: EvaluationMethod.ABS_DISTANCE,
                             },
                           ]}
@@ -206,11 +206,11 @@ const CreatePositionGroupMonitor = ({
                   </button>
                   <button
                     className={`py-3 px-5 bg-primary rounded-lg text-white shadow-primary ${
-                      isPending ? "animate-pulse" : ""
+                      isPending ? 'animate-pulse' : ''
                     }`}
                     onClick={() => handleSubmit()}
                   >
-                    {isPending ? "Adding Alert" : "Add Alert"}
+                    {isPending ? 'Adding Monitor...' : 'Add Monitor'}
                   </button>
                 </div>
               </div>

@@ -1,9 +1,29 @@
 import React from 'react';
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ChartOptions, TimeScale } from 'chart.js';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  ChartOptions,
+  TimeScale,
+} from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import 'chartjs-adapter-date-fns'; // For date/time axis support
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, TimeScale);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  TimeScale
+);
 
 interface FundingData {
   timestamp: string;
@@ -21,12 +41,32 @@ interface HistoryChartProps {
 
 const HistoryChart: React.FC<HistoryChartProps> = ({ data, timeRange }) => {
   const parseTimestamp = (timestampStr: string): Date => {
-    const [monthDayTime, hourMinute] = timestampStr.split("|");
-    const [month, day] = monthDayTime.split(" ");
-    const [hour, minute] = hourMinute.split(":");
-    const monthNumber = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"].indexOf(month) + 1;
+    const [monthDayTime, hourMinute] = timestampStr.split('|');
+    const [month, day] = monthDayTime.split(' ');
+    const [hour, minute] = hourMinute.split(':');
+    const monthNumber =
+      [
+        'Jan',
+        'Feb',
+        'Mar',
+        'Apr',
+        'May',
+        'Jun',
+        'Jul',
+        'Aug',
+        'Sep',
+        'Oct',
+        'Nov',
+        'Dec',
+      ].indexOf(month) + 1;
 
-    return new Date(new Date().getFullYear(), monthNumber - 1, parseInt(day), parseInt(hour), parseInt(minute));
+    return new Date(
+      new Date().getFullYear(),
+      monthNumber - 1,
+      parseInt(day),
+      parseInt(hour),
+      parseInt(minute)
+    );
   };
 
   const processedData = data.map((item) => ({
@@ -90,7 +130,7 @@ const HistoryChart: React.FC<HistoryChartProps> = ({ data, timeRange }) => {
       },
       tooltip: {
         callbacks: {
-          label: (context:any) => {
+          label: (context: any) => {
             const value = context.parsed.y;
             return `Funding: $${value.toFixed(2)}`;
           },

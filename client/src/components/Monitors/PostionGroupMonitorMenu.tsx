@@ -113,7 +113,7 @@ const PositionGroupMonitorMenu = ({
         open={open}
         onOpenChange={setOpen}
       >
-        <div className="inline-flex gap-2 items-center justify-center px-1">
+        <div className="inline-flex gap-2 items-center justify-between px-1">
           <span onClick={() => setOpen(!open)}>{fieldValue}</span>
           {selectedMonitors.length ? (
             <div className="bg-yellow-400 h-[0.4em] w-[0.35em] rounded-full" />
