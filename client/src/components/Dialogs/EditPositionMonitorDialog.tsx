@@ -98,7 +98,7 @@ const EditPositionMonitorDialog = ({
                 <div className="flex justify-between items-center px-3 py-6">
                   <div>
                     <h3 className="text-white/80 font-semibold text-xl mb-3">
-                      Add Alert
+                      Add Monitor
                     </h3>
                     <p className="text-xs">
                       This monitor will be created for{' '}
@@ -200,7 +200,7 @@ const EditPositionMonitorDialog = ({
                     }`}
                     onClick={() => handleSubmit()}
                   >
-                    {isPending ? 'Creating Monitor' : 'Create Monitor'}
+                    {isPending ? 'Creating Monitor...' : 'Create Monitor'}
                   </button>
                 </div>
               </div>

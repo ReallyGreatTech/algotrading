@@ -51,7 +51,7 @@ const MonitorMenu = ({
     <>
       <Popover
         color="#334154"
-        placement="rightTop"
+        placement="leftTop"
         content={
           <div
             onClick={(e) => e.stopPropagation()}

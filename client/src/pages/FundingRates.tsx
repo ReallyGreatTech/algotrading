@@ -1,31 +1,32 @@
-import AppTable from "../components/AppTable";
-import PrimaryButton from "../components/PrimaryButton";
-import { GrNext } from "react-icons/gr";
-import { FetchMarketParams, Market, PriceChartDataItem } from "../types";
+import AppTable from '../components/AppTable';
+import PrimaryButton from '../components/PrimaryButton';
+import { GrNext } from 'react-icons/gr';
+import { FetchMarketParams, Market, PriceChartDataItem } from '../types';
 import {
   filteredFundingRateColumns,
   fundingHistoryTabs,
   fundingRatesTableColumn,
-} from "../constants/data/fundingRatesPage";
-import SearchInput from "../components/SearchInput";
-import { useAppSelector, useAppDispatch } from "../hooks";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { updateSelectedToken } from "../redux/features/tokens/tokenSlice";
-import TimeFilter from "../components/TimeFilter";
-import { AiOutlineExpandAlt } from "react-icons/ai";
-import { Bars } from "react-loader-spinner";
+} from '../constants/data/fundingRatesPage';
+import SearchInput from '../components/SearchInput';
+import { useAppSelector, useAppDispatch } from '../hooks';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { updateSelectedToken } from '../redux/features/tokens/tokenSlice';
+import TimeFilter from '../components/TimeFilter';
+import { AiOutlineExpandAlt } from 'react-icons/ai';
+import { Bars } from 'react-loader-spinner';
 // import HistoryChart from "../components/Charts/HistoryChart";
-import { formatTimestamp } from "../utils/formatTime";
-import { fetchCryptoComparePrices } from "../utils/fetchCryptoPrices";
-import TradingViewChart from "../components/TradingViewChart";
-import { fetchSelectedFundingHistory } from "../redux/api/fundingHistory";
-import { fetchMarket } from "../redux/api/markets";
-import { subDays, subYears, isAfter } from "date-fns";
-import Tabs from "../components/Tabs";
-import MarketFilterBox from "../components/MarketFilterBox";
-import { getDateTime } from "../utils/dateUtils";
-import usePreLoadData from "../hooks/usePreLoadData";
-import HistoryChart from "../components/Charts/HistoryChartUpdate";
+import { formatTimestamp } from '../utils/formatTime';
+import { fetchCryptoComparePrices } from '../utils/fetchCryptoPrices';
+import TradingViewChart from '../components/TradingViewChart';
+import { fetchSelectedFundingHistory } from '../redux/api/fundingHistory';
+import { fetchMarket } from '../redux/api/markets';
+import { subDays, subYears, isAfter } from 'date-fns';
+import Tabs from '../components/Tabs';
+import MarketFilterBox from '../components/MarketFilterBox';
+import { getDateTime } from '../utils/dateUtils';
+import usePreLoadData from '../hooks/usePreLoadData';
+import AreaChart from '../components/Charts/AreaChart';
+import { sampleFundingRatesData } from '../constants/data/fundingRatesChartData';
 
 const FundingRates = () => {
   const [fundingHistoryTab, setFundingHistoryTab] = useState(
@@ -63,7 +64,7 @@ const FundingRates = () => {
 
   const dispatch = useAppDispatch();
 
-  const [timeRange, setTimeRange] = useState("");
+  const [timeRange, setTimeRange] = useState('');
   const { tokens, exchanges } = usePreLoadData();
 
   const range = getDateTime(timeRange);
@@ -124,13 +125,13 @@ const FundingRates = () => {
     let startDate;
 
     switch (timeRange) {
-      case "1D":
+      case '1D':
         startDate = subDays(now, 1);
         break;
-      case "1W":
+      case '1W':
         startDate = subDays(now, 7);
         break;
-      case "1Y":
+      case '1Y':
         startDate = subYears(now, 1);
         break;
       default:
@@ -149,13 +150,13 @@ const FundingRates = () => {
         let funding;
 
         switch (selectedTimeFilter) {
-          case "1H":
+          case '1H':
             funding = item.hourly_funding;
             break;
-          case "1D":
+          case '1D':
             funding = item.daily_funding;
             break;
-          case "1Y":
+          case '1Y':
             funding = item.annual_funding;
             break;
           default:
@@ -322,9 +323,9 @@ const FundingRates = () => {
                     selectedRow={selectedMarketRow}
                     columns={fundingRatesTableColumn}
                     data={
-                      fundingHistoryTab.label === "Favorite"
+                      fundingHistoryTab.label === 'Favorite'
                         ? localStorageMarketsData.data.favourites
-                        : fundingHistoryTab.label === "Hidden"
+                        : fundingHistoryTab.label === 'Hidden'
                         ? localStorageMarketsData.data.hidden
                         : // : unhiddenMarket
                           getUnhiddenMarket()
@@ -385,7 +386,14 @@ const FundingRates = () => {
                 <div>
                   {/* <HistoryChart data={getFundingData()} timeRange={timeRange} /> */}
                   {/* <HistoryChart data={getFundingData()} timeRange={timeRange} /> */}
-                  <HistoryChart data={getFundingData()} timeRange={timeRange} />
+                  {/* <HistoryChart data={getFundingData()} timeRange={timeRange} /> */}
+                  <div>
+                    <AreaChart data={sampleFundingRatesData} id={'chart-id'} />
+                    <button
+                      className="hidden"
+                      onClick={() => getFundingData()}
+                    ></button>
+                  </div>
                 </div>
               </div>
 
@@ -405,8 +413,8 @@ const FundingRates = () => {
             <div className="border col-span-full lg:col-span-2 rounded-[16px] bg-gray-800 border-white/20 h-fit overflow-hidden">
               <div className="py-5 px-4">
                 <h3 className="text-white/90 font-bold text-base">
-                  Filtered Results{" "}
-                  {selectedMarketRow ? `- ${selectedMarketRow?.token}` : ""}
+                  Filtered Results{' '}
+                  {selectedMarketRow ? `- ${selectedMarketRow?.token}` : ''}
                 </h3>
               </div>
 
