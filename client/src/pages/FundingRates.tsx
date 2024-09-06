@@ -14,7 +14,7 @@ import { updateSelectedToken } from '../redux/features/tokens/tokenSlice';
 import TimeFilter from '../components/TimeFilter';
 import { AiOutlineExpandAlt } from 'react-icons/ai';
 import { Bars } from 'react-loader-spinner';
-// import HistoryChart from "../components/Charts/HistoryChart";
+import HistoryChart from '../components/Charts/HistoryChart';
 import { formatTimestamp } from '../utils/formatTime';
 import { fetchCryptoComparePrices } from '../utils/fetchCryptoPrices';
 import TradingViewChart from '../components/TradingViewChart';
@@ -25,8 +25,8 @@ import Tabs from '../components/Tabs';
 import MarketFilterBox from '../components/MarketFilterBox';
 import { getDateTime } from '../utils/dateUtils';
 import usePreLoadData from '../hooks/usePreLoadData';
-import AreaChart from '../components/Charts/AreaChart';
-import { sampleFundingRatesData } from '../constants/data/fundingRatesChartData';
+import FundingHistoryChart from '../components/Charts/FundingHistoryChart';
+import { updateTimeRange } from '../redux/features/timeFilter/timeFilter';
 
 const FundingRates = () => {
   const [fundingHistoryTab, setFundingHistoryTab] = useState(
@@ -175,6 +175,7 @@ const FundingRates = () => {
 
   const handleTimeRangeChange = (range: string) => {
     setTimeRange(range);
+    dispatch(updateTimeRange(range));
   };
 
   const fundingData = useAppSelector((state) => {
@@ -386,9 +387,9 @@ const FundingRates = () => {
                 <div>
                   {/* <HistoryChart data={getFundingData()} timeRange={timeRange} /> */}
                   {/* <HistoryChart data={getFundingData()} timeRange={timeRange} /> */}
-                  {/* <HistoryChart data={getFundingData()} timeRange={timeRange} /> */}
+                  <HistoryChart data={getFundingData()} timeRange={timeRange} />
                   <div>
-                    <AreaChart data={sampleFundingRatesData} id={'chart-id'} />
+                    <FundingHistoryChart />
                     <button
                       className="hidden"
                       onClick={() => getFundingData()}

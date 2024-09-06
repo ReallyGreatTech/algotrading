@@ -17,7 +17,7 @@ import { apiClient } from './apiClient';
 //   { rejectValue: string }
 // >('fundingHistory/fetchFundingHistory', async ({token}, { rejectWithValue }) => {
 //   try {
-    
+
 //     // const fromDateTime = getFromDateTime(dateRange);
 //     const response = await apiClient.get<FetchFundingHistoryResponse>(
 //       '/funding-history',
@@ -37,20 +37,23 @@ export const fetchFundingHistory = createAsyncThunk<
   FundingHistory[],
   { token: string },
   { rejectValue: string }
->('fundingHistory/fetchFundingHistory', async ({ token }, { rejectWithValue }) => {
-  try {
-    const response = await apiClient.get<FetchFundingHistoryResponse>(
-      '/funding-history',
-      {
-        params: { token },
-      }
-    );
-    return response.data.results;
-  } catch (error) {
-    console.error('Error fetching funding history:', error);
-    return rejectWithValue('Failed to fetch funding history');
+>(
+  'fundingHistory/fetchFundingHistory',
+  async ({ token }, { rejectWithValue }) => {
+    try {
+      const response = await apiClient.get<FetchFundingHistoryResponse>(
+        '/funding-history',
+        {
+          params: { token },
+        }
+      );
+      return response.data.results;
+    } catch (error) {
+      console.error('Error fetching funding history:', error);
+      return rejectWithValue('Failed to fetch funding history');
+    }
   }
-});
+);
 
 // export const fetchSelectedFundingHistory = createAsyncThunk(
 //   'selectedFundingHistory/fetchselectedFundingHistory',
@@ -61,7 +64,7 @@ export const fetchFundingHistory = createAsyncThunk<
 //         token,
 //         exchange,
 //       };
-    
+
 //       if (from_datetime) {
 //         params.from_datetime = from_datetime;
 //       }
@@ -77,10 +80,12 @@ export const fetchFundingHistory = createAsyncThunk<
 //   }
 // );
 
-
 export const fetchSelectedFundingHistory = createAsyncThunk(
   'selectedFundingHistory/fetchSelectedFundingHistory',
-  async ({ token, exchange, from_datetime }: RowParams, { rejectWithValue }) => {
+  async (
+    { token, exchange, from_datetime }: RowParams,
+    { rejectWithValue }
+  ) => {
     try {
       const params: any = { token, exchange };
       if (from_datetime) {
