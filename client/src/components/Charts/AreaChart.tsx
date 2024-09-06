@@ -12,7 +12,7 @@ interface DataItem {
 interface ChartsProps {
   id: string;
   data: DataItem[];
-  timeUnit: TimeUnit;
+  timeUnit?: TimeUnit;
   containerStyle?: CSSProperties;
 }
 

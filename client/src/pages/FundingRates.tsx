@@ -14,7 +14,6 @@ import { updateSelectedToken } from '../redux/features/tokens/tokenSlice';
 import TimeFilter from '../components/TimeFilter';
 import { AiOutlineExpandAlt } from 'react-icons/ai';
 import { Bars } from 'react-loader-spinner';
-import HistoryChart from '../components/Charts/HistoryChart';
 import { formatTimestamp } from '../utils/formatTime';
 import { fetchCryptoComparePrices } from '../utils/fetchCryptoPrices';
 import TradingViewChart from '../components/TradingViewChart';
@@ -387,7 +386,7 @@ const FundingRates = () => {
                 <div>
                   {/* <HistoryChart data={getFundingData()} timeRange={timeRange} /> */}
                   {/* <HistoryChart data={getFundingData()} timeRange={timeRange} /> */}
-                  <HistoryChart data={getFundingData()} timeRange={timeRange} />
+                  {/* <HistoryChart data={getFundingData()} timeRange={timeRange} /> */}
                   <div>
                     <FundingHistoryChart />
                     <button
