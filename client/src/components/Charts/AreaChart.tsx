@@ -2,6 +2,7 @@ import { CSSProperties, useLayoutEffect } from 'react';
 import * as am5 from '@amcharts/amcharts5';
 import * as am5xy from '@amcharts/amcharts5/xy';
 import am5themes_Animated from '@amcharts/amcharts5/themes/Animated';
+import { TimeUnit } from '@amcharts/amcharts5/.internal/core/util/Time';
 
 interface DataItem {
   value: number;
@@ -11,10 +12,16 @@ interface DataItem {
 interface ChartsProps {
   id: string;
   data: DataItem[];
+  timeUnit?: TimeUnit;
   containerStyle?: CSSProperties;
 }
 
-const AreaChart = ({ data, id, containerStyle }: ChartsProps) => {
+const AreaChart = ({
+  data,
+  timeUnit: dateUnit = 'day',
+  id,
+  containerStyle,
+}: ChartsProps) => {
   useLayoutEffect(() => {
     const root = am5.Root.new(id);
 
@@ -43,7 +50,7 @@ const AreaChart = ({ data, id, containerStyle }: ChartsProps) => {
       am5xy.DateAxis.new(root, {
         maxDeviation: 0.5,
         baseInterval: {
-          timeUnit: 'day',
+          timeUnit: dateUnit,
           count: 1,
         },
         renderer: am5xy.AxisRendererX.new(root, {
@@ -109,17 +116,17 @@ const AreaChart = ({ data, id, containerStyle }: ChartsProps) => {
 
     series.fills.template.setAll({
       fillOpacity: 0.3,
-      fillGradient: am5.LinearGradient.new(root, {
-        stops: [
-          {
-            color: am5.color(0x6366f1),
-          },
-          {
-            color: am5.color(0x334154),
-          },
-        ],
-      }),
-      visible: true,
+      // fillGradient: am5.LinearGradient.new(root, {
+      //   stops: [
+      //     {
+      //       color: am5.color(0x6366f1),
+      //     },
+      //     {
+      //       color: am5.color(0x334154),
+      //     },
+      //   ],
+      // }),
+      // visible: true,
     });
 
     series.strokes.template.setAll({
@@ -136,7 +143,7 @@ const AreaChart = ({ data, id, containerStyle }: ChartsProps) => {
     return () => {
       root.dispose();
     };
-  }, []);
+  }, [data]);
 
   return (
     <div
