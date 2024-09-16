@@ -6,6 +6,8 @@ export interface TableColumn<T> {
   tableBodyCellClassName?: string;
   tableHeadCellClassName?: string;
   render?(item: T): ReactNode;
+  sortable?: boolean;
+  sortFunction?: (a: T, b: T) => number; // Add this line
 }
 
 export interface Position {

@@ -41,11 +41,12 @@ export const fundingRatesTableColumn: TableColumn<Market>[] = [
   },
   {
     label: "Price",
-    value: "mark_price",
+    value: "mark_price_usd",
     tableBodyCellClassName:"min-w-[4rem] ",
     render: ({mark_price_usd}) => {
       return formatCurrency(mark_price_usd)
-    }
+    },
+    sortable: true
   },
   {
     label: "Funding",
@@ -59,12 +60,12 @@ export const fundingRatesTableColumn: TableColumn<Market>[] = [
         ? item.funding_rate_live_annual
         : item.funding_rate_latest_annual;
       const divClassName = isLive
-        ? "bg-green-500 w-3 h-3 rounded-full ml-3"
+        ? "bg-green-500 w-2 h-2 rounded-full ml-3"
         : "";
 
       return (
         <div
-          className={`flex items-center    ${
+          className={`flex items-center ${
             fundingRate > 0 ? "text-green-400" : "text-red-400"
           }`}
         >
@@ -72,6 +73,12 @@ export const fundingRatesTableColumn: TableColumn<Market>[] = [
         </div>
       );
     },
+    sortable: true,
+    sortFunction: (a: Market, b: Market) => {
+      const aRate = a.funding_rate_live_annual ?? a.funding_rate_latest_annual;
+      const bRate = b.funding_rate_live_annual ?? b.funding_rate_latest_annual;
+      return aRate - bRate;
+    }
   },
   {
     label: "Open Interest",
@@ -81,6 +88,7 @@ export const fundingRatesTableColumn: TableColumn<Market>[] = [
     render: (item: Market) => {
       return formatCurrency(item.open_interest_usd);
     },
+    sortable: true
   },
   {
     label: "Actions",

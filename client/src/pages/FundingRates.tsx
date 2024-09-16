@@ -9,7 +9,7 @@ import {
 } from '../constants/data/fundingRatesPage';
 import SearchInput from '../components/SearchInput';
 import { useAppSelector, useAppDispatch } from '../hooks';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState, useCallback } from 'react';
 import { updateSelectedToken } from '../redux/features/tokens/tokenSlice';
 import TimeFilter from '../components/TimeFilter';
 import { AiOutlineExpandAlt } from 'react-icons/ai';
@@ -26,6 +26,7 @@ import { getDateTime } from '../utils/dateUtils';
 import usePreLoadData from '../hooks/usePreLoadData';
 import FundingHistoryChart from '../components/Charts/FundingHistoryChart';
 import { updateTimeRange } from '../redux/features/timeFilter/timeFilter';
+
 
 const FundingRates = () => {
   const [fundingHistoryTab, setFundingHistoryTab] = useState(
@@ -68,16 +69,53 @@ const FundingRates = () => {
 
   const range = getDateTime(timeRange);
 
-  const getUnhiddenMarket = () => {
+  const [sortColumn, setSortColumn] = useState<keyof Market | null>(null);
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+
+  const getUnhiddenMarket = useCallback(() => {
     const hidden = localStorageMarketsData.data.hidden;
-    let data: Market[] = filteredMarketData;
+    return filteredMarketData.filter((m) => !hidden.some((hm) => hm.id === m.id));
+  }, [filteredMarketData, localStorageMarketsData.data.hidden]);
 
-    data = data.filter((m) => {
-      const index = hidden.findIndex((hm) => hm.id === m.id);
-      if (index == -1) return m;
+  const getUnsortedTableData = useCallback(() => {
+    switch (fundingHistoryTab.label) {
+      case 'Favorite':
+        return localStorageMarketsData.data.favourites;
+      case 'Hidden':
+        return localStorageMarketsData.data.hidden;
+      default:
+        return getUnhiddenMarket();
+    }
+  }, [fundingHistoryTab.label, localStorageMarketsData.data, getUnhiddenMarket]);
+
+  const sortedData = useMemo(() => {
+    const dataToSort = getUnsortedTableData();
+    if (!sortColumn) return dataToSort;
+
+    return [...dataToSort].sort((a, b) => {
+      const column = fundingRatesTableColumn.find(col => col.value === sortColumn);
+      if (column && column.sortFunction) {
+        return sortDirection === 'asc' 
+          ? column.sortFunction(a, b) 
+          : column.sortFunction(b, a);
+      }
+
+      const aValue = a[sortColumn];
+      const bValue = b[sortColumn];
+      if (aValue == null || bValue == null) return 0;
+      if (aValue < bValue) return sortDirection === 'asc' ? -1 : 1;
+      if (aValue > bValue) return sortDirection === 'asc' ? 1 : -1;
+      return 0;
     });
+  }, [getUnsortedTableData, sortColumn, sortDirection]);
 
-    return data;
+  const handleSort = (column: keyof Market) => {
+    if (sortColumn === column) {
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortColumn(column);
+      setSortDirection('asc');
+    }
   };
 
   useEffect(() => {
@@ -91,7 +129,7 @@ const FundingRates = () => {
 
   const getMarketParams = (): FetchMarketParams => {
     const filterParams: FetchMarketParams = {};
-
+    
     if (selectedToken) filterParams.token = selectedToken;
     if (selectedExchange) filterParams.exchange = selectedExchange;
     if (fundingNormalization)
@@ -100,6 +138,9 @@ const FundingRates = () => {
       filterParams.annual_min_funding_rate = Number(minimumFundingRate);
     if (minOpenInterestUsd)
       filterParams.min_open_interest_usd = Number(minOpenInterestUsd);
+
+    
+
 
     return filterParams;
   };
@@ -181,25 +222,13 @@ const FundingRates = () => {
     return state.selecetedFundingHistory.data;
   });
 
-  // const unhiddenMarket = useMemo(() => {
-  //   const hidden = localStorageMarketsData.data.hidden;
-  //   let data: Market[] = filteredMarketData;
-
-  //   data = data.filter((m) => {
-  //     const index = hidden.findIndex((hm) => hm.id === m.id);
-  //     if (index == -1) return m;
-  //   });
-
-  //   return data;
-  // }, [localStorageMarketsData.data.hidden]);
-
   const marketsFilterByToken = useMemo((): Market[] => {
     if (!selectedMarketRow) return [];
 
     return filteredMarketData.filter(
       (m) => m.token === selectedMarketRow.token
     );
-  }, [selectedMarketRow]);
+  }, [selectedMarketRow,filteredMarketData]);
 
   const [filterKey, setFilterKey] = useState(0); // Add this state to manage key updates
 
@@ -322,14 +351,8 @@ const FundingRates = () => {
                   <AppTable<Market>
                     selectedRow={selectedMarketRow}
                     columns={fundingRatesTableColumn}
-                    data={
-                      fundingHistoryTab.label === 'Favorite'
-                        ? localStorageMarketsData.data.favourites
-                        : fundingHistoryTab.label === 'Hidden'
-                        ? localStorageMarketsData.data.hidden
-                        : // : unhiddenMarket
-                          getUnhiddenMarket()
-                    }
+                    data={sortedData}
+                    onSort={handleSort}
                     onRowClick={(item) => {
                       setSelectedRow(item);
 

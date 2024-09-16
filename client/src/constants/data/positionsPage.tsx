@@ -215,8 +215,10 @@ export const subPositionsTableColumn: TableColumn<Position>[] = [
         onField="entry_price"
         fieldValue={formatNumber(position.entry_price)}
         position={position}
+  
       />
     ),
+    
   },
   {
     label: "Direction",
