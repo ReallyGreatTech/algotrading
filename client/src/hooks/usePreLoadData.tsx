@@ -16,6 +16,7 @@ const usePreLoadData = () => {
       const tokens = await loadTokens();
       setTokens(tokens);
     } catch (err) {
+      console.log(err)
     } finally {
       setTokensLoading(false);
     }
@@ -27,6 +28,7 @@ const usePreLoadData = () => {
       const exchanges = Array.from(new Set(data.map((mo) => mo.exchange)));
       setExchanges(exchanges);
     } catch (err) {
+      console.log(err)
     } finally {
       setExchangesLoading(false);
     }

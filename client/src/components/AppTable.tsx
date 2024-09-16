@@ -1,5 +1,6 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useState } from 'react';
 import { TableColumn } from '../types';
+import SortButtons from './SortButtons';
 
 interface AppTableProps<T> {
   columns: TableColumn<T>[];
@@ -13,6 +14,7 @@ interface AppTableProps<T> {
   expansionProperty?: keyof T;
   expandComponent?: ReactNode;
   onRowClick?(row: T): void;
+  onSort?: (column: keyof T, direction: 'asc' | 'desc') => void;
 }
 
 const AppTable = <T extends {}>({
@@ -27,7 +29,11 @@ const AppTable = <T extends {}>({
   tableBodyRowClassName,
   tableBodyClassName,
   onRowClick,
+  onSort,
 }: AppTableProps<T>) => {
+  const [sortColumn, setSortColumn] = useState<keyof T | null>(null);
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc' | null>(null);
+
   const renderCell = (row: T, column: TableColumn<T>): ReactNode => {
     if (column.render) return column.render(row);
 
@@ -37,6 +43,14 @@ const AppTable = <T extends {}>({
   const raiseRowclick = (row: T) => {
     if (onRowClick) {
       onRowClick(row);
+    }
+  };
+
+  const handleSort = (column: keyof T, direction: 'asc' | 'desc') => {
+    setSortColumn(column);
+    setSortDirection(direction);
+    if (onSort) {
+      onSort(column, direction);
     }
   };
 
@@ -52,7 +66,15 @@ const AppTable = <T extends {}>({
               align="left"
               key={cIndex}
             >
-              {c.label}
+              <div className="flex items-center">
+                {c.label}
+                {c.sortable && (
+                  <SortButtons
+                    sortDirection={sortColumn === c.value ? sortDirection : null}
+                    onSort={(direction) => handleSort(c.value as keyof T, direction)}
+                  />
+                )}
+              </div>
             </th>
           ))}
         </tr>
