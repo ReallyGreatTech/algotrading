@@ -42,7 +42,7 @@ export const fundingRatesTableColumn: TableColumn<Market>[] = [
   {
     label: "Price",
     value: "mark_price_usd",
-    tableBodyCellClassName:"min-w-[4rem] ",
+    tableBodyCellClassName:"min-w-[6rem] ",
     render: ({mark_price_usd}) => {
       return formatCurrency(mark_price_usd)
     },
@@ -83,7 +83,7 @@ export const fundingRatesTableColumn: TableColumn<Market>[] = [
   {
     label: "Open Interest",
     value: "open_interest_usd",
-    tableHeadCellClassName: "min-w-[8em] ",
+    tableHeadCellClassName: "min-w-[12em] ",
     tableBodyCellClassName: "mr-5 ",
     render: (item: Market) => {
       return formatCurrency(item.open_interest_usd);
