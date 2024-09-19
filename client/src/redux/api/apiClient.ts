@@ -8,11 +8,11 @@
 //   baseURL: apiBaseURL,
 // });
 
-import axios from "axios";
+import axios from 'axios';
 
 const apiBaseURL =
   import.meta.env.VITE_API_BASE_URL ||
-  "https://api-algo.reallygreattech.com/api";
+  'https://api-algo.reallygreattech.com/api';
 
 const apiClient = axios.create({
   baseURL: apiBaseURL,
@@ -21,7 +21,7 @@ const apiClient = axios.create({
 // Add the JWT token to the request headers
 apiClient.interceptors.request.use(
   (config) => {
-    const authToken = localStorage.getItem("authToken");
+    const authToken = localStorage.getItem('authToken');
     if (authToken) {
       config.headers.Authorization = `Bearer ${authToken}`;
     }
@@ -33,7 +33,7 @@ apiClient.interceptors.request.use(
 );
 
 // Handle token refresh
-const refreshToken = localStorage.getItem("refreshToken");
+const refreshToken = localStorage.getItem('refreshToken');
 if (refreshToken) {
   apiClient.interceptors.response.use(
     (response) => response,
@@ -46,17 +46,17 @@ if (refreshToken) {
       ) {
         originalRequest._retry = true;
         try {
-          const response = await apiClient.post("/refresh-token", {
+          const response = await apiClient.post('/refresh-token', {
             refreshToken,
           });
           const { token } = response.data;
-          localStorage.setItem("authToken", token);
+          localStorage.setItem('authToken', token);
           originalRequest.headers.Authorization = `Bearer ${token}`;
           return apiClient(originalRequest);
         } catch (refreshError) {
-          console.error("Error refreshing token:", refreshError);
-          localStorage.removeItem("authToken");
-          localStorage.removeItem("refreshToken");
+          console.error('Error refreshing token:', refreshError);
+          localStorage.removeItem('authToken');
+          localStorage.removeItem('refreshToken');
           return Promise.reject(error);
         }
       }

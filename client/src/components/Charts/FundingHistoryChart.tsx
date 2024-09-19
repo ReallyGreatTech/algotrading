@@ -89,6 +89,12 @@ const FundingHistoryChart = () => {
             Loading....
           </p>
         </div>
+      ) : !getFundingData().length ? (
+        <div className="h-[500px] flex justify-center items-center">
+          <p className="text-center text-xs font-bold text-primary-light">
+            No data to plot chart.
+          </p>
+        </div>
       ) : (
         <AreaChart
           timeUnit={getTimeUnit()}
