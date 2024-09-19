@@ -92,7 +92,7 @@ const FundingHistoryChart = () => {
       ) : !getFundingData().length ? (
         <div className="h-[500px] flex justify-center items-center">
           <p className="text-center text-xs font-bold text-primary-light">
-            Data for chart is empty.
+            No data to plot chart.
           </p>
         </div>
       ) : (
