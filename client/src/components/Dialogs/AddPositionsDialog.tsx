@@ -17,6 +17,9 @@ import FormSelectInput from '../Form/FormSelectInput';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchMarketOptions } from '../../redux/api/marketsOptions';
 import PositionsSearchInput from '../PositionsSearchInput';
+import DatePicker from 'react-datepicker'; // Add this import
+import 'react-datepicker/dist/react-datepicker.css'; // Add this import
+import { fetchPositions } from '../../redux/api/positions';
 
 interface AddPositionsDialogProps extends DialogProps {}
 
@@ -82,8 +85,6 @@ const AddPositionsDialog = ({
   >(0);
   const [computedEquity, setComputedEquity] = useState<number | string>(0);
 
-  // ... other existing code remains the same
-
   const ComputedFields = () => {
     const { values, setFieldValue } = useFormikContext<NewPositionsFormData>();
 
@@ -140,17 +141,12 @@ const AddPositionsDialog = ({
       equity: Number(data.equity),
     };
 
-    //  if (formattedData.opened_at) formattedData.opened_at = new Date(formattedData.opened_at).toISOString();
-    //  if (formattedData.closed_at) formattedData.closed_at = new Date(formattedData.closed_at).toISOString();
-    // console.log('formatted data:',formattedData)
-    // console.log('status:',formattedData)
-    // console.log('wallet:',formattedData.wallet)
-
     try {
       console.log('formated data:', formattedData);
       await apiClient.post<Position>(`/positions/`, formattedData);
 
       toast.success('New position successfully created.');
+      dispatch(fetchPositions())
       // navigate('/positions');
       onClose();
     } catch (err) {
@@ -161,9 +157,23 @@ const AddPositionsDialog = ({
     }
   };
 
-  // useEffect(() => {
-  //   dispatch(fetchMarketOptions());
-  // }, []);
+  const FormDateTimeInput: React.FC<{ name: string; label: string }> = ({ name, label }) => {
+    const { values, setFieldValue } = useFormikContext<NewPositionsFormData>();
+
+    return (
+      <div className="col-span-1 flex flex-col">
+        <label className="text-white mb-1">{label}</label>
+        <DatePicker 
+          selected={values[name as keyof NewPositionsFormData] ? new Date(values[name as keyof NewPositionsFormData] || '') : null} // Update this line
+          onChange={(date) => setFieldValue(name as keyof NewPositionsFormData, date)} // Keep this line
+          className="w-full px-4 py-3 border border-white/20 bg-[#0F1621] rounded-lg text-white/80 "
+          showTimeSelect
+          dateFormat="Pp"
+          placeholderText='Select a Date and Time'
+        />
+      </div>
+    );
+  };
 
   return (
     <Dialog {...rest} open={open} onClose={onClose} maxWidth="xl">
@@ -217,22 +227,14 @@ const AddPositionsDialog = ({
                       />
                     </div> */}
 
-                    <div className="col-span-1 ">
-                      <FormInput
-                        type="datetime-local"
-                        label="Opened At"
-                        name="opened_at"
-                        placeholder="Enter value here..."
-                      />
-                    </div>
-                    <div className="col-span-1 ">
-                      <FormInput
-                        label="Closed At"
-                        name="closed_at"
-                        type="datetime-local"
-                        placeholder="Enter value here..."
-                      />
-                    </div>
+                    <FormDateTimeInput
+                      label="Opened At"
+                      name="opened_at"
+                    />
+                    <FormDateTimeInput
+                      label="Closed At"
+                      name="closed_at"
+                    />
                     <div className="col-span-1 ">
                       <FormSelectInput
                         name="status"
@@ -334,7 +336,7 @@ const AddPositionsDialog = ({
                       />
                     </div>
                     <div className="col-span-1 flex flex-col ">
-                      <label htmlFor="equity">Equity</label>
+                      <label htmlFor="equity" className='mb-2'>Equity</label>
                       <Field
                         name="equity"
                         type="number"

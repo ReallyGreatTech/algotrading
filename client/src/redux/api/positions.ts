@@ -11,7 +11,7 @@ export const fetchPositions = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const { data } = await apiClient.get<PositionsGroup[]>(
-        "/position-groups/"
+        "https://api-algo.reallygreattech.com/api/position-groups/"
       );
 
       return data;
