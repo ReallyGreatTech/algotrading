@@ -127,6 +127,15 @@ const AddPositionsDialog = ({
       return;
     }
 
+
+
+    
+    if (data.closed_at !== "" && data.opened_at > data.closed_at) {
+       toast.error(`Invalid position closed date. Cannot close position before it is opened Closed at ${typeof(data.closed_at)}`);
+       setIsPending(false);
+       return;
+    }
+
     const formattedData = {
       ...data,
       opened_at: data.opened_at ? new Date(data.opened_at).toISOString() : '',

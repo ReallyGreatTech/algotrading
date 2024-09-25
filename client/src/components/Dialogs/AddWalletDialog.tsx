@@ -75,7 +75,7 @@ const AddWalletDialog = ({ open, onClose, ...rest }: AddWalletDialogProps) => {
             <div className="col-span-2">
               <Input
                 placeholder="Add address "
-                label="Wallet wallet address"
+                label="Wallet address"
                 value={walletFormData.address}
                 onChange={(evt) =>
                   setWalletFormData({

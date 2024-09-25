@@ -27,8 +27,8 @@ const TopNav = () => {
           );
         })}
       </ul>
-      <span className="ms-auto">
-        <PrimaryButton buttonText="Connect Wallet"  />
+      <span className="ms-auto hidden">
+        <PrimaryButton buttonText="Connect Wallet"   />
       </span>
     </nav>
   );

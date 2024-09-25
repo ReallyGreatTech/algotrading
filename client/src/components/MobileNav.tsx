@@ -20,7 +20,7 @@ const MobileNav = () => {
 
   return (
     <>
-      <div className="flex justify-center items-center py-5 text-white/90">
+      <div className="flex  items-center py-5 text-white/90">
         <button
           onClick={() => setOpen(true)}
           className="text-xl text-white/90 p-4 bg-white/5 rounded-lg"
@@ -28,7 +28,7 @@ const MobileNav = () => {
           <IoMenu />
         </button>
 
-        <span className="ms-auto">
+        <span className="ms-auto hidden">
           <PrimaryButton buttonText="Connect Wallet" />
         </span>
       </div>
